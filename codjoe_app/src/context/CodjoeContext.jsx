@@ -12,6 +12,8 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const navigate = useNavigate();
 
+    const backUrl = 'https://codjoe-backend.onrender.com' || 'http://localhost:8085'
+
     //* products states
     const [products, setProducts] = useState([]);
     const [oneProductId, setOneProductId] = useState('');
@@ -58,7 +60,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     const loginRes = async (userData) => {
 
         // const res = await axios.get('http://localhost:8085/api/codjoe')
-        const res = await axios.post('http://localhost:8085/api/auth/login', userData)
+        const res = await axios.post(`${backUrl}/api/auth/login`, userData)
 
         console.log('logTTT ', res);
 
@@ -75,7 +77,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const signUpRes = async (userData) => {
 
-        const res = await axios.post('http://localhost:8085/api/auth/signup', userData)
+        const res = await axios.post(`${backUrl}/api/auth/signup`, userData)
 
         if (res.status === 200) {
             setIsSignup(true);
@@ -144,7 +146,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const getProducts = async () => {
 
-        const res = await axios.get('http://localhost:8085/api/products')
+        const res = await axios.get(`${backUrl}/api/products`)
 
         const products = []
 
@@ -165,7 +167,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const getOneProduct = async (id) => {
 
-        const res = await axios.get(`http://localhost:8085/api/products/${id}`)
+        const res = await axios.get(`${backUrl}/api/products/${id}`)
         const product = res.data
 
         if (product) {
@@ -177,14 +179,14 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     }
 
     const getUserCart = async (id) => {
-        const res = await axios.get(`http://localhost:8085/api/users/${id}/cart`)
+        const res = await axios.get(`${backUrl}/api/users/${id}/cart`)
         const cartProducts = res.data.data
         const convertedProducts = []
 
 
         if (res.status === 200) {
             cartProducts.forEach(async (elem) => {
-                const res = await axios.get(`http://localhost:8085/api/products/${elem.productId}`)
+                const res = await axios.get(`${backUrl}/api/products/${elem.productId}`)
                 const productData = res.data
 
                 if (productData) {
@@ -210,7 +212,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
         console.log('product added to cart contexttttt kkk2222', userID);
 
         if (newProduct) {
-            const res = await axios.post(`http://localhost:8085/api/users/${userID}/cart/add`, { newItems: [newProduct] })
+            const res = await axios.post(`${backUrl}/api/users/${userID}/cart/add`, { newItems: [newProduct] })
 
             if (res.status === 200) {
                 navigate(0)
@@ -224,7 +226,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
         if (newProductData) {
 
-            const res = await axios.post(`http://localhost:8085/api/products/add`,
+            const res = await axios.post(`${backUrl}/api/products/add`,
 
                 newProductData,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -244,14 +246,14 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const sendDeleteProduct = async (id) => {
 
-        const res = await axios.delete(`http://localhost:8085/api/products/delete/${id}`)
+        const res = await axios.delete(`${backUrl}/api/products/delete/${id}`)
 
-        if(res.status === 200 ) {
+        if (res.status === 200) {
             console.log('product deleted:', res);
-            
+
         } else {
             console.log('not deleted');
-            
+
         }
         console.log('send delete id ', id);
 
@@ -280,7 +282,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     // }
 
     const createPaymentIntent = async () => {
-        const res = await axios.post('http://localhost:8085/api/pay')
+        const res = await axios.post(`${backUrl}/api/pay`)
 
         console.log("context create pay");
 
@@ -320,7 +322,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
         if (productsArr.length >= 1) {
             productsArr.forEach(async (elemId) => {
-                const res = await axios.get(`http://localhost:8085/api/products/${elemId}`)
+                const res = await axios.get(`${backUrl}/api/products/${elemId}`)
                 const productData = res.data
 
                 if (productData) {
