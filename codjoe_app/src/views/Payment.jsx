@@ -62,7 +62,7 @@ const Payment = () => {
     }
 
     return (
-        <div className='min-h-[99vh] bg-white pt-20 text-black'>
+        <div className='min-h-[99vh] bg-white pt-20 text-black flex justify-center items-center'>
             {
                 stripePromise &&
                 clientKey &&

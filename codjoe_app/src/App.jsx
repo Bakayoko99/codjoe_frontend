@@ -19,6 +19,11 @@ import CJBestSellers from './components/backOffice/CJBestSellers';
 import { ProtectedRoute, ProtectedAdminRoute } from './components/ProtectedRoute';
 import Payment from './views/Payment';
 import AfterPay from './views/AfterPay';
+import Footer from './components/Footer';
+import Legal from './views/Legal';
+import LegalNotice from './components/legal/LegalNotice';
+import PrivacyPolicy from './components/legal/PrivacyPolicy';
+import Terms from './components/legal/Terms';
 
 
 const App = () => {
@@ -74,6 +79,15 @@ const App = () => {
             />
 
             <Route
+              path='/legal-info'
+              element={<Legal />}
+            >
+              <Route path='legal-notice' element={<LegalNotice />} />
+              <Route path='privacy-policy' element={<PrivacyPolicy />} />
+              <Route path='terms' element={<Terms />} />
+            </Route>
+
+            <Route
               path='/backOffice'
               element={
                 <ProtectedAdminRoute>
@@ -94,6 +108,7 @@ const App = () => {
               }
             />
           </Routes>
+          <Footer />
         </div>
       </CodjoeProvider>
     </Router>

@@ -14,11 +14,11 @@ const Backoffice = () => {
 
     // const officeMenu = ['homeHead', 'sta', 'usr', 'prd', 'best']
     const officeMenu = [
-        {
-            name: 'Menu',
-            icon: menu,
-            link: ''
-        },
+        // {
+        //     name: 'Menu',
+        //     icon: menu,
+        //     link: ''
+        // },
         {
             name: 'Stats',
             icon: stat,
@@ -44,15 +44,17 @@ const Backoffice = () => {
     return (
         <div className='bg-white pt-20 w-full text-black min-h-[100vh] flex'>
             {/* <h1>Backoffice</h1> */}
-            <div className={`${menuOpen === true ? 'w-1/5' : ' w-12'} bg-red-300 h-[87.7vh] duration-500 p-2`}>
+            <div className={`${menuOpen === true ? 'w-1/5' : ' w-12'} bg-sky-400 h-[87.7vh] duration-500 p-2`}>
                 <div className='bg-green-200 h-full'>
                     <div className='flex justify-center mb-2'>
-                        <button className='' onClick={() => setMenuOpen(!menuOpen)}>close</button>
+                        <button className='mt-5' onClick={() => setMenuOpen(!menuOpen)}>
+                            <img src={menu} alt="menu" />
+                        </button>
                     </div>
                     <ul className={`${menuOpen && 'ml-5'} mt-10`}>
                         {
                             officeMenu.map((e) => (
-                                <li className={`${!menuOpen && 'justify-center' } mb-5 flex `}>
+                                <li key={e.name} className={`${!menuOpen && 'justify-center' } mb-5 flex `}>
                                     <Link className='flex' to={e.link}>
                                         <p className={`${!menuOpen && 'hidden'} min-w-20 mr-7`}>{e.name}</p>
                                         <img className='h-6 w-6' src={e.icon} alt={e.name} />

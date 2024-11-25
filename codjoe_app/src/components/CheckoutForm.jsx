@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useStripe, useElements, PaymentElement, CardElement } from '@stripe/react-stripe-js';
 import { useCodjoeData } from '../context/CodjoeContext';
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutForm = () => {
 
     const stripe = useStripe();
     const elements = useElements();
+    const navigate = useNavigate()
 
     const { createPaymentIntent, clientSecret } = useCodjoeData()
 
@@ -53,10 +55,15 @@ const CheckoutForm = () => {
 
         if (error) {
             setMessage(error.message)
+            console.log('error pay message: ', error.message);
+            
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
             setMessage("Payment status:" + paymentIntent.status)
+            navigate('/succesfulPay')
         } else {
             setMessage("Unexpected status")
+            console.log('payStatus: ',paymentIntent.status);
+            
         }
 
         setIsProcessing(false)
@@ -75,14 +82,23 @@ const CheckoutForm = () => {
 
             <PaymentElement id="payment-element" />
             {/* <CardElement /> */}
+            <div className='flex justify-center mt-7'>
+                <button className='bg-[#C29F75] text-white mt-7 relative bottom-7 h-14 w-52 rounded-3xl font-medium flex justify-center items-center' disabled={!stripe || isProcessing} id='submit'>
+                    <span id="button-text">
+                        {isProcessing ? 'Processing ...' : 'Pay now'}
+                    </span>
+                </button>
+            </div>
 
-            <button className='bg-green-300' disabled={!stripe || isProcessing} id='submit'>
-                <span id="button-text">
-                    {isProcessing ? 'Processing ...' : 'Pay now'}
-                </span>
-            </button>
+            {/* <div className={`fixed mt-2 ml-2 transition-all duration-500 ${hideAlert && 'opacity-0'}`}>
+                <div className=" p-4 mb-4 text-sm text-white rounded-lg bg-green-800" role="alert">
+                    <p className="font-medium text-center">
+                        Sign up successful!.
+                    </p>
+                </div>
+            </div> */}
 
-            {message && <div id="payment-message">{message}</div>}
+            {/* {message && <div id="payment-message">{message}</div>} */}
 
         </form>
     );
