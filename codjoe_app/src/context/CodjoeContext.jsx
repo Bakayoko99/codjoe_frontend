@@ -18,6 +18,9 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     const [oneProduct, setOneProduct] = useState('');
     const [manyProducts, setManyProducts] = useState([]);
     const [testProducts, setTestProducts] = useState([]);
+    const [addNewProduct, setAddNewProduct] = useState(null);
+    const [deleteProduct, setDeleteProduct] = useState('');
+
 
     //* auth states
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -116,7 +119,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     //         //         setIsSignup(true);
     //         //     }
 
-            //     console.log('signup response', res.data);
+    //     console.log('signup response', res.data);
     //         // });
     //     }
     // }, [isLoggedIn, isSignup])
@@ -217,6 +220,57 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     }
 
+    const sendAddNewProduct = async (newProductData) => {
+
+        if (newProductData) {
+
+            const res = await axios.post(`http://localhost:8085/api/products/add`,
+
+                newProductData,
+                { headers: { 'Content-Type': 'multipart/form-data' } }
+            )
+
+            if (res.status === 200) {
+                console.log('new Product Added', res);
+
+            } else {
+                console.log('error product not added');
+
+            }
+
+        }
+
+    }
+
+    const sendDeleteProduct = async (id) => {
+
+        const res = await axios.delete(`http://localhost:8085/api/products/delete/${id}`)
+
+        if(res.status === 200 ) {
+            console.log('product deleted:', res);
+            
+        } else {
+            console.log('not deleted');
+            
+        }
+        console.log('send delete id ', id);
+
+    }
+
+    useEffect(() => {
+
+        if (deleteProduct.length > 1) sendDeleteProduct(deleteProduct)
+
+    }, [deleteProduct]);
+
+    useEffect(() => {
+
+        if (addNewProduct != null) {
+            sendAddNewProduct(addNewProduct)
+        }
+
+    }, [addNewProduct]);
+
     // const getStripePublicKey = async () => {
 
     //     const res = await axios.get('http://localhost:8085/api/config')
@@ -295,7 +349,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     useEffect(() => {
 
         // axios.get('https://fakestoreapi.com/products').then((res) => {
-            // console.log('response', res.data);
+        // console.log('response', res.data);
         //     setTestProducts(res.data);
 
         // });
@@ -312,17 +366,17 @@ export const CodjoeProvider = ({ children, initialValue }) => {
         //     const currentDate = new Date()
 
         //     if (decodedToken.exp * 1000 < currentDate.getTime()) {
-                console.log("Token expired.");
+        console.log("Token expired.");
         //         setIsLoggedIn(false)
         //         setUserID('')
         //     } else {
-                console.log("Valid token");
+        console.log("Valid token");
         //         setIsLoggedIn(true)
         //         setUserID(decodedToken.user.id)
         //     }
 
-            // console.log('token decodeddd', decodedToken);
-            console.log('token user', userID);
+        // console.log('token decodeddd', decodedToken);
+        console.log('token user', userID);
         // }
 
 
@@ -369,6 +423,8 @@ export const CodjoeProvider = ({ children, initialValue }) => {
             addCartNewProduct,
             // getManyProducts,
             manyProducts,
+            setAddNewProduct,
+            setDeleteProduct,
 
             // getStripePublicKey,
             // sPublicKey,

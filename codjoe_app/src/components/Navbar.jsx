@@ -27,7 +27,7 @@ const Navbar = () => {
 
     const searchRef = useRef(null)
 
-    const { isLoggedIn, setIsLoggedIn, isSignup, loginSuccess, userID, userCart, user, products } = useCodjoeData();
+    const { isLoggedIn, setIsLoggedIn, isSignup, loginSuccess, userID, userCart, user, userRole, products } = useCodjoeData();
     // const { ref, isComponentVisible } = useComponentVisible(false);
 
     // const handleCart = () => (
@@ -228,11 +228,21 @@ const Navbar = () => {
                             }
                         </ul>
 
+                        {
+                            userRole === 'admin' &&
+                            <div className=' text-black border-2 flex justify-between items-center cursor-pointer' >
+                                <Link to={'/backOffice/products'}>
+                                    <p>Back office</p>
+                                </Link>
+                            </div>
+                        }
                         {user &&
+
                             <div className=' text-black border-2 flex justify-between items-center cursor-pointer' onClick={() => handleLogOut()}>
                                 <p>Log out</p>
                                 <img src={logOut} alt="logOut" />
                             </div>
+
                         }
                     </div>
                 </div>
