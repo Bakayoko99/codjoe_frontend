@@ -62,23 +62,37 @@ const HomeHead = ({ screen }) => {
                 screen === 'lg-screens' && (
                     <div className='max-[1023px]:hidden grid grid-cols-3 gap-2 mx-4 justify-items-center h-auto '>
                         {
-                            lgScreenProducts.map((product) => (
-                                <div key={product._id} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh]'>
-                                    {/* <div className='pt-[125%] mb-3 bg-home-head-lg-img1 bg-cover bg-no-repeat bg-center ' /> */}
-                                    <div className='h-[85%] mb-3'>
-                                        <img className='h-full w-full object-cover' src={product.mainImg} alt={product.name} />
-                                    </div>
-                                    <div className='h-[60px] flex justify-between items-end'>
-                                        <div>
-                                            <p className='font-medium leading-[1.15rem] text-black'>{product.name}</p>
-                                            <p className='text-[#AFAFBD]'>${product.price}</p>
-                                        </div>
-                                        <div className='flex items-center'>
-                                            <Buttons data={homeheadLgBtnData} toLink={`/product/${product._id}`} />
+                            lgScreenProducts.length === 0 ? (
+                                [1, 2, 3].map((i) => (
+                                    <div key={i} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh] animate-pulse mb-5'>
+                                        <div className='h-[85%] mb-3 bg-[#F5F5F5]' />
+                                        <div className='h-[60px] flex justify-between items-end'>
+                                            <div>
+                                                <p className='font-medium leading-[1.15rem] text-black'>Loading...</p>
+                                                <p className='text-[#AFAFBD]'>Loading...</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))
+                                ))
+                            ) : (
+                                lgScreenProducts.map((product) => (
+                                    <div key={product._id} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh]'>
+                                        {/* <div className='pt-[125%] mb-3 bg-home-head-lg-img1 bg-cover bg-no-repeat bg-center ' /> */}
+                                        <div className='h-[85%] mb-3'>
+                                            <img className='h-full w-full object-cover' src={product.mainImg} alt={product.name} />
+                                        </div>
+                                        <div className='h-[60px] flex justify-between items-end'>
+                                            <div>
+                                                <p className='font-medium leading-[1.15rem] text-black'>{product.name}</p>
+                                                <p className='text-[#AFAFBD]'>${product.price}</p>
+                                            </div>
+                                            <div className='flex items-center'>
+                                                <Buttons data={homeheadLgBtnData} toLink={`/product/${product._id}`} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            )
                         }
                     </div>
                 )
