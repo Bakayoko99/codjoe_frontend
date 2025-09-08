@@ -25,7 +25,7 @@ const Navbar = () => {
     const [openSearch, setOpenSearch] = useState(false);
     const [searchData, setSearchData] = useState(['', []]);
 
-    const searchRef = useRef(null)
+    const searchRef = useRef(null);
 
     const { isLoggedIn, setIsLoggedIn, isSignup, loginSuccess, userID, userCart, user, userRole, products } = useCodjoeData();
     // const { ref, isComponentVisible } = useComponentVisible(false);
@@ -207,7 +207,7 @@ const Navbar = () => {
                         </li>
                     </ul>
 
-                    <div className={`${!toggle ? 'hidden' : 'flex flex-col justify-between'} p-6 border-4 bg-white absolute top-20 right-0 mx-4 my-2 min-w-[180px] z-10 rounded-xl h-80 `}>
+                    <div onMouseLeave={() => setToggle(false)} className={`${!toggle ? 'opacity-0' : 'flex flex-col justify-between'} duration-500 p-6 border-4 bg-white absolute top-20 right-0 mx-4 my-2 min-w-[180px] z-10 rounded-xl h-80 `}>
                         <ul>
                             {
                                 categories.map((category, index) => (

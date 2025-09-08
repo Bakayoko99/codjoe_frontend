@@ -31,14 +31,21 @@ const Home = () => {
 
     return (
         <>
-            <div className='bg-home-head h-0 pt-[116%] w-screen bg-contain bg-no-repeat max-w-full mt-20 lg:hidden'>
-                <HomeHead screen={screen} />
+            <div className='mx-16'>
+                <section className='bg-home-head h-0 pt-[116%] w-screen bg-contain bg-no-repeat max-w-full mt-20 lg:hidden'>
+                    <HomeHead screen={screen} />
+                </section>
+                <section className=' lg:block mt-20 hidden'>
+                    <HomeHead screen={screen} />
+                </section>
+                <section className='mx-10'>
+                    <h1 className='text-5xl font-bold font text-black '>Best sellers</h1>
+                    <BestSellers />
+                </section>
+                <section className='mt-20'>
+                    <PerfectMix />
+                </section>
             </div>
-            <div className=' lg:block mt-20 hidden'>
-                <HomeHead screen={screen} />
-            </div>
-            <BestSellers />
-            <PerfectMix />
         </>
     )
 }
