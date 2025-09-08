@@ -47,6 +47,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Buttons from './Buttons';
+import { Link } from 'react-router-dom';
 
 const BestSellers = () => {
     const items = [
@@ -67,22 +68,22 @@ const BestSellers = () => {
         },
         {
             id: 2,
-            title: 'Classic Jeans',
+            title: 'Classic Jeans Jacket',
             price: '$79.99',
-            imgClass: 'bg-classic-jeans',
+            imgClass: 'bg-classic-jeans-jacket',
             bestSellersBtnData: [
                 {
                     type: '',
                     btn1: {
                         text: 'Buy now',
-                        link: '/product/6644b60b3f1fd26bf1a66772',
+                        link: '/product/6644cb3f3f1fd26bf1a6678a',
                     },
                 }
             ],
         },
         {
             id: 3,
-            title: 'black shirt',
+            title: 'Summer Jacket',
             price: '$99.50',
             imgClass: 'bg-summer-jacket',
             bestSellersBtnData: [
@@ -90,7 +91,7 @@ const BestSellers = () => {
                     type: '',
                     btn1: {
                         text: 'Buy now',
-                        link: '/product/6644b60b3f1fd26bf1a66772',
+                        link: '/product/6644c9a73f1fd26bf1a66786',
                     },
                 }
             ],
@@ -122,38 +123,36 @@ const BestSellers = () => {
                 initial="hidden"
                 animate="visible"
             >
+                <div className='flex gap-36'>
+                    {items.map((item) => (
+                        <motion.div
+                            key={item.id}
+                            className="w-96 bg-white "
+                            variants={itemVariants}
+                        >
+                            <div className='w-96'>
+                                <Link to={item.bestSellersBtnData[0].btn1.link}>
+                                    <div className={`h-0 pt-[150%] bg-cover bg-no-repeat my-4 rounded-[27px] ${item.imgClass}`} />
+                                </Link>
+                                <div className='h-10 flex justify-between'>
+                                    <div>
+                                        <p className='font-medium leading-[1.15rem] text-black'>{item.title}</p>
+                                        <p className='text-[#AFAFBD]'>{item.price}</p>
+                                    </div>
+                                    <div className='flex items-center'>
+                                        <Buttons data={item.bestSellersBtnData} toLink={item.bestSellersBtnData[0].btn1.link} />
+                                    </div>
 
-                {items.map((item) => (
-                    <motion.div
-                        key={item.id}
-                        className="w-96 bg-white "
-                        variants={itemVariants}
-                    >
-                        {/* <div className={`h-48 bg-contain bg-no-repeat mb-4 rounded-xl ${item.imgClass}`} />
-                    <h2 className="text-xl font-semibold mb-1">{item.title}</h2>
-                    <p className="text-gray-500 mb-3">{item.price}</p>
-                    <Buttons data={[{ type: '', btn1: { text: 'Buy now', link: item.link } }]} /> */}
-
-                        {/* <div className='mt-8 p-6 w-full' > */}
-                        <div className='w-96'>
-                            <div className='bg-best-sellers h-0 pt-[150%] bg-contain bg-no-repeat my-4 rounded-[27px]' />
-                            <div className='h-10 flex justify-between'>
-                                <div>
-                                    <p className='font-medium leading-[1.15rem] text-black'>Codjoe Red Shirt</p>
-                                    <p className='text-[#AFAFBD]'>$59.95</p>
                                 </div>
-                                <div className='flex items-center'>
-                                    <Buttons data={item.bestSellersBtnData} />
-                                </div>
-
                             </div>
+
                             {/* <div className='bg-best-sellers bg-contain bg-no-repeat h-40 rounded-[27px]  bg-amber-400 my-4'> */}
-                        </div>
 
 
-                        {/* </div> */}
-                    </motion.div>
-                ))}
+                            {/* </div> */}
+                        </motion.div>
+                    ))}
+                </div>
             </motion.div>
         </>
     );
