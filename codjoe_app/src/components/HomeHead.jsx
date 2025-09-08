@@ -60,13 +60,15 @@ const HomeHead = ({ screen }) => {
             }
             {
                 screen === 'lg-screens' && (
-                    <div className='max-[1023px]:hidden grid grid-cols-3 gap-2 mx-4 justify-items-center h-auto '>
+                    <div className='max-[1023px]:hidden grid grid-cols-3 gap-2 justify-items-center h-auto '>
                         {
                             lgScreenProducts.length === 0 ? (
                                 [1, 2, 3].map((i) => (
                                     <div key={i} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh] animate-pulse mb-5'>
-                                        <div className='h-[85%] mb-3 bg-[#F5F5F5]' />
-                                        <div className='h-[60px] flex justify-between items-end'>
+                                        <div className='h-96 mb-3 bg-[#F5F5F5] flex justify-center items-center'>
+                                            <span className="w-12 h-12 rounded-[50%] inline-block border-t-codjoe-biscuit border-t-[3px] border-r-[3px] border-r-transparent animate-spin" />
+                                        </div>
+                                        <div className='h-14 flex justify-between items-end'>
                                             <div>
                                                 <p className='font-medium leading-[1.15rem] text-black'>Loading...</p>
                                                 <p className='text-[#AFAFBD]'>Loading...</p>
@@ -77,10 +79,12 @@ const HomeHead = ({ screen }) => {
                             ) : (
                                 lgScreenProducts.map((product) => (
                                     <div key={product._id} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh]'>
-                                        {/* <div className='pt-[125%] mb-3 bg-home-head-lg-img1 bg-cover bg-no-repeat bg-center ' /> */}
-                                        <div className='h-[85%] mb-3'>
-                                            <img className='h-full w-full object-cover' src={product.mainImg} alt={product.name} />
-                                        </div>
+                                        <Link to={`/product/${product._id}`}>
+                                            {/* <div className='pt-[125%] mb-3 bg-home-head-lg-img1 bg-cover bg-no-repeat bg-center ' /> */}
+                                            <div className='h-[85%] mb-3'>
+                                                <img className='h-full w-full object-cover' src={product.mainImg} alt={product.name} />
+                                            </div>
+                                        </Link>
                                         <div className='h-[60px] flex justify-between items-end'>
                                             <div>
                                                 <p className='font-medium leading-[1.15rem] text-black'>{product.name}</p>

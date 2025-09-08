@@ -101,18 +101,30 @@ const Product = () => {
                 <div className='h-[85vh]'>
                     <div className=' h-[365px] w-full grid grid-cols-3 gap-20 px-5 pt-[5%]'>
                         {/* <div className=' bg-orange-200 h-[365px] w-full px-20 flex justify-between'> */}
-                        <div className=' rounded-2xl relative mx-auto  overflow-hidden'>
-                            {/* h-full  w-80 */}
-                            <img className=' h-full w-full object-cover' src={product?.mainImg} alt="product image" />
-                        </div>
+
+                        {product.mainImg ? (
+                            <div className=' rounded-2xl relative mx-auto  overflow-hidden'>
+                                {/* h-full  w-80 */}
+                                <img className=' h-full w-full object-cover' src={product?.mainImg} alt="product image" />
+                            </div>
+
+                        ) : (
+                            // <div className='h-full w-90 flex justify-center items-center'>
+                            <div className=" ml-5 h-full w-90 animate-pulse bg-codjoe-biscuit flex justify-center items-center bg-white/20 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[5px] border border-white/30">
+                                <span className="w-12 h-12 rounded-[50%] inline-block border-t-codjoe-biscuit border-t-[3px] border-r-[3px] border-r-transparent animate-spin"></span>
+                            </div>
+                            // </div>
+                        )}
                         <div className='text-black h-full w-[600px] col-span-2'>
                             {/* <div className='text-black bg-slate-500 h-full w-[600px]'> */}
                             <p className='text-2xl font-medium mb-1'>
-                                {product.name}
+                                {product.name ? product.name : 'Loading...'}
                             </p>
-                            <p className='text-[#AFAFBD] text-xl mb-1'>€{product?.price}</p>
-                            <p className=' mb-6 font-light'>
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita aliquam fuga sint porro reiciendis ipsa nesciunt harum exercitationem voluptas est
+                            <p className={`${product?.price ? '' : 'animate-pulse bg-gray-300 h-5 w-full mt-5 mb-5'} text-[#AFAFBD] text-xl mb-1`}>
+                                {product?.price ? `€${product?.price}` : ''}
+                            </p>
+                            <p className={`${product?.name ? '' : 'animate-pulse bg-gray-300 h-10 w-full'} mb-6 font-light`}>
+                                {product?.name ? 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita aliquam fuga sint porro reiciendis ipsa nesciunt harum exercitationem voluptas est' : ''}
                             </p>
                             <div className=' w-full flex justify-between'>
                                 {/* <select className=' px-3 h-14 bg-white rounded-[28px] w-64'>
