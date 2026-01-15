@@ -31,18 +31,25 @@ const Home = () => {
 
     return (
         <>
-            <div className='mx-16'>
-                <section className='bg-home-head h-0 pt-[116%] w-screen bg-contain bg-no-repeat max-w-full mt-20 lg:hidden'>
+            <div className='mx-4 sm:mx-8 lg:mx-16'>
+                {/* Section mobile */}
+                <section className='bg-home-head h-0 pt-[116%] w-full bg-contain bg-no-repeat max-w-full mt-24 md:mt-28 lg:hidden mb-10'>
                     <HomeHead screen={screen} />
                 </section>
-                <section className=' lg:block mt-20 hidden'>
+                
+                {/* Section desktop */}
+                <section className='lg:block mt-16 sm:mt-20 hidden'>
                     <HomeHead screen={screen} />
                 </section>
-                <section className='mx-10'>
-                    <h1 className='text-5xl font-bold font text-black '>Best sellers</h1>
+                
+                {/* Section Best Sellers */}
+                <section className='mx-2 sm:mx-6 lg:mx-10'>
+                    <h1 className='text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-black mb-4 sm:mb-6'>Best sellers</h1>
                     <BestSellers />
                 </section>
-                <section className='mt-20'>
+                
+                {/* Section Perfect Mix */}
+                <section className='mt-12 sm:mt-16 lg:mt-20'>
                     <PerfectMix />
                 </section>
             </div>

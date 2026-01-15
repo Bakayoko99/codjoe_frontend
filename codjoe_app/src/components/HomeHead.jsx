@@ -60,12 +60,12 @@ const HomeHead = ({ screen }) => {
             }
             {
                 screen === 'lg-screens' && (
-                    <div className='max-[1023px]:hidden grid grid-cols-3 gap-2 justify-items-center h-auto '>
+                    <div className='max-[1023px]:hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 justify-items-center h-auto px-4'>
                         {
                             lgScreenProducts.length === 0 ? (
                                 [1, 2, 3].map((i) => (
-                                    <div key={i} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh] animate-pulse mb-5'>
-                                        <div className='h-96 mb-3 bg-[#F5F5F5] flex justify-center items-center'>
+                                    <div key={i} className='w-full max-w-sm animate-pulse mb-5'>
+                                        <div className='h-64 sm:h-80 lg:h-96 mb-3 bg-[#F5F5F5] flex justify-center items-center rounded-lg'>
                                             <span className="w-12 h-12 rounded-[50%] inline-block border-t-codjoe-biscuit border-t-[3px] border-r-[3px] border-r-transparent animate-spin" />
                                         </div>
                                         <div className='h-14 flex justify-between items-end'>
@@ -78,19 +78,18 @@ const HomeHead = ({ screen }) => {
                                 ))
                             ) : (
                                 lgScreenProducts.map((product) => (
-                                    <div key={product._id} className=' w-[23vh] lg:w-[45vh] xl:w-[50vh]'>
+                                    <div key={product._id} className='w-full max-w-sm'>
                                         <Link to={`/product/${product._id}`}>
-                                            {/* <div className='pt-[125%] mb-3 bg-home-head-lg-img1 bg-cover bg-no-repeat bg-center ' /> */}
-                                            <div className='h-[85%] mb-3'>
-                                                <img className='h-full w-full object-cover' src={product.mainImg} alt={product.name} />
+                                            <div className='h-64 sm:h-80 lg:h-96 mb-3 rounded-lg overflow-hidden'>
+                                                <img className='h-full w-full object-cover hover:scale-105 transition-transform duration-300' src={product.mainImg} alt={product.name} />
                                             </div>
                                         </Link>
                                         <div className='h-[60px] flex justify-between items-end'>
-                                            <div>
-                                                <p className='font-medium leading-[1.15rem] text-black'>{product.name}</p>
+                                            <div className='flex-1 pr-2'>
+                                                <p className='font-medium leading-[1.15rem] text-black truncate'>{product.name}</p>
                                                 <p className='text-[#AFAFBD]'>${product.price}</p>
                                             </div>
-                                            <div className='flex items-center'>
+                                            <div className='flex items-center flex-shrink-0'>
                                                 <Buttons data={homeheadLgBtnData} toLink={`/product/${product._id}`} />
                                             </div>
                                         </div>
