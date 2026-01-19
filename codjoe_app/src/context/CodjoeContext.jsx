@@ -181,48 +181,241 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     }
 
     const getUserCart = async (id) => {
-        const res = await axios.get(`${backUrl}/api/users/${id}/cart`)
-        const cartProducts = res.data.data
-        const convertedProducts = []
+        console.log('getUserCart called with id:', id);
+        try {
+            const res = await axios.get(`${backUrl}/api/users/${id}/cart`)
+            const cartProducts = res.data.data
 
-
-        if (res.status === 200) {
-            cartProducts.forEach(async (elem) => {
-                const res = await axios.get(`${backUrl}/api/products/${elem.productId}`)
-                const productData = res.data
-
-                if (productData) {
-                    convertedProducts.push({
-                        id: elem.productId,
-                        name: productData.name,
-                        price: productData.price,
-                        mainImg: convertImg(productData.mainImg.data.data, productData.mainImg.contentType),
-                        imgs: productData.imgs.map(img => convertImg(img.data.data, img.contentType)),
-                        size: elem.size.toUpperCase(),
-                        quantity: elem.quantity
-                    })
+            if (res.status === 200) {
+                // Vérifier si le panier est vide
+                if (!cartProducts || cartProducts.length === 0) {
+                    console.log('getUserCart - cart is empty')
+                    setUserCart([])
+                    return
                 }
 
-            })
-            setUserCart(convertedProducts)
+                // Utiliser Promise.all pour attendre toutes les requêtes
+                const promises = cartProducts.map(async (elem) => {
+                    const res = await axios.get(`${backUrl}/api/products/${elem.productId}`)
+                    const productData = res.data
+
+                    if (productData) {
+                        return {
+                            id: elem.productId,
+                            name: productData.name,
+                            price: productData.price,
+                            mainImg: convertImg(productData.mainImg.data.data, productData.mainImg.contentType),
+                            imgs: productData.imgs.map(img => convertImg(img.data.data, img.contentType)),
+                            size: elem.size.toUpperCase(),
+                            quantity: elem.quantity
+                        }
+                    }
+                    return null
+                })
+
+                const results = await Promise.all(promises)
+                // Filtrer les résultats null et créer une nouvelle array pour forcer React à détecter le changement
+                const validProducts = results.filter(product => product !== null)
+                
+                console.log('getUserCart - products loaded:', validProducts.length, 'items')
+                // Utiliser une nouvelle référence pour forcer le re-render
+                setUserCart([...validProducts])
+            }
+        } catch (error) {
+            console.error('Error in getUserCart:', error);
+            setUserCart([])
         }
 
     }
 
     const addCartNewProduct = async (newProduct) => {
-        console.log('product added to cart contexttttt kkk', { newItems: [newProduct] });
-        console.log('product added to cart contexttttt kkk2222', userID);
+        console.log('addCartNewProduct called with:', { newItems: [newProduct], userID });
+
+        if (!userID) {
+            console.error('Cannot add to cart: user not logged in');
+            return;
+        }
 
         if (newProduct) {
-            const res = await axios.post(`${backUrl}/api/users/${userID}/cart/add`, { newItems: [newProduct] })
-
-            if (res.status === 200) {
-                navigate(0)
+            try {
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/add`, { newItems: [newProduct] });
+                if (res.status === 200) {
+                    console.log('Product added/updated in cart successfully, response:', res.data)
+                    // Petit délai pour s'assurer que le backend a bien enregistré
+                    await new Promise(resolve => setTimeout(resolve, 100))
+                    // Recharger le panier et attendre que ce soit terminé
+                    await getUserCart(userID)
+                    console.log('Cart reloaded successfully after adding product')
+                    // Naviguer vers le panier
+                    navigate('/cart')
+                }
+            } catch (error) {
+                console.error('Error adding product to cart:', error);
+                // En cas d'erreur, essayer quand même de recharger le panier
+                await getUserCart(userID)
             }
-
         }
 
     }
+
+    const removeCartProduct = async (productId, size) => {
+        console.log('removeCartProduct called:', { productId, size, userID });
+
+        if (!userID) {
+            console.error('Cannot remove from cart: user not logged in');
+            return;
+        }
+
+        if (productId) {
+            try {
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/remove`, { 
+                    productId, 
+                    size 
+                })
+
+                if (res.status === 200) {
+                    console.log('Product removed successfully, reloading cart...')
+                    await getUserCart(userID)
+                    console.log('Cart reloaded after removal')
+                }
+            } catch (error) {
+                console.error('Error removing product:', error)
+                throw error
+            }
+        }
+    }
+
+    const updateCartQuantity = async (productId, size, quantity) => {
+        console.log('updateCartQuantity called:', { productId, size, quantity, userID });
+
+        if (!userID) {
+            console.error('Cannot update quantity: user not logged in');
+            return;
+        }
+
+        if (productId && size && quantity) {
+            try {
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/update-quantity`, { 
+                    productId, 
+                    size, 
+                    quantity 
+                })
+
+                if (res.status === 200) {
+                    console.log('Quantity updated successfully, reloading cart...')
+                    await getUserCart(userID)
+                    console.log('Cart reloaded after quantity update')
+                }
+            } catch (error) {
+                console.error('Error updating quantity:', error)
+                throw error
+            }
+        }
+    }
+
+    const updateCartSize = async (productId, oldSize, newSize) => {
+        console.log('updateCartSize called:', { productId, oldSize, newSize, userID });
+
+        if (!userID) {
+            console.error('Cannot update size: user not logged in');
+            return;
+        }
+
+        if (productId && oldSize && newSize) {
+            try {
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/update-size`, { 
+                    productId, 
+                    oldSize, 
+                    newSize 
+                })
+
+                if (res.status === 200) {
+                    console.log('Size updated successfully, reloading cart...')
+                    await getUserCart(userID)
+                    console.log('Cart reloaded after size update')
+                }
+                return res
+            } catch (error) {
+                console.error('Error updating size:', error)
+                throw error
+            }
+        }
+    }
+
+    // Créer une commande après paiement réussi
+    const createOrder = async (paymentIntentId) => {
+        console.log('Creating order after payment:', paymentIntentId);
+
+        if (!userCart || userCart.length === 0) {
+            throw new Error('Cart is empty');
+        }
+
+        try {
+            // Préparer les items de la commande
+            const items = userCart.map(item => ({
+                productId: item.id,
+                productName: item.name,
+                productPrice: parseFloat(item.price),
+                size: item.size,
+                quantity: item.quantity,
+                subtotal: parseFloat(item.price) * item.quantity
+            }));
+
+            const subtotal = parseFloat(cartSubtotal);
+            const shippingFee = 5.99;
+            const total = subtotal + shippingFee;
+
+            const orderData = {
+                items,
+                subtotal,
+                shippingFee,
+                total,
+                paymentIntentId
+            };
+
+            const res = await axios.post(
+                `${backUrl}/api/users/${userID}/orders/create`,
+                orderData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${user}`
+                    }
+                }
+            );
+
+            if (res.status === 201) {
+                console.log('Order created successfully:', res.data);
+                // Recharger le panier (qui devrait maintenant être vide)
+                await getUserCart(userID);
+                return res.data;
+            }
+        } catch (error) {
+            console.error('Error creating order:', error);
+            throw error;
+        }
+    };
+
+    // Récupérer les commandes de l'utilisateur
+    const getUserOrders = async () => {
+        try {
+            const res = await axios.get(
+                `${backUrl}/api/users/${userID}/orders`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${user}`
+                    }
+                }
+            );
+
+            if (res.status === 200) {
+                console.log('Orders fetched:', res.data);
+                return res.data;
+            }
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            throw error;
+        }
+    };
 
     const sendAddNewProduct = async (newProductData) => {
 
@@ -286,7 +479,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     const createPaymentIntent = async () => {
         const res = await axios.post(`${backUrl}/api/pay`)
 
-        console.log("context create pay");
+        console.log("context create pay", res.data);
 
 
         setClientSecret(res.data)
@@ -295,14 +488,17 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     useEffect(() => {
         let subtotal = 0
         if (userCart.length >= 1) {
-
-            userCart.forEach((elem) => (
+            userCart.forEach((elem) => {
                 subtotal = (parseInt(elem.price) * elem.quantity) + subtotal
-            ))
+            })
+            console.log('Cart subtotal recalculated:', subtotal, 'for cart:', userCart)
             setCartSubtotal(subtotal.toString())
+        } else {
+            console.log('Cart is empty, setting subtotal to 0')
+            setCartSubtotal('0')
         }
 
-    });
+    }, [userCart]);
 
     useEffect(() => {
         // getUserCart(userID)
@@ -310,36 +506,45 @@ export const CodjoeProvider = ({ children, initialValue }) => {
             const decodedToken = jwtDecode(user)
             setUserID(decodedToken.user.id)
             setUserRole(decodedToken.user.role)
+            setIsLoggedIn(true)
             getUserCart(decodedToken.user.id)
             console.log('user logged in new user state', decodedToken);
+        } else {
+            // Si pas de user, on est déconnecté
+            setIsLoggedIn(false)
+            setUserID('')
+            setUserRole(null)
+            setUserCart([])
         }
 
 
-    }, [user]);
-
-
-    const getManyProducts = async (productsArr) => {
-
-        let productArrRes = []
+    }, [user]);    const getManyProducts = async (productsArr) => {
 
         if (productsArr.length >= 1) {
-            productsArr.forEach(async (elemId) => {
-                const res = await axios.get(`${backUrl}/api/products/${elemId}`)
-                const productData = res.data
+            // Utiliser Promise.all pour charger tous les produits en parallèle
+            const promises = productsArr.map(async (elemId) => {
+                try {
+                    const res = await axios.get(`${backUrl}/api/products/${elemId}`)
+                    const productData = res.data
 
-                if (productData) {
-                    productData.mainImg = convertImg(productData.mainImg.data.data, productData.mainImg.contentType)
-                    productData.imgs = productData.imgs.map(img => convertImg(img.data.data, img.contentType))
-                    productArrRes.push(productData)
-                    console.log('getManyProducts contextt: Testtt22 ', productData);
-                    console.log('getManyProducts contextt: ', productArrRes);
+                    if (productData) {
+                        productData.mainImg = convertImg(productData.mainImg.data.data, productData.mainImg.contentType)
+                        productData.imgs = productData.imgs.map(img => convertImg(img.data.data, img.contentType))
+                        return productData
+                    }
+                    return null
+                } catch (error) {
+                    console.error('Error loading product:', elemId, error);
+                    return null
                 }
-
             })
 
-            setManyProducts(productArrRes)
+            const results = await Promise.all(promises)
+            const validProducts = results.filter(product => product !== null)
+            
+            console.log('getManyProducts: All products loaded', validProducts);
+            setManyProducts(validProducts)
         }
-
 
         console.log('getManyProducts contextt Test: ', productsArr.length);
 
@@ -421,20 +626,22 @@ export const CodjoeProvider = ({ children, initialValue }) => {
             setUserLoginData,
             isSignup,
             user,
+            setUser,
             userCart,
+            getUserCart,
             cartSubtotal,
-            // setCartNewProduct,
             addCartNewProduct,
-            // getManyProducts,
+            removeCartProduct,
+            updateCartQuantity,
+            updateCartSize,
             manyProducts,
             setAddNewProduct,
             setDeleteProduct,
 
-            // getStripePublicKey,
-            // sPublicKey,
-
             createPaymentIntent,
-            clientSecret
+            clientSecret,
+            createOrder,
+            getUserOrders
         }}>
             {children}
         </CodjoeContext.Provider>

@@ -97,103 +97,175 @@ const Modal = ({ setOpenModal, openModal, title, type, mainImg, deleteData }) =>
 
                 <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" >
 
-                    <div className="fixed inset-0 bg-gray-500/75 transition-opacity" >
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-fadeIn" >
 
                         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
 
-                                <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                <div className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl animate-slideUp">
                                     <form onSubmit={addProductSubmit}>
 
-                                        <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                        <div className="bg-gradient-to-br from-white to-gray-50 px-6 pb-6 pt-6 sm:p-8 sm:pb-6">
                                             <div className="sm:flex sm:items-start">
 
-                                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                                    <h3 className="text-base font-semibold text-gray-900 text-center" id="modal-title">{title}</h3>
-                                                    <div className="mt-5 mx-3 grid grid-cols-1 gap-x-3 gap-y-4 sm:grid-cols-6">
+                                                <div className="w-full">
+                                                    {/* Header avec icône */}
+                                                    <div className="flex items-center gap-3 mb-6">
+                                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#C29F75] to-[#B8956A] flex items-center justify-center shadow-lg">
+                                                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                                                            </svg>
+                                                        </div>
+                                                        <h3 className="text-2xl font-bold text-gray-900" id="modal-title">{title}</h3>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-6">
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Product name</label>
-                                                            <div className="mt-2">
-                                                                <input type="text" name="product_name" id="product-name" autoComplete="name" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" />
-                                                            </div>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Product name *</label>
+                                                            <input 
+                                                                type="text" 
+                                                                name="product_name" 
+                                                                id="product-name" 
+                                                                required
+                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm" 
+                                                                placeholder="Enter product name"
+                                                            />
                                                         </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Price</label>
-                                                            <div className="mt-2">
-                                                                <input type="number" name="price" id="price" autoComplete="price" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Quantity</label>
-                                                            <div className="mt-2">
-                                                                <input type="number" name="quantity" id="quantity" autoComplete="quantity" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">SoldOut</label>
-                                                            <div className="mt-2 h-9 flex items-center">
-                                                                {/* <input type='radio' name="last-name" id="last-name" autoComplete="given-name" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" /> */}
-                                                                <label className="mr-2">
-                                                                    <input className='mr-1' type="radio" name="soldOut" value={true} />
-                                                                    True
-                                                                </label>
-                                                                <label className="radio">
-                                                                    <input className='mr-1' type="radio" name="soldOut" value={false} />
-                                                                    False
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Main image</label>
-                                                            <div className="mt-2">
-                                                                <input type='file' accept='image/*' name="main_image" id="main_image" autoComplete="main_image" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Other images</label>
-                                                            <div className="mt-2">
-                                                                <input type="file" accept='image/*' name="images" id="images" multiple autoComplete="images" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Sizes</label>
-                                                            <div className="mt-2">
-                                                                {/* <input type='text' name="sizes" id="sizes" autoComplete="sizes" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" /> */}
-                                                                <div className='flex h-9 items-center'>
-                                                                    {
-                                                                        sizesList.map((size) => (
-                                                                            <div key={size.name} className='mr-1'>
-                                                                                <input type="checkbox" id={size.name} name="sizes" value={size.size} />
-                                                                                <label className='ml-1' >{size.size}</label>
-                                                                            </div>
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="sm:col-span-3">
-                                                            <label className="block text-sm/6 font-medium text-gray-900">Category</label>
-                                                            <div className="mt-2 flex items-center h-9">
-                                                                {/* <input type="text" name="category" id="category" autoComplete="category" className="block w-full rounded-md border-0 p-1.5 text-black bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" /> */}
-                                                                <select className='bg-white' name="category" id="category_select">
-                                                                    <option value="">-- choose a category--</option>
-                                                                    {
-                                                                        categories.map((e) => (
 
-                                                                            <option key={e.id} value={e.name.toLowerCase()}>{e.name}</option>
-                                                                        ))
-                                                                    }
-                                                                </select>
+                                                        <div className="sm:col-span-3">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Price (€) *</label>
+                                                            <input 
+                                                                type="number" 
+                                                                name="price" 
+                                                                id="price" 
+                                                                required
+                                                                step="0.01"
+                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm" 
+                                                                placeholder="0.00"
+                                                            />
+                                                        </div>
+
+                                                        <div className="sm:col-span-3">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Quantity *</label>
+                                                            <input 
+                                                                type="number" 
+                                                                name="quantity" 
+                                                                id="quantity" 
+                                                                required
+                                                                min="0"
+                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm" 
+                                                                placeholder="0"
+                                                            />
+                                                        </div>
+
+                                                        <div className="sm:col-span-3">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Stock Status *</label>
+                                                            <div className="flex items-center gap-4 h-12">
+                                                                <label className="flex items-center gap-2 cursor-pointer group">
+                                                                    <input 
+                                                                        className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded' 
+                                                                        type="radio" 
+                                                                        name="soldOut" 
+                                                                        value={true} 
+                                                                    />
+                                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Sold Out</span>
+                                                                </label>
+                                                                <label className="flex items-center gap-2 cursor-pointer group">
+                                                                    <input 
+                                                                        className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded' 
+                                                                        type="radio" 
+                                                                        name="soldOut" 
+                                                                        value={false} 
+                                                                        defaultChecked
+                                                                    />
+                                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Available</span>
+                                                                </label>
                                                             </div>
+                                                        </div>
+
+                                                        <div className="sm:col-span-6">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Main image *</label>
+                                                            <input 
+                                                                type='file' 
+                                                                accept='image/*' 
+                                                                name="main_image" 
+                                                                id="main_image" 
+                                                                required
+                                                                className="block w-full text-sm text-gray-900 bg-white border-2 border-gray-200 rounded-xl cursor-pointer focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-[#C29F75] file:text-white hover:file:bg-[#B8956A] file:transition-colors file:duration-200" 
+                                                            />
+                                                        </div>
+
+                                                        <div className="sm:col-span-6">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Additional images</label>
+                                                            <input 
+                                                                type="file" 
+                                                                accept='image/*' 
+                                                                name="images" 
+                                                                id="images" 
+                                                                multiple 
+                                                                className="block w-full text-sm text-gray-900 bg-white border-2 border-gray-200 rounded-xl cursor-pointer focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 file:transition-colors file:duration-200" 
+                                                            />
+                                                            <p className="mt-1 text-xs text-gray-500">You can select multiple files</p>
+                                                        </div>
+
+                                                        <div className="sm:col-span-3">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Available Sizes *</label>
+                                                            <div className='flex gap-3 flex-wrap py-2'>
+                                                                {
+                                                                    sizesList.map((size) => (
+                                                                        <label key={size.name} className='flex items-center gap-2 cursor-pointer group'>
+                                                                            <input 
+                                                                                type="checkbox" 
+                                                                                id={size.name} 
+                                                                                name="sizes" 
+                                                                                value={size.size}
+                                                                                className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded' 
+                                                                            />
+                                                                            <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{size.size}</span>
+                                                                        </label>
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="sm:col-span-3">
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
+                                                            <select 
+                                                                className='w-full bg-white border-2 border-gray-200 rounded-xl p-3 text-gray-900 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 cursor-pointer' 
+                                                                name="category" 
+                                                                id="category_select"
+                                                                required
+                                                            >
+                                                                <option value="">-- Choose a category --</option>
+                                                                {
+                                                                    categories.map((e) => (
+                                                                        <option key={e.id} value={e.name.toLowerCase()}>{e.name}</option>
+                                                                    ))
+                                                                }
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="submit" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Add product</button>
-                                            <button type="reset" onClick={() => setOpenModal(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                        <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse sm:px-8 gap-3 border-t border-gray-200">
+                                            <button 
+                                                type="submit" 
+                                                className="inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-xl bg-gradient-to-r from-[#C29F75] to-[#B8956A] px-6 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+                                            >
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                Add Product
+                                            </button>
+                                            <button 
+                                                type="reset" 
+                                                onClick={() => setOpenModal(false)} 
+                                                className="inline-flex w-full sm:w-auto justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
+                                            >
+                                                Cancel
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
