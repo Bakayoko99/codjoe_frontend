@@ -43,191 +43,125 @@ const CJProducts = () => {
     }
 
     return (
-        <div className='w-full text-black h-[87.7vh] bg-sky-500 p-2'>
-            <div className='bg-green-200 h-full'>
-                {/* <h1>productss</h1> */}
-                <div className='py-2 px-5'>
-                    {/* <div className='drop-shadow-2xl shadow-2xl h-10 bg-white mb-5 min-w-[65rem] overflow-auto'>
-
-                    </div> */}
-                    <button className='h-10 w-40 rounded-2xl bg-slate-400 mb-3' onClick={() => setNewProductModal(true)}>
-                        Add New Products
+        <div className='w-full min-h-[87.7vh] bg-gradient-to-br from-gray-50 to-gray-100 p-6'>
+            <div className='max-w-7xl mx-auto'>
+                {/* Header */}
+                <div className='mb-8 flex justify-between items-center'>
+                    <div>
+                        <h1 className='text-4xl font-bold text-gray-900 mb-2'>Products Management</h1>
+                        <p className='text-gray-600'>Manage your product catalog</p>
+                    </div>
+                    <button 
+                        className='bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1' 
+                        onClick={() => setNewProductModal(true)}
+                    >
+                        + Add New Product
                     </button>
-                    {
-                        newProductModal && (
-                            <Modal setOpenModal={setNewProductModal} openModal={newProductModal} title={'New product'} type={'addProduct'} />
-                        )
-                    }
-                    {
-                        seeMainImgModal && (
-                            <Modal setOpenModal={setSeeMainImgModal} openModal={seeMainImgModal} title={'Main Image'} type={'mainImg'} mainImg={mainImg} />
-                        )
-                    }
-                    {
-                        deleteProductModal && (
-                            <Modal setOpenModal={setDeleteProductModal} openModal={deleteProductModal} title={'Delete Product'} type={'deleteProduct'} deleteData={deleteData} />
-                        )
-                    }
+                </div>
 
-                    {/* products tab  */}
-                    <div className='drop-shadow-2xl shadow-2xl h-[30rem] bg-white p-5 min-w-[65rem] overflow-auto'>
+                {/* Modals */}
+                {newProductModal && (
+                    <Modal setOpenModal={setNewProductModal} openModal={newProductModal} title={'New product'} type={'addProduct'} />
+                )}
+                {seeMainImgModal && (
+                    <Modal setOpenModal={setSeeMainImgModal} openModal={seeMainImgModal} title={'Main Image'} type={'mainImg'} mainImg={mainImg} />
+                )}
+                {deleteProductModal && (
+                    <Modal setOpenModal={setDeleteProductModal} openModal={deleteProductModal} title={'Delete Product'} type={'deleteProduct'} deleteData={deleteData} />
+                )}
 
-                        <table className="table-auto w-full h-full">
-                            <thead >
+                {/* Products Table */}
+                <div className='bg-white rounded-2xl shadow-lg overflow-hidden'>
+                    <div className='overflow-x-auto'>
+                        <table className="w-full">
+                            <thead className='bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200'>
                                 <tr>
-                                    {titles.map((e) => (
-                                        <th key={e} className='ml-3 border-b pb-5 px-3'>{e}</th>
+                                    {titles.map((title, index) => (
+                                        <th key={index} className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
+                                            {title}
+                                        </th>
                                     ))}
                                 </tr>
                             </thead>
-                            <tbody className='mt-5'>
-                                {products.map((e) => (
-                                    <tr key={e._id} className='text-center'>
-                                        <td className='py-5 text-left'>{e.name}</td>
-                                        <td className='py-5'>{e.price}</td>
-                                        <td className='py-5'>{e.quantity}</td>
-                                        <td className='py-5'><button onClick={() => mainImgData(e.mainImg)} className='border-4 p-1 rounded-full'>see</button></td>
-                                        <td className='py-5'><button className='border-4 p-1 rounded-full'>see</button></td>
-                                        <td className='py-5'>{'false'}</td>
-                                        <td className='py-5'>{'S, M, L, XL'}</td>
-                                        <td className='py-5'>{e.category}</td>
-                                        <td className='flex justify-center items-center h-full w-full py-5'>
-                                            {/* <img className='h-5 mx-1 cursor-pointer' src={editIcon} alt="edit" /> */}
-                                            <img className='h-6 mx-1 cursor-pointer' onClick={() => deleteProductData({ name: e.name, id: e._id })} src={deleteIcon} alt="delete" />
+                            <tbody className='divide-y divide-gray-200'>
+                                {products.map((product, index) => (
+                                    <tr key={product._id} className='hover:bg-gray-50 transition-colors'>
+                                        <td className='px-6 py-4 whitespace-nowrap'>
+                                            <div className='flex items-center'>
+                                                <div className='w-12 h-12 rounded-lg overflow-hidden bg-gray-100 mr-3'>
+                                                    <img 
+                                                        src={product.mainImg} 
+                                                        alt={product.name}
+                                                        className='w-full h-full object-cover'
+                                                    />
+                                                </div>
+                                                <span className='text-sm font-medium text-gray-900'>{product.name}</span>
+                                            </div>
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap'>
+                                            <span className='text-sm font-semibold text-gray-900'>€{product.price}</span>
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
+                                            {product.quantity}
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap'>
+                                            <button 
+                                                onClick={() => mainImgData(product.mainImg)} 
+                                                className='text-[#C29F75] hover:text-[#B8956A] font-medium text-sm'
+                                            >
+                                                View
+                                            </button>
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap'>
+                                            <button className='text-[#C29F75] hover:text-[#B8956A] font-medium text-sm'>
+                                                View ({product.imgs?.length || 0})
+                                            </button>
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap'>
+                                            <span className='px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
+                                                In Stock
+                                            </span>
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                                            S, M, L, XL, XXL
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap'>
+                                            <span className='px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800'>
+                                                {product.category || 'Uncategorized'}
+                                            </span>
+                                        </td>
+                                        <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                                            <button 
+                                                onClick={() => deleteProductData({ name: product.name, id: product._id })}
+                                                className='text-red-600 hover:text-red-900 transition-colors'
+                                            >
+                                                <img className='h-5 w-5' src={deleteIcon} alt="delete" />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
-
                             </tbody>
                         </table>
-
-                        {/* /// */}
-                        {/* <div className="flex justify-center mb-5">
-                            <div className=" h-14 flex justify-around p-1  w-[97%]">
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>name</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>price</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Av. quantity</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Main image</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Others images</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>SoldOut</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Available sizes</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Category</p>
-                                </div>
-                            </div>
-                        </div> */}
-
-                        {/* <div className="flex mb-5">
-                            <div className="border h-14 flex justify-around p-1 drop-shadow-2xl shadow-2xl w-[97%]">
-                                <div className='text-center mr-3'>
-                                    <p className='text-sms'>codjoe xhite shirt</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p>50$</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p>5</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <button>see</button>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <button>see</button>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p>false</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p>S, M, L, XL</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p>Tops</p>
-                                </div>
-                            </div>
-                            <div className='w-[3%] h-14'>
-                                <div className='h-7 flex justify-center items-center'><img className='h-5 ' src={editIcon} alt="edit" /></div>
-                                <div className='h-7 flex justify-center items-center'><img className='h-6 ' src={deleteIcon} alt="delete" /></div>
-                            </div>
-                        </div> */}
-
-
-                        {/* <div className="flex">
-                            <div className="border h-14 flex justify-around p-1 drop-shadow-2xl shadow-2xl w-[97%]">
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>name</p>
-                                    <p className='text-sms'>codjoe xhite shirt</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>price</p>
-                                    <p>50$</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Av. quantity</p>
-                                    <p>5</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Main image</p>
-                                    <button>see</button>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Others images</p>
-                                    <button>see</button>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>SoldOut</p>
-                                    <p>false</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Available sizes</p>
-                                    <p>S, M, L, XL</p>
-                                </div>
-                                <div className='text-center mr-3'>
-                                    <p className=' border-b'>Category</p>
-                                    <p>Tops</p>
-                                </div>
-                            </div>
-                            <div className='w-[3%] h-14'>
-                                <div className='h-7 flex justify-center items-center'><img className='h-5 ' src={editIcon} alt="edit" /></div>
-                                <div className='h-7 flex justify-center items-center'><img className='h-6 ' src={deleteIcon} alt="delete" /></div>
-                            </div>
-                        </div> */}
-
                     </div>
 
-
-                    {/* // */}
+                    {products.length === 0 && (
+                        <div className='text-center py-12'>
+                            <span className='text-6xl'>📦</span>
+                            <p className='text-gray-500 mt-4'>No products found</p>
+                        </div>
+                    )}
                 </div>
-                {/* <div className='w-2/5 flex justify-center m-7'>
-                    <div className=' bg-slate-400 w-4/5 h-4/5 rounded-2xl drop-shadow-2xl'>
-                        <div className='bg-white h-1/5 rounded-t-2xl border-b-2 border-black flex justify-center items-center'>
-                            <input className='rounded-2xl bg-white border-2 border-black p-2' placeholder='Search product' type="text" />
-                        </div>
+
+                {/* Summary */}
+                <div className='mt-6 bg-white rounded-xl shadow-lg p-6'>
+                    <div className='flex items-center justify-between'>
                         <div>
-                            <div className='bg-slate-300 m-3 h-72 p-2 list-disc'>
-                                <ul>
-                                    <li className='h-7 px-3 border rounded-sm my-1&'>ok</li>
-                                    <li className='h-7 px-3 border rounded-sm my-1&'>ok</li>
-                                    <li className='h-7 px-3 border rounded-sm my-1&'>ok</li>
-                                    <li className='h-7 px-3 border rounded-sm my-1&'>ok</li>
-                                </ul>
-                            </div>
+                            <p className='text-sm text-gray-600'>Total Products</p>
+                            <p className='text-3xl font-bold text-gray-900'>{products.length}</p>
                         </div>
+                        <span className='text-5xl'>📦</span>
                     </div>
-                </div> */}
+                </div>
             </div>
         </div>
     );

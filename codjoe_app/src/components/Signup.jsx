@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useCodjoeData } from '../context/CodjoeContext';
-import Buttons from './Buttons';
 
 const Signup = () => {
     const { setUserSignupData } = useCodjoeData();
 
-
     const signupUser = async (e) => {
         e.preventDefault();
-
-        // if (e.target.email.value !== e.target.confirmEmail.value) {
-        //     console.log('email not match');
-        //     return;
-        // }
 
         setUserSignupData({
             firstName: e.target.firstName.value,
@@ -23,64 +17,152 @@ const Signup = () => {
             country: e.target.country.value,
             birthday: e.target.birthday.value
         });
-
-        console.log('login user', e.target);
     }
 
     return (
-
-        <div className=' bg-white text-black min-h-[97vh] flex items-center pt-20 flex-col'>
-            <p className=' mt-14 mb-5'>Welcome</p>
-            <div>
-
-                <div className='flex justify-center items-center flex-col mb-8'>
-                    <p className='font-semibold text-5xl mb-4'>Join us</p>
-                    <p className='text-center'>or register to access your <br />
-                        order history, order status & more</p>
+        <div className='bg-gradient-to-br from-gray-50 to-gray-100 text-black min-h-screen flex items-center justify-center pt-20 pb-10 px-4'>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className='w-full max-w-lg'
+            >
+                <div className='text-center mb-8'>
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: "spring" }}
+                        className='inline-block mb-6'
+                    >
+                        <div className='w-16 h-16 bg-codjoe-biscuit rounded-full flex items-center justify-center shadow-lg'>
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                        </div>
+                    </motion.div>
+                    
+                    <motion.h1
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className='font-bold text-4xl md:text-5xl mb-3 text-gray-900'
+                    >
+                        Join CODJOE
+                    </motion.h1>
+                    
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className='text-gray-600 text-sm md:text-base'
+                    >
+                        Create your account to start shopping
+                    </motion.p>
                 </div>
 
-                <form onSubmit={signupUser} className="flex items-center flex-col">
-                    <input name="email" type="email" required
-                        className="block w-full rounded-3xl drop-shadow-authShadow bg-white px-3 py-2 mb-3 outline-none placeholder:text-gray-400 text-black"
-                        placeholder="Email" />
-                    <input name="password" type="password" autoComplete="current-password" required
-                        className="mt-2 block w-full drop-shadow-authShadow bg-white rounded-3xl px-3 py-2 mb-3 outline-none placeholder:text-gray-400 text-black"
-                        placeholder="Password">
-                    </input>
-                    <input name="confirmPsw" type="password" autoComplete="current-password" required
-                        className="mt-2 block w-full drop-shadow-authShadow bg-white rounded-3xl px-3 py-2 mb-5 outline-none placeholder:text-gray-400 text-black"
-                        placeholder="Confirm password">
-                    </input>
-
-                    <div className=' grid grid-cols-2 max-w-[340px] gap-3 mb-7'>
-                        <input name="firstName" type="text" required
-                            className="block w-full rounded-3xl drop-shadow-authShadow bg-white px-3 py-2  outline-none placeholder:text-gray-400 text-black"
-                            placeholder="First name" />
-                        <input name="lastName" type="text" required
-                            className="block w-full rounded-3xl drop-shadow-authShadow bg-white px-3 py-2  outline-none placeholder:text-gray-400 text-black"
-                            placeholder="Last name" />
-                        <input name="country" type="text" required
-                            className="block w-full rounded-3xl drop-shadow-authShadow bg-white px-3 py-2  outline-none placeholder:text-gray-400 text-black"
-                            placeholder="Country" />
-                        <input name="birthday" type="date" required
-                            className="block w-full rounded-3xl drop-shadow-authShadow bg-white px-3 py-2  outline-none placeholder:text-gray-400 text-black"
-                            placeholder="Date of birth" />
+                <motion.form
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    onSubmit={signupUser}
+                    className="bg-white rounded-3xl shadow-xl p-8 space-y-4"
+                >
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>Email</label>
+                        <input
+                            name="email"
+                            type="email"
+                            required
+                            className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
+                            placeholder="you@example.com"
+                        />
                     </div>
 
-                    <button type="submit"
-                        className="inline-flex items-center justify-center w-44 rounded-3xl bg-codjoe-biscuit p-2 py-3 mb-10 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400">
-                        Register
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>Password</label>
+                        <input
+                            name="password"
+                            type="password"
+                            autoComplete="new-password"
+                            required
+                            className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
+                            placeholder="••••••••"
+                        />
+                    </div>
+
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>Confirm Password</label>
+                        <input
+                            name="confirmPsw"
+                            type="password"
+                            autoComplete="new-password"
+                            required
+                            className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
+                            placeholder="••••••••"
+                        />
+                    </div>
+
+                    <div className='grid grid-cols-2 gap-4'>
+                        <div>
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>First Name</label>
+                            <input
+                                name="firstName"
+                                type="text"
+                                required
+                                className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
+                                placeholder="John"
+                            />
+                        </div>
+                        <div>
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>Last Name</label>
+                            <input
+                                name="lastName"
+                                type="text"
+                                required
+                                className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
+                                placeholder="Doe"
+                            />
+                        </div>
+                        <div>
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>Country</label>
+                            <input
+                                name="country"
+                                type="text"
+                                required
+                                className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
+                                placeholder="France"
+                            />
+                        </div>
+                        <div>
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>Birthday</label>
+                            <input
+                                name="birthday"
+                                type="date"
+                                required
+                                className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all text-black"
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full rounded-2xl bg-codjoe-biscuit hover:bg-codjoe-biscuit/90 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 mt-6"
+                    >
+                        Create Account
                     </button>
 
-                    <div className="mt-3 mb-5 text-center text-sm text-slate-600">
-                        <p className="font-medium text-black">Already have an account ? <Link className='text-[#4285f4]' to={'/login'}>Login</Link> </p>
+                    <div className="text-center pt-4">
+                        <p className="text-sm text-gray-600">
+                            Already have an account?{' '}
+                            <Link className='text-codjoe-biscuit font-semibold hover:underline' to={'/login'}>
+                                Sign in
+                            </Link>
+                        </p>
                     </div>
-                </form>
-
-            </div>
-
+                </motion.form>
+            </motion.div>
         </div>
-    )
+    );
 }
 
 export default Signup;

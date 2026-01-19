@@ -19,11 +19,15 @@ import CJBestSellers from './components/backOffice/CJBestSellers';
 import { ProtectedRoute, ProtectedAdminRoute } from './components/ProtectedRoute';
 import Payment from './views/Payment';
 import AfterPay from './views/AfterPay';
+import Orders from './views/Orders';
 import Footer from './components/Footer';
 import Legal from './views/Legal';
 import LegalNotice from './components/legal/LegalNotice';
 import PrivacyPolicy from './components/legal/PrivacyPolicy';
 import Terms from './components/legal/Terms';
+import Accessories from './views/Accessories';
+import Collections from './views/Collections';
+import LimitedEdition from './views/LimitedEdition';
 
 
 const App = () => {
@@ -51,6 +55,9 @@ const App = () => {
             <Route path="/list" element={<List />} />
             <Route key={"tops"} exact path="/list/tops" element={<List categoryName={'Tops'} />} />
             <Route key={"bottoms"} exact path="/list/bottoms" element={<List categoryName={'Bottoms'} />} />
+            <Route key={"accessories"} exact path="/list/accessories" element={<Accessories />} />
+            <Route key={"collections"} exact path="/list/collections" element={<Collections />} />
+            <Route key={"limitedEdition"} exact path="/list/limited-edition" element={<LimitedEdition />} />
             {/* <Route key={"bestSellers"} exact path="/list/bestSellers" element={<List categoryName={'Best sellers'}/>}/> */}
             <Route path="/product/:id" element={<Product />} />
             <Route
@@ -61,19 +68,27 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/payment"
               element={
                 <ProtectedRoute>
                   <Payment />
                 </ProtectedRoute>
               }
-            /> */}
+            />
             <Route
               path="/succesfulPay"
               element={
                 <ProtectedRoute>
                   <AfterPay />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <Orders />
                 </ProtectedRoute>
               }
             />
