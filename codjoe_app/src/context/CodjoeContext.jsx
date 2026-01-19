@@ -12,9 +12,9 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const navigate = useNavigate();
 
-    // const backUrl = 'https://codjoe-backend.onrender.com' || 'http://localhost:8085'
+    const backUrl = 'https://codjoe-backend.onrender.com' || 'http://localhost:8085'
 
-    const backUrl = 'http://localhost:8085'
+    // const backUrl = 'http://localhost:8085'
 
     //* products states
     const [products, setProducts] = useState([]);
