@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCodjoeData } from '../context/CodjoeContext';
-import { Buffer } from 'buffer';
-import axios from 'axios';
-import Buttons from './Buttons';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import SEO from './SEO';
 
 const Product = () => {
 
     const { id } = useParams();
     const { sizesData, setOneProductId, oneProduct, addCartNewProduct } = useCodjoeData();
 
-    const [showDiv, setShowDiv] = useState(false);
     const [product, setProduct] = useState({});
     const [sizeOpen, setSizeOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState('');
-    const [lgSizeOpen, setLgSizeOpen] = useState(false)
+    const [lgSizeOpen, setLgSizeOpen] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [allImages, setAllImages] = useState([])
 
     const productBtnData = [
         {
@@ -50,13 +51,12 @@ const Product = () => {
     // }, []);
 
     useEffect(() => {
-
         if (oneProduct != '') {
-            setProduct(oneProduct)
-            console.log('one product page: ', oneProduct)
+            setProduct(oneProduct);
+            // Combiner l'image principale et les images supplémentaires
+            const images = [oneProduct.mainImg, ...(oneProduct.imgs || [])].filter(Boolean);
+            setAllImages(images);
         }
-        console.log('one product page: empty ')
-
     }, [oneProduct]);
 
     const handleCart = () => {
@@ -81,8 +81,13 @@ const Product = () => {
 
         console.log('id product: ', id);
         setOneProductId(id)
+        // Réinitialiser l'état lors du changement de produit
+        setCurrentImageIndex(0);
+        setSelectedSize('');
+        setSizeOpen(false);
+        setLgSizeOpen(false);
 
-    }, []);
+    }, [id, setOneProductId]);
 
     const toggleSize = () => {
         setSizeOpen(!sizeOpen);
@@ -91,31 +96,157 @@ const Product = () => {
 
     const handleSize = (size) => {
         setSelectedSize(size);
-        console.log('selected size', size);
     }
+
+    const nextImage = () => {
+        setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    };
+
+    const prevImage = () => {
+        setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    };
+
+    const goToImage = (index) => {
+        setCurrentImageIndex(index);
+    };
 
 
     return (
         <>
-            <div className='max-[1023px]:hidden bg-white pt-20 min-h-[97vh]'>
-                <div className='h-[85vh]'>
-                    <div className=' h-[365px] w-full grid grid-cols-3 gap-20 px-5 pt-[5%]'>
-                        {/* <div className=' bg-orange-200 h-[365px] w-full px-20 flex justify-between'> */}
+            <SEO 
+                title={product.name ? `${product.name} - CODJOE` : 'Loading Product - CODJOE'}
+                description={product.name ? `Shop ${product.name} at CODJOE. Premium quality, modern design. Price: €${product.price}. Available in multiple sizes.` : 'Loading...'}
+                keywords={product.name ? `${product.name}, ${product.category || 'fashion'}, streetwear, CODJOE, online shopping` : 'fashion, streetwear'}
+                image={product.mainImg || '/codjoe_logo.png'}
+                type="product"
+            />
+            {product.name && (
+                <Helmet>
+                    <script type="application/ld+json">
+                        {JSON.stringify({
+                            "@context": "https://schema.org/",
+                            "@type": "Product",
+                            "name": product.name,
+                            "image": product.mainImg,
+                            "description": `${product.name} - Premium ${product.category || 'fashion'} by CODJOE`,
+                            "brand": {
+                                "@type": "Brand",
+                                "name": "CODJOE"
+                            },
+                            "offers": {
+                                "@type": "Offer",
+                                "url": window.location.href,
+                                "priceCurrency": "EUR",
+                                "price": product.price,
+                                "availability": "https://schema.org/InStock",
+                                "seller": {
+                                    "@type": "Organization",
+                                    "name": "CODJOE"
+                                }
+                            }
+                        })}
+                    </script>
+                </Helmet>
+            )}
 
-                        {product.mainImg ? (
-                            <div className=' rounded-2xl relative mx-auto  overflow-hidden'>
-                                {/* h-full  w-80 */}
-                                <img className=' h-full w-full object-cover' src={product?.mainImg} alt="product image" />
-                            </div>
+            {/* Version Desktop */}
+            <div className='max-[1023px]:hidden bg-white pt-20 min-h-screen pb-10'>
+                <div className='max-w-7xl mx-auto px-6 lg:px-8 pt-8'>
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-start'>
+                        
+                        {/* Carousel d'images */}
+                        <div className='sticky top-24'>
+                            {allImages.length > 0 ? (
+                                <div className='space-y-4'>
+                                    {/* Image principale */}
+                                    <div className='relative aspect-[3/4] rounded-2xl overflow-hidden shadow-xl bg-gray-100'>
+                                        <AnimatePresence mode='wait'>
+                                            <motion.img
+                                                key={currentImageIndex}
+                                                src={allImages[currentImageIndex]}
+                                                alt={`${product.name} - Image ${currentImageIndex + 1}`}
+                                                className='w-full h-full object-cover'
+                                                initial={{ opacity: 0, scale: 1.05 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                transition={{ duration: 0.3 }}
+                                            />
+                                        </AnimatePresence>
 
-                        ) : (
-                            // <div className='h-full w-90 flex justify-center items-center'>
-                            <div className=" ml-5 h-full w-90 animate-pulse bg-codjoe-biscuit flex justify-center items-center bg-white/20 rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[5px] border border-white/30">
-                                <span className="w-12 h-12 rounded-[50%] inline-block border-t-codjoe-biscuit border-t-[3px] border-r-[3px] border-r-transparent animate-spin"></span>
-                            </div>
-                            // </div>
-                        )}
-                        <div className='text-black h-full w-[600px] col-span-2'>
+                                        {/* Boutons de navigation */}
+                                        {allImages.length > 1 && (
+                                            <>
+                                                <button
+                                                    onClick={prevImage}
+                                                    className='absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110'
+                                                    aria-label="Previous image"
+                                                >
+                                                    <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
+                                                <button
+                                                    onClick={nextImage}
+                                                    className='absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110'
+                                                    aria-label="Next image"
+                                                >
+                                                    <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+
+                                                {/* Indicateurs */}
+                                                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2'>
+                                                    {allImages.map((_, index) => (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => goToImage(index)}
+                                                            className={`h-2 rounded-full transition-all duration-300 ${
+                                                                index === currentImageIndex 
+                                                                    ? 'w-8 bg-white' 
+                                                                    : 'w-2 bg-white/50 hover:bg-white/75'
+                                                            }`}
+                                                            aria-label={`Go to image ${index + 1}`}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    {/* Miniatures */}
+                                    {allImages.length > 1 && (
+                                        <div className='grid grid-cols-4 gap-3'>
+                                            {allImages.map((image, index) => (
+                                                <button
+                                                    key={index}
+                                                    onClick={() => goToImage(index)}
+                                                    className={`aspect-square rounded-lg overflow-hidden transition-all duration-200 ${
+                                                        index === currentImageIndex
+                                                            ? 'ring-2 ring-codjoe-biscuit ring-offset-2 shadow-lg'
+                                                            : 'opacity-60 hover:opacity-100 hover:shadow-md'
+                                                    }`}
+                                                >
+                                                    <img
+                                                        src={image}
+                                                        alt={`Thumbnail ${index + 1}`}
+                                                        className='w-full h-full object-cover'
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                // Loading State
+                                <div className='aspect-[3/4] rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center animate-pulse'>
+                                    <div className="w-16 h-16 border-4 border-gray-300 border-t-codjoe-biscuit rounded-full animate-spin"></div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Informations produit */}
+                        <div className='text-black space-y-6'>
                             {/* <div className='text-black bg-slate-500 h-full w-[600px]'> */}
                             <p className='text-2xl font-medium mb-1'>
                                 {product.name ? product.name : 'Loading...'}
@@ -169,80 +300,110 @@ const Product = () => {
                     </div>
                 </div>
             </div>
-            <div className=' lg:hidden bg-white mt-20 h-full' onClick={sizeOpen ? toggleSize : undefined}>
-                <div className='h-[441px] w-screen bg-contain bg-no-repeat max-w-full mt-4 '>
-                    <img className=' h-full w-full object-contain' src={product?.mainImg} alt="main image" />
-
-                </div>
-                {
-                    product.imgs?.length > 0 &&
-                    product.imgs.map((image, index) => {
-                        return (
-                            <div key={index} className='h-[441px] w-screen bg-contain bg-no-repeat max-w-full mt-4 '>
-                                <img className=' h-full w-full object-contain' src={image} alt="product image" />
+            {/* Version Mobile */}
+            <div className='lg:hidden bg-white pt-20 min-h-screen pb-32'>
+                {/* Images scroll */}
+                <div className='space-y-2'>
+                    {allImages.length > 0 ? (
+                        allImages.map((image, index) => (
+                            <div key={index} className='aspect-[3/4] w-full bg-gray-100'>
+                                <img 
+                                    className='w-full h-full object-cover' 
+                                    src={image} 
+                                    alt={`${product.name} - Image ${index + 1}`}
+                                    loading={index === 0 ? "eager" : "lazy"}
+                                />
                             </div>
-                        )
-                    })
+                        ))
+                    ) : (
+                        <div className='aspect-[3/4] w-full bg-gray-200 flex items-center justify-center animate-pulse'>
+                            <div className="w-12 h-12 border-4 border-gray-300 border-t-codjoe-biscuit rounded-full animate-spin"></div>
+                        </div>
+                    )}
+                </div>
 
-                }
-
-                <div className=' rounded-t-3xl h-[155px] relative'>
-
-                    <div className={`w-screen h-[172px] rounded-t-3xl bg-white bottom-0 shadow-2xl border-4 fixed transition-all duration-500 ${sizeOpen ? 'h-[470px]' : ''}`}>
-                        <div className='h-10 flex justify-between m-6'>
-                            <div>
-                                <p className='font-medium leading-[2.15rem] text-2xl text-black overflow-hidden h-9'>{product.name}</p>
-                                <p className='text-[#AFAFBD] text-xl'>€{product.price}</p>
+                {/* Footer fixe avec informations et actions */}
+                <div className='fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50'>
+                    {/* Panel de sélection de taille (se déploie vers le haut) */}
+                    <div 
+                        className={`bg-codjoe-biscuit transition-all duration-500 overflow-hidden ${
+                            sizeOpen ? 'max-h-[380px]' : 'max-h-0'
+                        }`}
+                    >
+                        <div className='p-6 space-y-3'>
+                            <div className='bg-white rounded-2xl py-3 text-center'>
+                                <p className='font-semibold text-gray-900'>Sélectionnez votre taille</p>
+                            </div>
+                            <div className='space-y-2'>
+                                {sizesData.map((size, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => {
+                                            handleSize(size);
+                                            toggleSize();
+                                        }}
+                                        className={`w-full py-3 rounded-2xl font-medium transition-all duration-200 ${
+                                            selectedSize === size
+                                                ? 'bg-white text-gray-900 shadow-lg'
+                                                : 'text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        {size}
+                                    </button>
+                                ))}
                             </div>
                         </div>
-                        <div className=' flex justify-between mr-6'>
-                            {/* <Buttons data={productBtnData} /> */}
-                            <div>
-                                <p onClick={toggleSize} className={`w-[150px] h-12 border-4 rounded-[28.50px] text-black flex justify-center items-center`}>
-                                    Size : {selectedSize}
-                                </p>
-                            </div>
-                            <button onClick={() => handleCart()} className={`w-[150px] h-12 bg-codjoe-biscuit text-white rounded-[28.50px] m-1 flex justify-center items-center`}>
-                                <Link
-                                    to={`${selectedSize.length != '' ? '/cart' : ''}`}
-                                >
-                                    Buy now
-                                </Link>
+                    </div>
+
+                    {/* Informations et boutons principaux */}
+                    <div className='p-4 space-y-3 border-t border-gray-100'>
+                        {/* Nom et prix */}
+                        <div>
+                            <h1 className='font-bold text-xl text-gray-900 line-clamp-1'>
+                                {product.name}
+                            </h1>
+                            <p className='text-2xl font-bold text-codjoe-biscuit mt-1'>
+                                €{product.price}
+                            </p>
+                        </div>
+
+                        {/* Boutons d'action */}
+                        <div className='flex gap-3'>
+                            <button
+                                onClick={toggleSize}
+                                className='flex-1 h-12 bg-white border-2 border-gray-200 rounded-xl font-medium text-gray-900 flex items-center justify-center gap-2 transition-all duration-200 active:scale-95'
+                            >
+                                {selectedSize ? (
+                                    <>
+                                        <span>Taille:</span>
+                                        <span className='font-bold text-codjoe-biscuit'>{selectedSize}</span>
+                                    </>
+                                ) : (
+                                    'Choisir taille'
+                                )}
                             </button>
+                            
+                            <Link
+                                onClick={() => {
+                                    if (selectedSize) {
+                                        handleCart();
+                                    }
+                                }}
+                                to={selectedSize ? '/cart' : '#'}
+                                className={`flex-1 h-12 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 ${
+                                    selectedSize
+                                        ? 'bg-codjoe-biscuit text-white shadow-lg'
+                                        : 'bg-gray-200 text-gray-400'
+                                }`}
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                Acheter
+                            </Link>
                         </div>
                     </div>
-
-                    <div className={`w-screen h-0 rounded-t-3xl bg-codjoe-biscuit fixed transition-all duration-500 bottom-0 ${sizeOpen ? 'h-[375px]' : 'h-0'} `}>
-
-                        <div className={`${sizeOpen ? 'flex' : 'hidden'} flex-col items-center justify-center h-full`}>
-                            <div className='h-14 w-80 bg-white rounded-[28.50px] mb-2 flex justify-center items-center'>
-                                <p className='font-medium text-black'>Sizes</p>
-                            </div>
-                            <div>
-                                {sizesData.map((size, index) => {
-                                    return (
-                                        <div key={index} onClick={() => handleSize(size)} className={`h-14 w-80 rounded-[28.50px] flex justify-center items-center ${selectedSize == size ? 'bg-white text-black' : 'text-white'}`}>
-                                            {/* ${selectedSize == size ? 'bg-white' : ''} */}
-                                            <p className='font-medium'>{size}</p>
-                                        </div>
-                                    )
-                                })}
-
-                            </div>
-
-                        </div>
-
-                    </div>
                 </div>
-                {/* <div className='w-screen h-[400px] rounded-t-3xl bg-green-600 bottom-[-400px] sticky'>
-
-            </div> */}
-
-
-                <div>
-                    {showDiv && <div className="fixed bottom-0 right-0 bg-gray-200 p-4">Bottom reached!</div>}
-                </div>
-
             </div>
         </>
 

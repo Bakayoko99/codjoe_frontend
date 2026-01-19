@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /backOffice/
+Disallow: /cart
+Disallow: /payment
+Disallow: /orders
+Disallow: /succesfulPay
+
+Sitemap: https://codjoe.com/sitemap.xml
