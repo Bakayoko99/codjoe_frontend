@@ -16,12 +16,38 @@ const CheckoutForm = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
+    
+    // Shipping Address State
+    const [shippingAddress, setShippingAddress] = useState({
+        firstName: '',
+        lastName: '',
+        address: '',
+        city: '',
+        country: '',
+        postalCode: ''
+    });
+
+    const handleAddressChange = (e) => {
+        const { name, value } = e.target;
+        setShippingAddress(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (!stripe || !elements) {
             setMessage('Payment system not ready. Please refresh the page.');
+            setShowError(true);
+            return;
+        }
+
+        // Validation de l'adresse de livraison
+        if (!shippingAddress.firstName || !shippingAddress.lastName || 
+            !shippingAddress.address || !shippingAddress.country) {
+            setMessage('Please fill in all required shipping address fields.');
             setShowError(true);
             return;
         }
@@ -44,9 +70,9 @@ const CheckoutForm = () => {
                 setShowError(true);
                 console.error('Payment error:', error.message);
             } else if (paymentIntent && paymentIntent.status === "succeeded") {
-                // Créer la commande après paiement réussi
+                // Créer la commande après paiement réussi avec l'adresse de livraison
                 try {
-                    await createOrder(paymentIntent.id);
+                    await createOrder(paymentIntent.id, shippingAddress);
                     setMessage("Payment successful! Creating your order...");
                     setShowSuccess(true);
                     setTimeout(() => {
@@ -77,8 +103,110 @@ const CheckoutForm = () => {
     return (
         <form id='payment-form' className='space-y-6' onSubmit={handleSubmit}>
             
+            {/* Shipping Address Section */}
+            <div className='bg-gray-50 rounded-xl p-6 border border-gray-200'>
+                <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center gap-2'>
+                    <span>📦</span>
+                    Shipping Address
+                </h3>
+                
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>
+                            First Name <span className='text-red-500'>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={shippingAddress.firstName}
+                            onChange={handleAddressChange}
+                            required
+                            className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
+                            placeholder='John'
+                        />
+                    </div>
+                    
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>
+                            Last Name <span className='text-red-500'>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="lastName"
+                            value={shippingAddress.lastName}
+                            onChange={handleAddressChange}
+                            required
+                            className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
+                            placeholder='Doe'
+                        />
+                    </div>
+                    
+                    <div className='md:col-span-2'>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>
+                            Address <span className='text-red-500'>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="address"
+                            value={shippingAddress.address}
+                            onChange={handleAddressChange}
+                            required
+                            className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
+                            placeholder='123 Main Street, Apt 4B'
+                        />
+                    </div>
+                    
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>
+                            City
+                        </label>
+                        <input
+                            type="text"
+                            name="city"
+                            value={shippingAddress.city}
+                            onChange={handleAddressChange}
+                            className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
+                            placeholder='Paris'
+                        />
+                    </div>
+                    
+                    <div>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>
+                            Postal Code
+                        </label>
+                        <input
+                            type="text"
+                            name="postalCode"
+                            value={shippingAddress.postalCode}
+                            onChange={handleAddressChange}
+                            className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
+                            placeholder='75001'
+                        />
+                    </div>
+                    
+                    <div className='md:col-span-2'>
+                        <label className='block text-sm font-medium text-gray-700 mb-2'>
+                            Country <span className='text-red-500'>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="country"
+                            value={shippingAddress.country}
+                            onChange={handleAddressChange}
+                            required
+                            className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
+                            placeholder='France'
+                        />
+                    </div>
+                </div>
+            </div>
+            
             {/* Payment Element */}
             <div className='mb-6'>
+                <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center gap-2'>
+                    <span>💳</span>
+                    Payment Details
+                </h3>
                 <PaymentElement 
                     id="payment-element"
                     options={{

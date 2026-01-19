@@ -28,11 +28,16 @@ const Orders = () => {
                     const ordersWithProductDetails = response.data.map(order => {
                         const itemsWithDetails = order.items.map(item => {
                             const product = products.find(p => p._id === item.productId);
+                            // Utiliser les données de la commande si disponibles, sinon chercher dans products
+                            const productPrice = parseFloat(item.productPrice || (product ? product.price : 0));
+                            const productName = item.productName || (product ? product.name : 'Unknown Product');
+                            const subtotal = parseFloat(item.subtotal || (item.quantity * productPrice));
+                            
                             return {
                                 ...item,
-                                productName: product ? product.name : 'Unknown Product',
-                                productPrice: product ? product.price : 0,
-                                subtotal: item.quantity * (product ? product.price : 0),
+                                productName,
+                                productPrice,
+                                subtotal,
                                 productImage: product ? product.mainImg : null
                             };
                         });
@@ -43,15 +48,10 @@ const Orders = () => {
                     });
                     
                     setOrders(ordersWithProductDetails);
-                    
+                    console.log('User orders loaded with product details:', ordersWithProductDetails);
                 } else {
                     setOrders([]);
                 }
-
-                //
-
-                setOrders(response.data || []);
-                console.log('User orders loaded:', response.data);
 
             } catch (error) {
                 console.error('Error loading orders:', error);
@@ -186,7 +186,7 @@ const Orders = () => {
                                             </div>
                                             <div className='text-right'>
                                                 <p className='text-sm text-gray-600 mb-1'>Total</p>
-                                                <p className='text-2xl font-bold text-[#C29F75]'>€{order.total.toFixed(2)}</p>
+                                                <p className='text-2xl font-bold text-[#C29F75]'>€{(parseFloat(order.total) || 0).toFixed(2)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -212,11 +212,11 @@ const Orders = () => {
                                                         <div className='flex gap-4 mt-1 text-sm text-gray-600'>
                                                             <span>Size: {item.size}</span>
                                                             <span>Qty: {item.quantity}</span>
-                                                            <span>€{item.productPrice.toFixed(2)} each</span>
+                                                            <span>€{(parseFloat(item.productPrice) || 0).toFixed(2)} each</span>
                                                         </div>
                                                     </div>
                                                     <div className='text-right'>
-                                                        <p className='font-semibold text-gray-900'>€{item.subtotal.toFixed(2)}</p>
+                                                        <p className='font-semibold text-gray-900'>€{(parseFloat(item.subtotal) || 0).toFixed(2)}</p>
                                                     </div>
                                                 </div>
                                             ))}
@@ -227,15 +227,15 @@ const Orders = () => {
                                             <div className='space-y-2'>
                                                 <div className='flex justify-between text-gray-700'>
                                                     <span>Subtotal</span>
-                                                    <span>€{order.subtotal.toFixed(2)}</span>
+                                                    <span>€{(parseFloat(order.subtotal) || 0).toFixed(2)}</span>
                                                 </div>
                                                 <div className='flex justify-between text-gray-700'>
                                                     <span>Shipping</span>
-                                                    <span>€{order.shippingFee.toFixed(2)}</span>
+                                                    <span>€{(parseFloat(order.shippingFee) || 0).toFixed(2)}</span>
                                                 </div>
                                                 <div className='flex justify-between text-lg font-bold text-gray-900 pt-2'>
                                                     <span>Total</span>
-                                                    <span className='text-[#C29F75]'>€{order.total.toFixed(2)}</span>
+                                                    <span className='text-[#C29F75]'>€{(parseFloat(order.total) || 0).toFixed(2)}</span>
                                                 </div>
                                             </div>
                                         </div>
