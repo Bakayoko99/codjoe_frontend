@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { jwtDecode } from 'jwt-decode'
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import Alert from '../components/Alert';
 
 export const CodjoeContext = React.createContext();
 
@@ -12,9 +13,9 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const navigate = useNavigate();
 
-    // const backUrl = 'https://codjoe-backend.onrender.com' || 'http://localhost:8085'
+    const backUrl = 'https://codjoe-backend.onrender.com' || 'http://localhost:8085'
 
-    const backUrl = 'http://localhost:8085'
+    // const backUrl = 'http://localhost:8085'
 
     //* products states
     const [products, setProducts] = useState([]);
@@ -48,6 +49,21 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     });
 
     const [userRole, setUserRole] = useState(null);
+    
+    //* alert states
+    const [alertState, setAlertState] = useState({
+        show: false,
+        message: '',
+        type: 'error'
+    });
+    
+    const showAlert = (message, type = 'error') => {
+        setAlertState({ show: true, message, type });
+        setTimeout(() => {
+            setAlertState({ show: false, message: '', type: 'error' });
+        }, 5000);
+    };
+    
     //
     //* cart states
 
@@ -60,33 +76,74 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
 
     const loginRes = async (userData) => {
+        try {
+            const res = await axios.post(`${backUrl}/api/auth/login`, userData)
 
-        // const res = await axios.get('http://localhost:8085/api/codjoe')
-        const res = await axios.post(`${backUrl}/api/auth/login`, userData)
+            console.log('logTTT ', res);
 
-        console.log('logTTT ', res);
-
-        if (res?.status == 200) {
-
-            setIsLoggedIn(true);
-            setLoginSucess(true)
-            // localStorage.setItem("codjoe-user", res.data.token)
-            setUser(res.data.token)
-            console.log('storage data: ', localStorage.getItem('codjoe-user'));
-            navigate('/');
+            if (res?.status == 200) {
+                setIsLoggedIn(true);
+                setLoginSucess(true)
+                setUser(res.data.token)
+                console.log('storage data: ', localStorage.getItem('codjoe-user'));
+                showAlert('Login successful! Welcome back.', 'success');
+                setTimeout(() => navigate('/'), 1000);
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            
+            if (error.response) {
+                const errorMsg = error.response.data?.msg || error.response.data?.message || 'Login failed';
+                
+                if (error.response.status === 401) {
+                    showAlert('Invalid email or password. Please try again.', 'error');
+                } else if (error.response.status === 404) {
+                    showAlert('Account not found. Please sign up.', 'error');
+                } else if (error.response.status === 500) {
+                    showAlert('Server error. Please try again later.', 'error');
+                } else {
+                    showAlert(`Error: ${errorMsg}`, 'error');
+                }
+            } else if (error.request) {
+                showAlert('Unable to connect to server. Check your connection.', 'error');
+            } else {
+                showAlert('An error occurred. Please try again.', 'error');
+            }
         }
     }
 
     const signUpRes = async (userData) => {
+        try {
+            const res = await axios.post(`${backUrl}/api/auth/signup`, userData)
 
-        const res = await axios.post(`${backUrl}/api/auth/signup`, userData)
-
-        if (res.status === 200) {
-            setIsSignup(true);
+            if (res.status === 200) {
+                setIsSignup(true);
+                showAlert('Account created successfully! Please login.', 'success');
+                setTimeout(() => navigate('/login'), 1500);
+                console.log('signup response', res.data);
+            }
+        } catch (error) {
+            console.error('Signup error:', error);
+            
+            if (error.response) {
+                const errorMsg = error.response.data?.msg || error.response.data?.message || 'Signup failed';
+                
+                if (error.response.status === 400) {
+                    showAlert(`Registration error: ${errorMsg}`, 'error');
+                } else if (error.response.status === 500) {
+                    showAlert('Server error. Please try again later.', 'error');
+                } else {
+                    showAlert(`Error: ${errorMsg}`, 'error');
+                }
+            } else if (error.request) {
+                showAlert('Unable to connect to server. Check your connection.', 'error');
+            } else {
+                showAlert('An error occurred. Please try again.', 'error');
+            }
+            
+            // Réinitialiser l'état d'inscription en cas d'erreur
+            setIsSignup(false);
         }
-
-        console.log('signup response', res.data);
-
     }
 
     useEffect(() => {
@@ -343,7 +400,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     }
 
     // Créer une commande après paiement réussi
-    const createOrder = async (paymentIntentId) => {
+    const createOrder = async (paymentIntentId, shippingAddress = null) => {
         console.log('Creating order after payment:', paymentIntentId);
 
         if (!userCart || userCart.length === 0) {
@@ -370,7 +427,8 @@ export const CodjoeProvider = ({ children, initialValue }) => {
                 subtotal,
                 shippingFee,
                 total,
-                paymentIntentId
+                paymentIntentId,
+                shippingAddress: shippingAddress || undefined
             };
 
             const res = await axios.post(
@@ -641,8 +699,16 @@ export const CodjoeProvider = ({ children, initialValue }) => {
             createPaymentIntent,
             clientSecret,
             createOrder,
-            getUserOrders
+            getUserOrders,
+            
+            showAlert
         }}>
+            <Alert 
+                show={alertState.show} 
+                message={alertState.message} 
+                type={alertState.type}
+                onClose={() => setAlertState({ show: false, message: '', type: 'error' })}
+            />
             {children}
         </CodjoeContext.Provider>
     );
