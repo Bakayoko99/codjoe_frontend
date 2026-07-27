@@ -1,5 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 
+/**
+ * Composant SEO — Injecte les balises meta, Open Graph, Twitter Cards et données structurées JSON-LD.
+ * @param {string} title - Titre de la page
+ * @param {string} description - Description meta
+ * @param {string} keywords - Mots-clés SEO
+ * @param {string} image - URL de l'image Open Graph
+ * @param {string} url - URL canonique de la page
+ * @param {string} type - Type Open Graph (website | product | article)
+ * @param {string} robots - Directive robots (index, follow | noindex, nofollow)
+ * @param {Object|null} structuredData - Données structurées schema.org (JSON-LD). Ex: Product, BreadcrumbList, Organization.
+ */
 const SEO = ({ 
     title = 'CODJOE - Premium Fashion & Streetwear',
     description = 'Discover CODJOE\'s exclusive collection of premium streetwear, tops, and bottoms. Shop the latest trends in fashion with fast shipping.',
@@ -7,11 +18,38 @@ const SEO = ({
     image = '/codjoe_logo.png',
     url = typeof window !== 'undefined' ? window.location.href : '',
     type = 'website',
-    robots = 'index, follow'
+    robots = 'index, follow',
+    structuredData = null
 }) => {
-    const siteUrl = 'https://codjoe.com'; // À remplacer par votre URL de production
+    const siteUrl = 'https://codjoe-frontend.onrender.com';
     const fullUrl = url.startsWith('http') ? url : `${siteUrl}${url}`;
     const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
+    // Données structurées Organization par défaut (présentes sur toutes les pages)
+    const organizationSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'CODJOE',
+        url: siteUrl,
+        logo: `${siteUrl}/codjoe_logo.png`,
+        sameAs: [
+            'https://www.instagram.com/codjoe',
+            'https://twitter.com/codjoe'
+        ]
+    };
+
+    // Données structurées WebSite avec SearchAction (sitelinks searchbox Google)
+    const websiteSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'CODJOE',
+        url: siteUrl,
+        potentialAction: {
+            '@type': 'SearchAction',
+            target: `${siteUrl}/list?q={search_term_string}`,
+            'query-input': 'required name=search_term_string'
+        }
+    };
 
     return (
         <Helmet>
@@ -52,6 +90,19 @@ const SEO = ({
             <meta name="mobile-web-app-capable" content="yes" />
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+            {/* Données structurées JSON-LD (schema.org) */}
+            <script type="application/ld+json">
+                {JSON.stringify(organizationSchema)}
+            </script>
+            <script type="application/ld+json">
+                {JSON.stringify(websiteSchema)}
+            </script>
+            {structuredData && (
+                <script type="application/ld+json">
+                    {JSON.stringify(structuredData)}
+                </script>
+            )}
         </Helmet>
     );
 };

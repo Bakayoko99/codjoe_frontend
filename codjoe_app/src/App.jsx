@@ -28,6 +28,7 @@ import Terms from './components/legal/Terms';
 import Accessories from './views/Accessories';
 import Collections from './views/Collections';
 import LimitedEdition from './views/LimitedEdition';
+import CookieBanner from './components/CookieBanner';
 
 
 const App = () => {
@@ -102,6 +103,9 @@ const App = () => {
               <Route path='terms' element={<Terms />} />
             </Route>
 
+            {/* Route directe pour le lien du CookieBanner (C25 RGPD) */}
+            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+
             <Route
               path='/backOffice'
               element={
@@ -124,6 +128,7 @@ const App = () => {
             />
           </Routes>
           <Footer />
+          <CookieBanner />
         </div>
       </CodjoeProvider>
     </Router>
