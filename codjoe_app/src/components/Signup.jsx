@@ -66,37 +66,46 @@ const Signup = () => {
                     transition={{ delay: 0.5 }}
                     onSubmit={signupUser}
                     className="bg-white rounded-3xl shadow-xl p-8 space-y-4"
+                    aria-label="Formulaire d'inscription"
+                    noValidate
                 >
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-2'>Email</label>
+                        <label htmlFor="signup-email" className='block text-sm font-medium text-gray-700 mb-2'>Email</label>
                         <input
+                            id="signup-email"
                             name="email"
                             type="email"
                             required
+                            aria-required="true"
+                            autoComplete="email"
                             className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                             placeholder="you@example.com"
                         />
                     </div>
 
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-2'>Password</label>
+                        <label htmlFor="signup-password" className='block text-sm font-medium text-gray-700 mb-2'>Password</label>
                         <input
+                            id="signup-password"
                             name="password"
                             type="password"
                             autoComplete="new-password"
                             required
+                            aria-required="true"
                             className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                             placeholder="••••••••"
                         />
                     </div>
 
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-2'>Confirm Password</label>
+                        <label htmlFor="signup-confirm-password" className='block text-sm font-medium text-gray-700 mb-2'>Confirm Password</label>
                         <input
+                            id="signup-confirm-password"
                             name="confirmPsw"
                             type="password"
                             autoComplete="new-password"
                             required
+                            aria-required="true"
                             className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                             placeholder="••••••••"
                         />
@@ -104,41 +113,53 @@ const Signup = () => {
 
                     <div className='grid grid-cols-2 gap-4'>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>First Name</label>
+                            <label htmlFor="signup-firstname" className='block text-sm font-medium text-gray-700 mb-2'>First Name</label>
                             <input
+                                id="signup-firstname"
                                 name="firstName"
                                 type="text"
                                 required
+                                aria-required="true"
+                                autoComplete="given-name"
                                 className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                                 placeholder="John"
                             />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>Last Name</label>
+                            <label htmlFor="signup-lastname" className='block text-sm font-medium text-gray-700 mb-2'>Last Name</label>
                             <input
+                                id="signup-lastname"
                                 name="lastName"
                                 type="text"
                                 required
+                                aria-required="true"
+                                autoComplete="family-name"
                                 className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                                 placeholder="Doe"
                             />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>Country</label>
+                            <label htmlFor="signup-country" className='block text-sm font-medium text-gray-700 mb-2'>Country</label>
                             <input
+                                id="signup-country"
                                 name="country"
                                 type="text"
                                 required
+                                aria-required="true"
+                                autoComplete="country-name"
                                 className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                                 placeholder="France"
                             />
                         </div>
                         <div>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>Birthday</label>
+                            <label htmlFor="signup-birthday" className='block text-sm font-medium text-gray-700 mb-2'>Birthday</label>
                             <input
+                                id="signup-birthday"
                                 name="birthday"
                                 type="date"
                                 required
+                                aria-required="true"
+                                autoComplete="bday"
                                 className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all text-black"
                             />
                         </div>
@@ -146,6 +167,7 @@ const Signup = () => {
 
                     <button
                         type="submit"
+                        aria-label="Créer mon compte"
                         className="w-full rounded-2xl bg-codjoe-biscuit hover:bg-codjoe-biscuit/90 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 mt-6"
                     >
                         Create Account

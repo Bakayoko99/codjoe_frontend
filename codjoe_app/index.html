@@ -1,10 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CODJOE</title>
+
+    <!-- Google Analytics 4 (C27 — Performance marketing) -->
+    <!-- Remplacer G-XXXXXXXXXX par votre Measurement ID GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        // Respect du consentement RGPD : ne track que si l'utilisateur a accepté les cookies
+        'anonymize_ip': true
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -62,25 +62,32 @@ const Login = () => {
                     transition={{ delay: 0.5 }}
                     onSubmit={loginUser}
                     className="bg-white rounded-3xl shadow-xl p-8 space-y-5"
+                    aria-label="Formulaire de connexion"
+                    noValidate
                 >
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-2'>Email</label>
+                        <label htmlFor="login-email" className='block text-sm font-medium text-gray-700 mb-2'>Email</label>
                         <input
+                            id="login-email"
                             name="email"
                             type="email"
                             required
+                            aria-required="true"
+                            autoComplete="email"
                             className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                             placeholder="you@example.com"
                         />
                     </div>
 
                     <div>
-                        <label className='block text-sm font-medium text-gray-700 mb-2'>Password</label>
+                        <label htmlFor="login-password" className='block text-sm font-medium text-gray-700 mb-2'>Password</label>
                         <input
+                            id="login-password"
                             name="password"
                             type="password"
                             autoComplete="current-password"
                             required
+                            aria-required="true"
                             className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
                             placeholder="••••••••"
                         />
@@ -88,6 +95,7 @@ const Login = () => {
 
                     <button
                         type="submit"
+                        aria-label="Se connecter"
                         className="w-full rounded-2xl bg-codjoe-biscuit hover:bg-codjoe-biscuit/90 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
                     >
                         Sign In
