@@ -49,7 +49,7 @@ const ShoppingCart = () => {
     const handleCheckout = (e) => {
         if (!hasItems) {
             e.preventDefault();
-            setAlertMessage('Your cart is empty. Please add items before checkout.');
+            setAlertMessage('Votre panier est vide. Ajoutez des articles avant de passer commande.');
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 3000);
             return false;
@@ -59,11 +59,11 @@ const ShoppingCart = () => {
     const handleRemoveItem = async (productId, size) => {
         try {
             await removeCartProduct(productId, size);
-            setAlertMessage('Item removed from cart');
+            setAlertMessage('Article retiré du panier');
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 2000);
         } catch (error) {
-            setAlertMessage('Error removing item');
+            setAlertMessage("Erreur lors du retrait de l'article");
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 3000);
         }
@@ -73,7 +73,7 @@ const ShoppingCart = () => {
         try {
             await updateCartQuantity(productId, size, quantity);
         } catch (error) {
-            setAlertMessage('Error updating quantity');
+            setAlertMessage('Erreur lors de la mise à jour de la quantité');
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 3000);
         }
@@ -113,9 +113,9 @@ const ShoppingCart = () => {
 
     return (
         <>
-            <SEO 
-                title="Shopping Cart - CODJOE"
-                description="Review your CODJOE shopping cart. Secure checkout with multiple payment options available."
+            <SEO
+                title="Panier - CODJOE"
+                description="Consultez votre panier CODJOE. Paiement sécurisé avec plusieurs options disponibles."
                 robots="noindex, nofollow"
             />
             {/* Alert */}
@@ -145,9 +145,9 @@ const ShoppingCart = () => {
                 >
                     {/* Header */}
                     <motion.div variants={itemVariants} className='text-center mb-8'>
-                        <h1 className='text-4xl lg:text-5xl font-bold text-gray-900 mb-2'>Shopping Cart</h1>
+                        <h1 className='text-4xl lg:text-5xl font-bold text-gray-900 mb-2'>Mon panier</h1>
                         <p className='text-gray-600'>
-                            {hasItems ? `${validCart.length} item${validCart.length > 1 ? 's' : ''} in your cart` : 'Your cart is empty'}
+                            {hasItems ? `${validCart.length} article${validCart.length > 1 ? 's' : ''} dans votre panier` : 'Votre panier est vide'}
                         </p>
                     </motion.div>
 
@@ -177,21 +177,21 @@ const ShoppingCart = () => {
                             {/* Résumé de la commande */}
                             <motion.div variants={itemVariants} className='lg:col-span-1'>
                                 <div className='bg-white rounded-2xl shadow-xl p-6 sticky top-24'>
-                                    <h2 className='text-2xl font-bold text-gray-900 mb-6'>Order Summary</h2>
-                                    
+                                    <h2 className='text-2xl font-bold text-gray-900 mb-6'>Récapitulatif</h2>
+
                                     <div className='space-y-4 mb-6'>
                                         <div className='flex justify-between text-gray-700'>
-                                            <span>Subtotal</span>
+                                            <span>Sous-total</span>
                                             <span className='font-semibold'>€{cartSubtotal > 0 ? cartSubtotal : 0}</span>
                                         </div>
-                                        
+
                                         <div className='flex justify-between text-gray-700'>
-                                            <span>Shipping</span>
+                                            <span>Livraison</span>
                                             <span className='font-semibold'>€{shippingFee.toFixed(2)}</span>
                                         </div>
-                                        
+
                                         <div className='h-px bg-gray-200' />
-                                        
+
                                         <div className='flex justify-between text-lg font-bold text-gray-900'>
                                             <span>Total</span>
                                             <span className='text-[#C29F75]'>€{total}</span>
@@ -204,31 +204,31 @@ const ShoppingCart = () => {
                                         onClick={handleCheckout}
                                         className='w-full bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
                                     >
-                                        <span>Proceed to Checkout</span>
+                                        <span>Passer la commande</span>
                                         <span>→</span>
                                     </Link>
-                                    
+
                                     <Link
                                         to="/"
                                         className='w-full mt-3 border-2 border-gray-300 hover:border-[#C29F75] text-gray-700 hover:text-[#C29F75] font-medium py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center'
                                     >
-                                        Continue Shopping
+                                        Continuer mes achats
                                     </Link>
-                                    
+
                                     {/* Trust badges */}
                                     <div className='mt-6 pt-6 border-t border-gray-200'>
                                         <div className='space-y-3 text-sm text-gray-600'>
                                             <div className='flex items-center gap-2'>
                                                 <span className='text-green-500'>✓</span>
-                                                <span>Secure checkout</span>
+                                                <span>Paiement sécurisé</span>
                                             </div>
                                             <div className='flex items-center gap-2'>
                                                 <span className='text-green-500'>✓</span>
-                                                <span>Free returns within 30 days</span>
+                                                <span>Retours gratuits sous 30 jours</span>
                                             </div>
                                             <div className='flex items-center gap-2'>
                                                 <span className='text-green-500'>✓</span>
-                                                <span>Express delivery available</span>
+                                                <span>Livraison express disponible</span>
                                             </div>
                                         </div>
                                     </div>
@@ -238,13 +238,13 @@ const ShoppingCart = () => {
                     ) : (
                         <motion.div variants={itemVariants} className='text-center py-16'>
                             <div className='text-gray-300 text-9xl mb-6'>🛒</div>
-                            <h2 className='text-3xl font-bold text-gray-700 mb-4'>Your cart is empty</h2>
-                            <p className='text-gray-500 text-lg mb-8'>Discover our collection and add some products</p>
+                            <h2 className='text-3xl font-bold text-gray-700 mb-4'>Votre panier est vide</h2>
+                            <p className='text-gray-500 text-lg mb-8'>Découvrez notre collection et ajoutez des articles</p>
                             <Link
                                 to="/"
                                 className='inline-block bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
                             >
-                                Start Shopping
+                                Commencer mes achats
                             </Link>
                         </motion.div>
                     )}
@@ -260,9 +260,9 @@ const ShoppingCart = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className='mb-6'
                     >
-                        <h1 className='text-2xl sm:text-3xl font-bold mb-2'>Shopping Cart</h1>
+                        <h1 className='text-2xl sm:text-3xl font-bold mb-2'>Mon panier</h1>
                         <p className='text-gray-600'>
-                            {hasItems ? `${validCart.length} item${validCart.length > 1 ? 's' : ''}` : 'Your cart is empty'}
+                            {hasItems ? `${validCart.length} article${validCart.length > 1 ? 's' : ''}` : 'Votre panier est vide'}
                         </p>
                     </motion.div>
                     
@@ -305,11 +305,11 @@ const ShoppingCart = () => {
                                     {/* Résumé des prix */}
                                     <div className='bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 mb-4 border border-gray-100'>
                                         <div className='flex justify-between items-center pb-2 mb-2 border-b border-gray-200'>
-                                            <span className='font-medium text-gray-700'>Subtotal</span>
+                                            <span className='font-medium text-gray-700'>Sous-total</span>
                                             <span className='text-gray-900 font-semibold'>€{cartSubtotal > 0 ? cartSubtotal : 0}</span>
                                         </div>
                                         <div className='flex justify-between items-center pb-2 mb-2 border-b border-gray-200'>
-                                            <span className='font-medium text-gray-700'>Shipping</span>
+                                            <span className='font-medium text-gray-700'>Livraison</span>
                                             <span className='text-gray-600 font-semibold'>€{shippingFee.toFixed(2)}</span>
                                         </div>
                                         <div className='flex justify-between items-center'>
@@ -324,7 +324,7 @@ const ShoppingCart = () => {
                                         onClick={handleCheckout}
                                         className='bg-[#C29F75] hover:bg-[#B8956A] w-full h-12 sm:h-14 rounded-xl font-semibold flex justify-center items-center text-white transition-all duration-300 shadow-lg active:scale-95'
                                     >
-                                        <span>Proceed to Checkout</span>
+                                        <span>Passer la commande</span>
                                         <span className='ml-2'>→</span>
                                     </Link>
                                 </div>
@@ -340,13 +340,13 @@ const ShoppingCart = () => {
                             className='text-center py-12'
                         >
                             <div className='text-gray-300 text-7xl mb-4'>🛒</div>
-                            <h2 className='text-xl font-bold text-gray-700 mb-2'>Your cart is empty</h2>
-                            <p className='text-gray-500 mb-6'>Add some products to get started</p>
+                            <h2 className='text-xl font-bold text-gray-700 mb-2'>Votre panier est vide</h2>
+                            <p className='text-gray-500 mb-6'>Ajoutez des produits pour commencer</p>
                             <Link
                                 to="/"
                                 className='inline-block bg-[#C29F75] hover:bg-[#B8956A] px-6 py-3 rounded-xl text-white font-semibold transition-all duration-300 shadow-lg active:scale-95'
                             >
-                                Start Shopping
+                                Commencer mes achats
                             </Link>
                         </motion.div>
                     )}

@@ -10,12 +10,12 @@ const BestSellers = () => {
             title: 'Codjoe Red Shirt',
             price: '$59.95',
             imgClass: 'bg-best-sellers',
-            badge: 'Best Seller',
+            badge: 'Meilleure vente',
             bestSellersBtnData: [
                 {
                     type: '',
                     btn1: {
-                        text: 'Buy now',
+                        text: 'Acheter',
                         link: '/product/6644cc253f1fd26bf1a6678e',
                     },
                 }
@@ -26,12 +26,12 @@ const BestSellers = () => {
             title: 'Classic Jeans Jacket',
             price: '$79.99',
             imgClass: 'bg-classic-jeans-jacket',
-            badge: 'Trending',
+            badge: 'Tendance',
             bestSellersBtnData: [
                 {
                     type: '',
                     btn1: {
-                        text: 'Buy now',
+                        text: 'Acheter',
                         link: '/product/6644cb3f3f1fd26bf1a6678a',
                     },
                 }
@@ -42,12 +42,12 @@ const BestSellers = () => {
             title: 'Summer Jacket',
             price: '$99.50',
             imgClass: 'bg-summer-jacket',
-            badge: 'Hot',
+            badge: 'Coup de cœur',
             bestSellersBtnData: [
                 {
                     type: '',
                     btn1: {
-                        text: 'Buy now',
+                        text: 'Acheter',
                         link: '/product/6644c9a73f1fd26bf1a66786',
                     },
                 }
@@ -140,13 +140,13 @@ const BestSellers = () => {
                                 </div>
 
                                 {/* Quick view link */}
-                                <Link 
+                                <Link
                                     to={item.bestSellersBtnData[0].btn1.link}
-                                    className='inline-block text-sm text-gray-500 hover:text-gray-900 
-                                        underline underline-offset-2 opacity-0 group-hover:opacity-100 
+                                    className='inline-block text-sm text-gray-500 hover:text-gray-900
+                                        underline underline-offset-2 opacity-0 group-hover:opacity-100
                                         transition-opacity duration-300'
                                 >
-                                    View details →
+                                    Voir les détails →
                                 </Link>
                             </div>
                         </div>

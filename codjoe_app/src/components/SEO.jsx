@@ -11,10 +11,10 @@ import { Helmet } from 'react-helmet-async';
  * @param {string} robots - Directive robots (index, follow | noindex, nofollow)
  * @param {Object|null} structuredData - Données structurées schema.org (JSON-LD). Ex: Product, BreadcrumbList, Organization.
  */
-const SEO = ({ 
-    title = 'CODJOE - Premium Fashion & Streetwear',
-    description = 'Discover CODJOE\'s exclusive collection of premium streetwear, tops, and bottoms. Shop the latest trends in fashion with fast shipping.',
-    keywords = 'fashion, streetwear, tops, bottoms, clothing, premium fashion, CODJOE, online shopping',
+const SEO = ({
+    title = 'CODJOE - Mode premium & streetwear',
+    description = 'Découvrez la collection exclusive CODJOE : streetwear premium, hauts et bas. Suivez les dernières tendances mode avec une livraison rapide.',
+    keywords = 'mode, streetwear, hauts, bas, vêtements, mode premium, CODJOE, boutique en ligne',
     image = '/codjoe_logo.png',
     url = typeof window !== 'undefined' ? window.location.href : '',
     type = 'website',
@@ -66,7 +66,7 @@ const SEO = ({
             <meta property="og:description" content={description} />
             <meta property="og:image" content={fullImage} />
             <meta property="og:site_name" content="CODJOE" />
-            <meta property="og:locale" content="en_US" />
+            <meta property="og:locale" content="fr_FR" />
             
             {/* Twitter */}
             <meta property="twitter:card" content="summary_large_image" />
@@ -81,7 +81,7 @@ const SEO = ({
             
             {/* Additional SEO */}
             <meta name="robots" content={robots} />
-            <meta name="language" content="English" />
+            <meta name="language" content="French" />
             <meta name="author" content="CODJOE" />
             <meta name="theme-color" content="#C29F75" />
             

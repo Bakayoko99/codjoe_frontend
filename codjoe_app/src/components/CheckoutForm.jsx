@@ -39,15 +39,15 @@ const CheckoutForm = () => {
         e.preventDefault()
 
         if (!stripe || !elements) {
-            setMessage('Payment system not ready. Please refresh the page.');
+            setMessage('Le système de paiement n\'est pas prêt. Veuillez rafraîchir la page.');
             setShowError(true);
             return;
         }
 
         // Validation de l'adresse de livraison
-        if (!shippingAddress.firstName || !shippingAddress.lastName || 
+        if (!shippingAddress.firstName || !shippingAddress.lastName ||
             !shippingAddress.address || !shippingAddress.country) {
-            setMessage('Please fill in all required shipping address fields.');
+            setMessage('Veuillez renseigner tous les champs obligatoires de l\'adresse de livraison.');
             setShowError(true);
             return;
         }
@@ -66,34 +66,34 @@ const CheckoutForm = () => {
             });
 
             if (error) {
-                setMessage(error.message || 'Payment failed. Please try again.');
+                setMessage(error.message || 'Le paiement a échoué. Veuillez réessayer.');
                 setShowError(true);
                 console.error('Payment error:', error.message);
             } else if (paymentIntent && paymentIntent.status === "succeeded") {
                 // Créer la commande après paiement réussi avec l'adresse de livraison
                 try {
                     await createOrder(paymentIntent.id, shippingAddress);
-                    setMessage("Payment successful! Creating your order...");
+                    setMessage("Paiement réussi ! Création de votre commande...");
                     setShowSuccess(true);
                     setTimeout(() => {
                         navigate('/succesfulPay');
                     }, 1500);
                 } catch (orderError) {
                     console.error('Error creating order:', orderError);
-                    setMessage("Payment successful but order creation failed. Please contact support.");
+                    setMessage("Le paiement a réussi mais la création de la commande a échoué. Veuillez contacter le support.");
                     setShowError(true);
                 }
             } else if (paymentIntent) {
-                setMessage(`Payment status: ${paymentIntent.status}`);
+                setMessage(`Statut du paiement : ${paymentIntent.status}`);
                 setShowError(true);
                 console.log('Payment status:', paymentIntent.status);
             } else {
-                setMessage("Unexpected payment status. Please contact support.");
+                setMessage("Statut de paiement inattendu. Veuillez contacter le support.");
                 setShowError(true);
             }
         } catch (err) {
             console.error('Payment exception:', err);
-            setMessage('An unexpected error occurred. Please try again.');
+            setMessage('Une erreur inattendue est survenue. Veuillez réessayer.');
             setShowError(true);
         } finally {
             setIsProcessing(false);
@@ -107,13 +107,13 @@ const CheckoutForm = () => {
             <div className='bg-gray-50 rounded-xl p-6 border border-gray-200'>
                 <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center gap-2'>
                     <span>📦</span>
-                    Shipping Address
+                    Adresse de livraison
                 </h3>
-                
+
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>
-                            First Name <span className='text-red-500'>*</span>
+                            Prénom <span className='text-red-500'>*</span>
                         </label>
                         <input
                             type="text"
@@ -122,13 +122,13 @@ const CheckoutForm = () => {
                             onChange={handleAddressChange}
                             required
                             className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
-                            placeholder='John'
+                            placeholder='Jean'
                         />
                     </div>
-                    
+
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>
-                            Last Name <span className='text-red-500'>*</span>
+                            Nom <span className='text-red-500'>*</span>
                         </label>
                         <input
                             type="text"
@@ -137,13 +137,13 @@ const CheckoutForm = () => {
                             onChange={handleAddressChange}
                             required
                             className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
-                            placeholder='Doe'
+                            placeholder='Dupont'
                         />
                     </div>
-                    
+
                     <div className='md:col-span-2'>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>
-                            Address <span className='text-red-500'>*</span>
+                            Adresse <span className='text-red-500'>*</span>
                         </label>
                         <input
                             type="text"
@@ -152,13 +152,13 @@ const CheckoutForm = () => {
                             onChange={handleAddressChange}
                             required
                             className='w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 outline-none transition-all bg-white text-black'
-                            placeholder='123 Main Street, Apt 4B'
+                            placeholder='12 rue de la Paix, Apt 4B'
                         />
                     </div>
-                    
+
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>
-                            City
+                            Ville
                         </label>
                         <input
                             type="text"
@@ -169,10 +169,10 @@ const CheckoutForm = () => {
                             placeholder='Paris'
                         />
                     </div>
-                    
+
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>
-                            Postal Code
+                            Code postal
                         </label>
                         <input
                             type="text"
@@ -183,10 +183,10 @@ const CheckoutForm = () => {
                             placeholder='75001'
                         />
                     </div>
-                    
+
                     <div className='md:col-span-2'>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>
-                            Country <span className='text-red-500'>*</span>
+                            Pays <span className='text-red-500'>*</span>
                         </label>
                         <input
                             type="text"
@@ -200,12 +200,12 @@ const CheckoutForm = () => {
                     </div>
                 </div>
             </div>
-            
+
             {/* Payment Element */}
             <div className='mb-6'>
                 <h3 className='text-lg font-bold text-gray-900 mb-4 flex items-center gap-2'>
                     <span>💳</span>
-                    Payment Details
+                    Détails du paiement
                 </h3>
                 <PaymentElement 
                     id="payment-element"
@@ -265,11 +265,11 @@ const CheckoutForm = () => {
                     {isProcessing ? (
                         <>
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                            <span>Processing...</span>
+                            <span>Traitement en cours...</span>
                         </>
                     ) : (
                         <>
-                            <span>Pay Now</span>
+                            <span>Payer maintenant</span>
                             <span>→</span>
                         </>
                     )}
@@ -281,14 +281,14 @@ const CheckoutForm = () => {
                     disabled={isProcessing}
                     className='w-full py-3 px-6 rounded-xl font-medium text-gray-700 hover:text-[#C29F75] border-2 border-gray-300 hover:border-[#C29F75] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed'
                 >
-                    Back to Cart
+                    Retour au panier
                 </button>
             </div>
 
             {/* Security Note */}
             <div className='pt-4 border-t border-gray-200'>
                 <p className='text-xs text-gray-500 text-center'>
-                    🔒 Your payment information is secure and encrypted
+                    🔒 Vos informations de paiement sont sécurisées et chiffrées
                 </p>
             </div>
         </form>

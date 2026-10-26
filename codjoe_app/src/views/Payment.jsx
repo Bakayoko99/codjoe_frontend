@@ -4,6 +4,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { motion } from 'framer-motion';
 import { useCodjoeData } from '../context/CodjoeContext';
 import CheckoutForm from '../components/CheckoutForm';
+import SEO from '../components/SEO';
 
 const stripePromise = loadStripe(import.meta.env.VITE_REACT_APP_STRIPE_PUBLIC_KEY)
 
@@ -22,7 +23,7 @@ const Payment = () => {
                 console.log('Payment Intent created:', clientSecret);
             } catch (err) {
                 console.error('Error creating payment intent:', err);
-                setError('Failed to initialize payment. Please try again.');
+                setError("Impossible d'initialiser le paiement. Veuillez réessayer.");
             } finally {
                 setIsLoading(false);
             }
@@ -82,6 +83,12 @@ const Payment = () => {
     const total = validCart.length > 0 ? (parseFloat(cartSubtotal) + shippingFee).toFixed(2) : 0;
 
     return (
+        <>
+        <SEO
+            title="Paiement sécurisé - CODJOE"
+            description="Finalisez votre achat CODJOE en toute sécurité."
+            robots="noindex, nofollow"
+        />
         <div className='min-h-screen bg-gradient-to-br from-gray-50 to-white pt-20 pb-10'>
             <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
                 {/* Header */}
@@ -90,46 +97,46 @@ const Payment = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className='text-center mb-8'
                 >
-                    <h1 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-2'>Secure Checkout</h1>
-                    <p className='text-gray-600'>Complete your purchase securely</p>
+                    <h1 className='text-3xl sm:text-4xl font-bold text-gray-900 mb-2'>Paiement sécurisé</h1>
+                    <p className='text-gray-600'>Finalisez votre achat en toute sécurité</p>
                 </motion.div>
 
                 {isLoading ? (
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className='flex flex-col items-center justify-center py-20'
                     >
                         <div className="w-16 h-16 border-4 border-gray-200 border-t-[#C29F75] rounded-full animate-spin mb-4"></div>
-                        <p className='text-gray-600 text-lg'>Preparing secure checkout...</p>
+                        <p className='text-gray-600 text-lg'>Préparation du paiement sécurisé...</p>
                     </motion.div>
                 ) : error ? (
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         className='bg-red-50 border border-red-200 rounded-xl p-6 text-center'
                     >
                         <div className='text-red-500 text-5xl mb-4'>⚠️</div>
-                        <h2 className='text-xl font-bold text-red-900 mb-2'>Payment Error</h2>
+                        <h2 className='text-xl font-bold text-red-900 mb-2'>Erreur de paiement</h2>
                         <p className='text-red-700 mb-4'>{error}</p>
                         <button
                             onClick={() => window.location.reload()}
                             className='bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors'
                         >
-                            Try Again
+                            Réessayer
                         </button>
                     </motion.div>
                 ) : (
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
                         {/* Formulaire de paiement */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
                             className='lg:col-span-2'
                         >
                             <div className='bg-white rounded-2xl shadow-xl p-6 sm:p-8'>
-                                <h2 className='text-2xl font-bold text-gray-900 mb-6'>Payment Details</h2>
+                                <h2 className='text-2xl font-bold text-gray-900 mb-6'>Détails du paiement</h2>
                                 {stripePromise && clientKey && (
                                     <Elements stripe={stripePromise} options={stripeOptions}>
                                         <CheckoutForm />
@@ -146,7 +153,7 @@ const Payment = () => {
                             className='lg:col-span-1'
                         >
                             <div className='bg-white rounded-2xl shadow-xl p-6 sticky top-24'>
-                                <h2 className='text-xl font-bold text-gray-900 mb-4'>Order Summary</h2>
+                                <h2 className='text-xl font-bold text-gray-900 mb-4'>Récapitulatif de commande</h2>
                                 
                                 {/* Liste des produits */}
                                 <div className='space-y-3 mb-6 max-h-60 overflow-y-auto'>
@@ -161,8 +168,8 @@ const Payment = () => {
                                             )}
                                             <div className='flex-1 min-w-0'>
                                                 <p className='font-semibold text-sm text-gray-900 truncate'>{item.name}</p>
-                                                <p className='text-xs text-gray-500'>Size: {item.size}</p>
-                                                <p className='text-xs text-gray-500'>Qty: {item.quantity}</p>
+                                                <p className='text-xs text-gray-500'>Taille : {item.size}</p>
+                                                <p className='text-xs text-gray-500'>Qté : {item.quantity}</p>
                                             </div>
                                             <p className='font-semibold text-sm text-gray-900'>€{item.price}</p>
                                         </div>
@@ -172,17 +179,17 @@ const Payment = () => {
                                 {/* Totaux */}
                                 <div className='space-y-3 pt-4 border-t-2 border-gray-200'>
                                     <div className='flex justify-between text-gray-700'>
-                                        <span>Subtotal</span>
+                                        <span>Sous-total</span>
                                         <span className='font-semibold'>€{cartSubtotal > 0 ? cartSubtotal : 0}</span>
                                     </div>
-                                    
+
                                     <div className='flex justify-between text-gray-700'>
-                                        <span>Shipping</span>
+                                        <span>Livraison</span>
                                         <span className='font-semibold'>€{shippingFee.toFixed(2)}</span>
                                     </div>
-                                    
+
                                     <div className='h-px bg-gray-200' />
-                                    
+
                                     <div className='flex justify-between text-lg font-bold text-gray-900'>
                                         <span>Total</span>
                                         <span className='text-[#C29F75]'>€{total}</span>
@@ -194,15 +201,15 @@ const Payment = () => {
                                     <div className='space-y-2 text-xs text-gray-600'>
                                         <div className='flex items-center gap-2'>
                                             <span className='text-green-500'>🔒</span>
-                                            <span>Secure SSL encryption</span>
+                                            <span>Chiffrement SSL sécurisé</span>
                                         </div>
                                         <div className='flex items-center gap-2'>
                                             <span className='text-green-500'>✓</span>
-                                            <span>Payment powered by Stripe</span>
+                                            <span>Paiement propulsé par Stripe</span>
                                         </div>
                                         <div className='flex items-center gap-2'>
                                             <span className='text-green-500'>✓</span>
-                                            <span>Your data is protected</span>
+                                            <span>Vos données sont protégées</span>
                                         </div>
                                     </div>
                                 </div>
@@ -212,6 +219,7 @@ const Payment = () => {
                 )}
             </div>
         </div>
+        </>
     );
 }
 

@@ -3,51 +3,35 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCodjoeData } from '../../context/CodjoeContext';
 
 const CJUsers = () => {
-    const [users, setUsers] = useState([
-        {
-            id: 1,
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'john@example.com',
-            role: 'user',
-            orders: 5,
-            totalSpent: 299.95,
-            createdAt: '2024-01-15',
-            country: 'USA',
-            birthday: '1990-05-15'
-        },
-        {
-            id: 2,
-            firstName: 'Jane',
-            lastName: 'Smith',
-            email: 'jane@example.com',
-            role: 'user',
-            orders: 12,
-            totalSpent: 645.50,
-            createdAt: '2023-12-10',
-            country: 'UK',
-            birthday: '1988-09-20'
-        },
-        {
-            id: 3,
-            firstName: 'Admin',
-            lastName: 'User',
-            email: 'admin@codjoe.com',
-            role: 'admin',
-            orders: 0,
-            totalSpent: 0,
-            createdAt: '2023-11-01',
-            country: 'France',
-            birthday: '1985-03-12'
-        }
-    ]);
+    const { fetchAllUsers, changeUserRole, deleteUserByAdmin, showAlert } = useCodjoeData();
 
+    const [users, setUsers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterRole, setFilterRole] = useState('all');
     const [selectedUser, setSelectedUser] = useState(null);
     const [showViewModal, setShowViewModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteConfirmation, setDeleteConfirmation] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const loadUsers = async () => {
+        try {
+            setIsLoading(true);
+            const data = await fetchAllUsers();
+            setUsers(data);
+        } catch (error) {
+            console.error('Erreur lors du chargement des utilisateurs:', error);
+            showAlert('Impossible de charger les utilisateurs.', 'error');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const filteredUsers = users.filter(user => {
         const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -62,20 +46,47 @@ const CJUsers = () => {
         setShowViewModal(true);
     };
 
+    const handleRoleChange = async (user, newRole) => {
+        try {
+            await changeUserRole(user._id, newRole);
+            setUsers((prev) => prev.map((u) => (u._id === user._id ? { ...u, role: newRole } : u)));
+            showAlert('Rôle mis à jour avec succès.', 'success');
+        } catch (error) {
+            showAlert('Impossible de mettre à jour le rôle.', 'error');
+        }
+    };
+
     const handleDeleteUser = (user) => {
         setSelectedUser(user);
         setShowDeleteModal(true);
         setDeleteConfirmation('');
     };
 
-    const confirmDelete = () => {
-        if (deleteConfirmation.toLowerCase() === 'delete') {
-            setUsers(users.filter(u => u.id !== selectedUser.id));
+    const confirmDelete = async () => {
+        if (deleteConfirmation.toLowerCase() !== 'supprimer') return;
+        setIsDeleting(true);
+        try {
+            await deleteUserByAdmin(selectedUser._id);
+            setUsers((prev) => prev.filter((u) => u._id !== selectedUser._id));
+            showAlert('Utilisateur supprimé avec succès.', 'success');
             setShowDeleteModal(false);
             setSelectedUser(null);
             setDeleteConfirmation('');
+        } catch (error) {
+            showAlert("Impossible de supprimer l'utilisateur.", 'error');
+        } finally {
+            setIsDeleting(false);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className='w-full min-h-[87.7vh] bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center'>
+                <div className="w-16 h-16 border-4 border-gray-200 border-t-[#C29F75] rounded-full animate-spin mb-4"></div>
+                <p className='text-gray-600'>Chargement des utilisateurs...</p>
+            </div>
+        );
+    }
 
     return (
         <div className='w-full min-h-[87.7vh] bg-gradient-to-br from-gray-50 to-gray-100 p-6'>
@@ -86,8 +97,8 @@ const CJUsers = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className='mb-8'
                 >
-                    <h1 className='text-4xl font-bold text-gray-900 mb-2'>Users Management</h1>
-                    <p className='text-gray-600'>Manage and monitor your customers</p>
+                    <h1 className='text-4xl font-bold text-gray-900 mb-2'>Gestion des utilisateurs</h1>
+                    <p className='text-gray-600'>Gérez et suivez vos clients</p>
                 </motion.div>
 
                 {/* Filters */}
@@ -99,25 +110,25 @@ const CJUsers = () => {
                 >
                     <div className='flex flex-col md:flex-row gap-4'>
                         <div className='flex-1'>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>Search</label>
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>Rechercher</label>
                             <input
                                 type='text'
-                                placeholder='Search by name or email...'
+                                placeholder='Rechercher par nom ou email...'
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className='w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C29F75] focus:border-transparent bg-gray-100'
                             />
                         </div>
                         <div className='md:w-48'>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>Filter by Role</label>
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>Filtrer par rôle</label>
                             <select
                                 value={filterRole}
                                 onChange={(e) => setFilterRole(e.target.value)}
                                 className='w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C29F75] focus:border-transparent bg-gray-100'
                             >
-                                <option value='all'>All Roles</option>
-                                <option value='user'>Users</option>
-                                <option value='admin'>Admins</option>
+                                <option value='all'>Tous les rôles</option>
+                                <option value='user'>Utilisateurs</option>
+                                <option value='admin'>Administrateurs</option>
                             </select>
                         </div>
                     </div>
@@ -135,22 +146,16 @@ const CJUsers = () => {
                             <thead className='bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200'>
                                 <tr>
                                     <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
-                                        User
+                                        Utilisateur
                                     </th>
                                     <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
                                         Email
                                     </th>
                                     <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
-                                        Role
+                                        Rôle
                                     </th>
                                     <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
-                                        Orders
-                                    </th>
-                                    <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
-                                        Total Spent
-                                    </th>
-                                    <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
-                                        Joined
+                                        Inscrit le
                                     </th>
                                     <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider'>
                                         Actions
@@ -160,7 +165,7 @@ const CJUsers = () => {
                             <tbody className='divide-y divide-gray-200'>
                                 {filteredUsers.map((user, index) => (
                                     <motion.tr
-                                        key={user.id}
+                                        key={user._id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.05 }}
@@ -182,39 +187,38 @@ const CJUsers = () => {
                                             <div className='text-sm text-gray-900'>{user.email}</div>
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap'>
-                                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                user.role === 'admin'
-                                                    ? 'bg-purple-100 text-purple-800'
-                                                    : 'bg-green-100 text-green-800'
-                                            }`}>
-                                                {user.role}
-                                            </span>
-                                        </td>
-                                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>
-                                            {user.orders}
-                                        </td>
-                                        <td className='px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900'>
-                                            €{user.totalSpent.toFixed(2)}
+                                            <select
+                                                value={user.role}
+                                                onChange={(e) => handleRoleChange(user, e.target.value)}
+                                                className={`px-3 py-1 text-xs leading-5 font-semibold rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-[#C29F75] cursor-pointer ${
+                                                    user.role === 'admin'
+                                                        ? 'bg-purple-100 text-purple-800'
+                                                        : 'bg-green-100 text-green-800'
+                                                }`}
+                                            >
+                                                <option value='user'>Utilisateur</option>
+                                                <option value='admin'>Administrateur</option>
+                                            </select>
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                                            {new Date(user.createdAt).toLocaleDateString('en-US', {
+                                            {new Date(user.createdAt).toLocaleDateString('fr-FR', {
                                                 year: 'numeric',
                                                 month: 'short',
                                                 day: 'numeric'
                                             })}
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                                            <button 
+                                            <button
                                                 onClick={() => handleViewUser(user)}
                                                 className='text-[#C29F75] hover:text-[#B8956A] mr-3 font-semibold transition-colors duration-200'
                                             >
-                                                👁️ View
+                                                👁️ Voir
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleDeleteUser(user)}
                                                 className='text-red-600 hover:text-red-900 font-semibold transition-colors duration-200'
                                             >
-                                                🗑️ Delete
+                                                🗑️ Supprimer
                                             </button>
                                         </td>
                                     </motion.tr>
@@ -226,7 +230,7 @@ const CJUsers = () => {
                     {filteredUsers.length === 0 && (
                         <div className='text-center py-12'>
                             <span className='text-6xl'>👥</span>
-                            <p className='text-gray-500 mt-4'>No users found</p>
+                            <p className='text-gray-500 mt-4'>Aucun utilisateur trouvé</p>
                         </div>
                     )}
                 </motion.div>
@@ -236,12 +240,12 @@ const CJUsers = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className='grid grid-cols-1 md:grid-cols-3 gap-6 mt-6'
+                    className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'
                 >
                     <div className='bg-white rounded-xl shadow-lg p-6'>
                         <div className='flex items-center justify-between'>
                             <div>
-                                <p className='text-sm text-gray-600'>Total Users</p>
+                                <p className='text-sm text-gray-600'>Total utilisateurs</p>
                                 <p className='text-2xl font-bold text-gray-900'>{users.length}</p>
                             </div>
                             <span className='text-4xl'>👥</span>
@@ -250,23 +254,12 @@ const CJUsers = () => {
                     <div className='bg-white rounded-xl shadow-lg p-6'>
                         <div className='flex items-center justify-between'>
                             <div>
-                                <p className='text-sm text-gray-600'>Total Orders</p>
+                                <p className='text-sm text-gray-600'>Administrateurs</p>
                                 <p className='text-2xl font-bold text-gray-900'>
-                                    {users.reduce((sum, user) => sum + user.orders, 0)}
+                                    {users.filter((u) => u.role === 'admin').length}
                                 </p>
                             </div>
-                            <span className='text-4xl'>🛍️</span>
-                        </div>
-                    </div>
-                    <div className='bg-white rounded-xl shadow-lg p-6'>
-                        <div className='flex items-center justify-between'>
-                            <div>
-                                <p className='text-sm text-gray-600'>Total Revenue</p>
-                                <p className='text-2xl font-bold text-gray-900'>
-                                    €{users.reduce((sum, user) => sum + user.totalSpent, 0).toFixed(2)}
-                                </p>
-                            </div>
-                            <span className='text-4xl'>💰</span>
+                            <span className='text-4xl'>🛡️</span>
                         </div>
                     </div>
                 </motion.div>
@@ -304,7 +297,7 @@ const CJUsers = () => {
                                                         ? 'bg-purple-100 text-purple-800'
                                                         : 'bg-green-100 text-green-800'
                                                 }`}>
-                                                    {selectedUser.role}
+                                                    {selectedUser.role === 'admin' ? 'Administrateur' : 'Utilisateur'}
                                                 </span>
                                             </div>
                                         </div>
@@ -324,49 +317,26 @@ const CJUsers = () => {
                                     {/* Contact Information */}
                                     <div>
                                         <h3 className='text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2'>
-                                            📧 Contact Information
+                                            📧 Coordonnées
                                         </h3>
                                         <div className='bg-gray-50 rounded-xl p-4 space-y-3'>
                                             <div className='flex justify-between'>
-                                                <span className='text-gray-600'>Email:</span>
+                                                <span className='text-gray-600'>Email :</span>
                                                 <span className='font-medium text-gray-900'>{selectedUser.email}</span>
                                             </div>
                                             <div className='flex justify-between'>
-                                                <span className='text-gray-600'>Country:</span>
+                                                <span className='text-gray-600'>Pays :</span>
                                                 <span className='font-medium text-gray-900'>{selectedUser.country}</span>
                                             </div>
                                             <div className='flex justify-between'>
-                                                <span className='text-gray-600'>Birthday:</span>
+                                                <span className='text-gray-600'>Date de naissance :</span>
                                                 <span className='font-medium text-gray-900'>
-                                                    {new Date(selectedUser.birthday).toLocaleDateString('en-US', {
+                                                    {selectedUser.birthday ? new Date(selectedUser.birthday).toLocaleDateString('fr-FR', {
                                                         year: 'numeric',
                                                         month: 'long',
                                                         day: 'numeric'
-                                                    })}
+                                                    }) : '—'}
                                                 </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Account Statistics */}
-                                    <div>
-                                        <h3 className='text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2'>
-                                            📊 Account Statistics
-                                        </h3>
-                                        <div className='grid grid-cols-3 gap-4'>
-                                            <div className='bg-blue-50 rounded-xl p-4 text-center'>
-                                                <p className='text-2xl font-bold text-blue-600'>{selectedUser.orders}</p>
-                                                <p className='text-sm text-gray-600 mt-1'>Orders</p>
-                                            </div>
-                                            <div className='bg-green-50 rounded-xl p-4 text-center'>
-                                                <p className='text-2xl font-bold text-green-600'>€{selectedUser.totalSpent.toFixed(2)}</p>
-                                                <p className='text-sm text-gray-600 mt-1'>Total Spent</p>
-                                            </div>
-                                            <div className='bg-purple-50 rounded-xl p-4 text-center'>
-                                                <p className='text-2xl font-bold text-purple-600'>
-                                                    {Math.floor((new Date() - new Date(selectedUser.createdAt)) / (1000 * 60 * 60 * 24))}
-                                                </p>
-                                                <p className='text-sm text-gray-600 mt-1'>Days Active</p>
                                             </div>
                                         </div>
                                     </div>
@@ -374,17 +344,23 @@ const CJUsers = () => {
                                     {/* Member Since */}
                                     <div>
                                         <h3 className='text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2'>
-                                            📅 Account Details
+                                            📅 Détails du compte
                                         </h3>
                                         <div className='bg-gray-50 rounded-xl p-4'>
                                             <div className='flex justify-between'>
-                                                <span className='text-gray-600'>Member Since:</span>
+                                                <span className='text-gray-600'>Membre depuis :</span>
                                                 <span className='font-medium text-gray-900'>
-                                                    {new Date(selectedUser.createdAt).toLocaleDateString('en-US', {
+                                                    {new Date(selectedUser.createdAt).toLocaleDateString('fr-FR', {
                                                         year: 'numeric',
                                                         month: 'long',
                                                         day: 'numeric'
                                                     })}
+                                                </span>
+                                            </div>
+                                            <div className='flex justify-between mt-2'>
+                                                <span className='text-gray-600'>Email vérifié :</span>
+                                                <span className='font-medium text-gray-900'>
+                                                    {selectedUser.emailVerified ? 'Oui' : 'Non'}
                                                 </span>
                                             </div>
                                         </div>
@@ -397,7 +373,7 @@ const CJUsers = () => {
                                         onClick={() => setShowViewModal(false)}
                                         className='px-6 py-2 bg-white border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-colors'
                                     >
-                                        Close
+                                        Fermer
                                     </button>
                                 </div>
                             </motion.div>
@@ -431,28 +407,28 @@ const CJUsers = () => {
                                             </svg>
                                         </div>
                                         <div>
-                                            <h3 className='text-xl font-bold text-gray-900'>Delete User</h3>
-                                            <p className='text-sm text-gray-500 mt-1'>This action cannot be undone</p>
+                                            <h3 className='text-xl font-bold text-gray-900'>Supprimer l&apos;utilisateur</h3>
+                                            <p className='text-sm text-gray-500 mt-1'>Cette action est irréversible</p>
                                         </div>
                                     </div>
 
                                     <div className='mt-6 bg-red-50 border border-red-200 rounded-xl p-4'>
                                         <p className='text-sm text-red-800'>
-                                            You are about to delete <span className='font-bold'>{selectedUser.firstName} {selectedUser.lastName}</span> ({selectedUser.email}).
-                                            All associated data will be permanently removed.
+                                            Vous êtes sur le point de supprimer <span className='font-bold'>{selectedUser.firstName} {selectedUser.lastName}</span> ({selectedUser.email}).
+                                            Toutes les données associées seront définitivement supprimées.
                                         </p>
                                     </div>
 
                                     <div className='mt-6'>
                                         <label className='block text-sm font-semibold text-gray-700 mb-2'>
-                                            Type <span className='text-red-600 font-mono'>DELETE</span> to confirm
+                                            Tapez <span className='text-red-600 font-mono'>SUPPRIMER</span> pour confirmer
                                         </label>
                                         <input
                                             type='text'
                                             value={deleteConfirmation}
                                             onChange={(e) => setDeleteConfirmation(e.target.value)}
                                             className='w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent'
-                                            placeholder='Type DELETE'
+                                            placeholder='Tapez SUPPRIMER'
                                         />
                                     </div>
                                 </div>
@@ -463,18 +439,18 @@ const CJUsers = () => {
                                         onClick={() => setShowDeleteModal(false)}
                                         className='px-6 py-2 bg-white border-2 border-gray-200 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-colors'
                                     >
-                                        Cancel
+                                        Annuler
                                     </button>
                                     <button
                                         onClick={confirmDelete}
-                                        disabled={deleteConfirmation.toLowerCase() !== 'delete'}
+                                        disabled={deleteConfirmation.toLowerCase() !== 'supprimer' || isDeleting}
                                         className={`px-6 py-2 rounded-xl font-semibold text-white transition-all ${
-                                            deleteConfirmation.toLowerCase() === 'delete'
+                                            deleteConfirmation.toLowerCase() === 'supprimer' && !isDeleting
                                                 ? 'bg-red-600 hover:bg-red-700 cursor-pointer'
                                                 : 'bg-gray-400 cursor-not-allowed'
                                         }`}
                                     >
-                                        Delete User
+                                        {isDeleting ? 'Suppression...' : "Supprimer l'utilisateur"}
                                     </button>
                                 </div>
                             </motion.div>

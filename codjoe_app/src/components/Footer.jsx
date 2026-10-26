@@ -22,9 +22,9 @@ const Footer = () => {
                         transition={{ delay: 0.1 }}
                         className='flex flex-col'
                     >
-                        <h3 className='mb-4 font-semibold text-lg text-white'>About us</h3>
+                        <h2 className='mb-4 font-semibold text-lg text-white'>À propos</h2>
                         <p className='text-sm text-white/80 leading-relaxed'>
-                            CODJOE - African clothing style E-commerce platform bringing authentic fashion to the world.
+                            CODJOE - Plateforme e-commerce de mode africaine, qui fait rayonner l&apos;authenticité dans le monde entier.
                         </p>
                     </motion.div>
                     
@@ -36,19 +36,19 @@ const Footer = () => {
                         transition={{ delay: 0.2 }}
                         className='flex flex-col'
                     >
-                        <h3 className='mb-4 font-semibold text-lg text-white'>Company</h3>
+                        <h2 className='mb-4 font-semibold text-lg text-white'>Mon compte</h2>
                         <ul className='space-y-2'>
                             <li className='text-sm'>
-                                <Link to={'/login'} className='text-white/80 hover:text-white transition-colors duration-200'>Login</Link>
+                                <Link to={'/login'} className='text-white/80 hover:text-white transition-colors duration-200'>Connexion</Link>
                             </li>
                             <li className='text-sm'>
-                                <Link to={'/signup'} className='text-white/80 hover:text-white transition-colors duration-200'>Register</Link>
+                                <Link to={'/signup'} className='text-white/80 hover:text-white transition-colors duration-200'>Créer un compte</Link>
                             </li>
                             <li className='text-sm'>
-                                <Link to={'/cart'} className='text-white/80 hover:text-white transition-colors duration-200'>Your shopping cart</Link>
+                                <Link to={'/cart'} className='text-white/80 hover:text-white transition-colors duration-200'>Mon panier</Link>
                             </li>
                             <li className='text-sm'>
-                                <Link to={'/list'} className='text-white/80 hover:text-white transition-colors duration-200'>Our Products</Link>
+                                <Link to={'/list'} className='text-white/80 hover:text-white transition-colors duration-200'>Nos produits</Link>
                             </li>
                         </ul>
                     </motion.div>
@@ -61,16 +61,16 @@ const Footer = () => {
                         transition={{ delay: 0.3 }}
                         className='flex flex-col'
                     >
-                        <h3 className='mb-4 font-semibold text-lg text-white'>Legal</h3>
+                        <h2 className='mb-4 font-semibold text-lg text-white'>Informations légales</h2>
                         <ul className='space-y-2'>
                             <li className='text-sm'>
-                                <Link to={'/legal-info/legal-notice'} className='text-white/80 hover:text-white transition-colors duration-200'>Legal notice</Link>
+                                <Link to={'/legal-info/legal-notice'} className='text-white/80 hover:text-white transition-colors duration-200'>Mentions légales</Link>
                             </li>
                             <li className='text-sm'>
-                                <Link to={'/legal-info/privacy-policy'} className='text-white/80 hover:text-white transition-colors duration-200'>Privacy policy</Link>
+                                <Link to={'/legal-info/privacy-policy'} className='text-white/80 hover:text-white transition-colors duration-200'>Politique de confidentialité</Link>
                             </li>
                             <li className='text-sm'>
-                                <Link to={'/legal-info/terms'} className='text-white/80 hover:text-white transition-colors duration-200'>General terms of sale</Link>
+                                <Link to={'/legal-info/terms'} className='text-white/80 hover:text-white transition-colors duration-200'>Conditions générales de vente</Link>
                             </li>
                         </ul>
                     </motion.div>
@@ -79,7 +79,7 @@ const Footer = () => {
                 {/* Copyright */}
                 <div className='border-t border-white/20 pt-6 text-center'>
                     <p className='text-xs sm:text-sm text-white/60'>
-                        © 2025 CODJOE SAS. All rights reserved.
+                        © 2025 CODJOE SAS. Tous droits réservés.
                     </p>
                 </div>
             </div>

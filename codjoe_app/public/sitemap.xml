@@ -24,7 +24,17 @@
     
     <!-- Legal Pages -->
     <url>
-        <loc>https://codjoe.com/legal</loc>
+        <loc>https://codjoe.com/legal-info/legal-notice</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://codjoe.com/legal-info/privacy-policy</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://codjoe.com/legal-info/terms</loc>
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>

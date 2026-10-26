@@ -1,19 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCodjoeData } from '../context/CodjoeContext';
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const Login = () => {
     const { setUserLoginData } = useCodjoeData();
+    const [errors, setErrors] = useState({});
+
+    const validate = (data) => {
+        const newErrors = {};
+
+        if (!data.email.trim()) {
+            newErrors.email = "L'adresse email est obligatoire.";
+        } else if (!EMAIL_REGEX.test(data.email.trim())) {
+            newErrors.email = "Le format de l'adresse email est invalide.";
+        }
+
+        if (!data.password) {
+            newErrors.password = 'Le mot de passe est obligatoire.';
+        }
+
+        return newErrors;
+    };
 
     const loginUser = async (e) => {
         e.preventDefault();
 
-        setUserLoginData({
+        const data = {
             email: e.target.email.value,
             password: e.target.password.value
-        });
+        };
+
+        const validationErrors = validate(data);
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
+
+        setUserLoginData(data);
     }
+
+    const fieldClass = (hasError) =>
+        `w-full rounded-2xl bg-gray-50 border px-4 py-3 outline-none focus:ring-2 transition-all placeholder:text-gray-400 text-black ${
+            hasError
+                ? 'border-red-400 focus:border-red-500 focus:ring-red-200'
+                : 'border-gray-200 focus:border-codjoe-biscuit focus:ring-codjoe-biscuit/20'
+        }`;
 
     return (
         <div className='bg-gradient-to-br from-gray-50 to-gray-100 text-black min-h-screen flex items-center justify-center pt-20 px-4'>
@@ -43,7 +78,7 @@ const Login = () => {
                         transition={{ delay: 0.3 }}
                         className='font-bold text-4xl md:text-5xl mb-3 text-gray-900'
                     >
-                        Welcome Back
+                        Bon retour
                     </motion.h1>
 
                     <motion.p
@@ -52,7 +87,7 @@ const Login = () => {
                         transition={{ delay: 0.4 }}
                         className='text-gray-600 text-sm md:text-base'
                     >
-                        Login to access your orders, wishlist & more
+                        Connectez-vous pour accéder à vos commandes, favoris et plus encore
                     </motion.p>
                 </div>
 
@@ -73,14 +108,19 @@ const Login = () => {
                             type="email"
                             required
                             aria-required="true"
+                            aria-invalid={!!errors.email}
+                            aria-describedby={errors.email ? 'login-email-error' : undefined}
                             autoComplete="email"
-                            className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
-                            placeholder="you@example.com"
+                            className={fieldClass(errors.email)}
+                            placeholder="vous@exemple.com"
                         />
+                        {errors.email && (
+                            <p id="login-email-error" className='mt-1 text-sm text-red-600'>{errors.email}</p>
+                        )}
                     </div>
 
                     <div>
-                        <label htmlFor="login-password" className='block text-sm font-medium text-gray-700 mb-2'>Password</label>
+                        <label htmlFor="login-password" className='block text-sm font-medium text-gray-700 mb-2'>Mot de passe</label>
                         <input
                             id="login-password"
                             name="password"
@@ -88,9 +128,14 @@ const Login = () => {
                             autoComplete="current-password"
                             required
                             aria-required="true"
-                            className="w-full rounded-2xl bg-gray-50 border border-gray-200 px-4 py-3 outline-none focus:border-codjoe-biscuit focus:ring-2 focus:ring-codjoe-biscuit/20 transition-all placeholder:text-gray-400 text-black"
-                            placeholder="••••••••"
+                            aria-invalid={!!errors.password}
+                            aria-describedby={errors.password ? 'login-password-error' : undefined}
+                            className={fieldClass(errors.password)}
+                            placeholder="••••••••••"
                         />
+                        {errors.password && (
+                            <p id="login-password-error" className='mt-1 text-sm text-red-600'>{errors.password}</p>
+                        )}
                     </div>
 
                     <button
@@ -98,14 +143,14 @@ const Login = () => {
                         aria-label="Se connecter"
                         className="w-full rounded-2xl bg-codjoe-biscuit hover:bg-codjoe-biscuit/90 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
                     >
-                        Sign In
+                        Se connecter
                     </button>
 
                     <div className="text-center pt-4">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{' '}
+                            Vous n&apos;avez pas de compte ?{' '}
                             <Link className='text-codjoe-biscuit font-semibold hover:underline' to={'/signup'}>
-                                Create one
+                                Créer un compte
                             </Link>
                         </p>
                     </div>
