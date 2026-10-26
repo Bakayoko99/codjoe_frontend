@@ -9,10 +9,10 @@ const List = ({ categoryName }) => {
 
     return (
         <>
-            <SEO 
-                title={categoryName ? `${categoryName} Collection - CODJOE` : 'Our Collection - CODJOE'}
-                description={categoryName ? `Browse our ${categoryName} collection. Discover the latest trends in ${categoryName.toLowerCase()} at CODJOE. Premium quality guaranteed.` : 'Browse our complete fashion collection at CODJOE. Premium streetwear, tops, bottoms and more.'}
-                keywords={categoryName ? `${categoryName}, fashion, clothing, streetwear, CODJOE, online shopping` : 'fashion, clothing, streetwear, collection, CODJOE'}
+            <SEO
+                title={categoryName ? `Collection ${categoryName} - CODJOE` : 'Notre collection - CODJOE'}
+                description={categoryName ? `Parcourez notre collection ${categoryName}. Découvrez les dernières tendances en ${categoryName.toLowerCase()} chez CODJOE. Qualité premium garantie.` : 'Parcourez toute la collection mode CODJOE. Streetwear premium, hauts, bas et plus encore.'}
+                keywords={categoryName ? `${categoryName}, mode, vêtements, streetwear, CODJOE, boutique en ligne` : 'mode, vêtements, streetwear, collection, CODJOE'}
             />
             <div className='bg-white pt-20 w-full text-black min-h-[97vh] pb-10'>
                 <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -23,36 +23,36 @@ const List = ({ categoryName }) => {
                         className='my-8'
                     >
                         <h1 className='text-3xl md:text-4xl font-bold text-black mb-2'>
-                            {categoryName || 'Our Collection'}
+                            {categoryName || 'Notre collection'}
                         </h1>
                         <div className='h-1 w-20 bg-codjoe-biscuit rounded-full'></div>
                         <p className='text-gray-600 mt-4'>
-                            {products?.length || 0} products available
+                            {products?.length || 0} produit{products?.length === 1 ? '' : 's'} disponible{products?.length === 1 ? '' : 's'}
                         </p>
                     </motion.div>
 
                     {products && products.length > 0 ? (
                         <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center'>
                             {products.map((item) => (
-                                <ListCard 
-                                    key={item._id} 
-                                    id={item._id} 
-                                    name={item.name} 
-                                    price={item.price} 
-                                    isSoldOut={item.soldOut} 
-                                    image={item.mainImg} 
+                                <ListCard
+                                    key={item._id}
+                                    id={item._id}
+                                    name={item.name}
+                                    price={item.price}
+                                    isSoldOut={item.soldOut}
+                                    image={item.mainImg}
                             />
                             ))}
                         </div>
                     ) : (
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className='flex flex-col items-center justify-center py-20'
                         >
                             <div className='text-gray-400 text-6xl mb-4'>📦</div>
-                            <p className='text-gray-600 text-lg'>No products found</p>
-                            <p className='text-gray-400 text-sm mt-2'>Check back soon for new items</p>
+                            <p className='text-gray-600 text-lg'>Aucun produit trouvé</p>
+                            <p className='text-gray-400 text-sm mt-2'>Revenez bientôt pour découvrir nos nouveautés</p>
                         </motion.div>
                     )}
                 </div>

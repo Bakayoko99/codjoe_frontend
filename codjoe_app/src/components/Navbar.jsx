@@ -100,7 +100,7 @@ const Navbar = () => {
                                 <input
                                     ref={searchRef}
                                     type="text"
-                                    placeholder="Search products..."
+                                    placeholder="Rechercher un produit..."
                                     className="text-black w-48 lg:w-64 xl:w-72 pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-[#C29F75]/50 focus:border-[#C29F75] focus:bg-white transition-all placeholder:text-gray-400"
                                     onChange={(e) => handleSearch(e.target.value)}
                                     onFocus={inputFocus}
@@ -117,7 +117,7 @@ const Navbar = () => {
                                     <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-80 overflow-y-auto z-50">
                                         {searchData[1].length === 0 ? (
                                             <div className='p-4 text-center text-sm text-gray-500'>
-                                                No products found
+                                                Aucun produit trouvé
                                             </div>
                                         ) : (
                                             <ul className="py-2">
@@ -192,7 +192,7 @@ const Navbar = () => {
                             <div className="max-h-80 overflow-y-auto">
                                 <div className="p-2">
                                     <p className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        Categories
+                                        Catégories
                                     </p>
                                     {categories.map((category, index) => (
                                         <Link
@@ -219,27 +219,35 @@ const Navbar = () => {
                                 {/* Back office pour admin */}
                                 {userRole === 'admin' && (
                                     <div className="p-2">
-                                        <Link 
+                                        <Link
                                             to='/backOffice/products'
                                             className="flex items-center gap-2 px-3 py-2.5 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors font-medium"
                                             onClick={() => setToggle(false)}
                                         >
                                             <span>⚙️</span>
-                                            <span>Back Office</span>
+                                            <span>Back-office</span>
                                         </Link>
                                     </div>
                                 )}
 
-                                {/* Orders - pour utilisateurs connectés */}
+                                {/* Compte et commandes - pour utilisateurs connectés */}
                                 {isLoggedIn && (
                                     <div className="p-2">
-                                        <Link 
+                                        <Link
+                                            to='/account'
+                                            className="flex items-center gap-2 px-3 py-2.5 text-sm text-[#C29F75] hover:bg-[#C29F75]/10 rounded-lg transition-colors font-medium"
+                                            onClick={() => setToggle(false)}
+                                        >
+                                            <span>👤</span>
+                                            <span>Mon compte</span>
+                                        </Link>
+                                        <Link
                                             to='/orders'
                                             className="flex items-center gap-2 px-3 py-2.5 text-sm text-[#C29F75] hover:bg-[#C29F75]/10 rounded-lg transition-colors font-medium"
                                             onClick={() => setToggle(false)}
                                         >
                                             <span>📦</span>
-                                            <span>My Orders</span>
+                                            <span>Mes commandes</span>
                                         </Link>
                                     </div>
                                 )}
@@ -247,7 +255,7 @@ const Navbar = () => {
                                 {/* Déconnexion */}
                                 {user && (
                                     <div className="p-2">
-                                        <button 
+                                        <button
                                             onClick={() => {
                                                 handleLogOut();
                                                 setToggle(false);
@@ -255,7 +263,7 @@ const Navbar = () => {
                                             className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
                                         >
                                             <img src={logOut} alt="logout" className="w-4 h-4" />
-                                            <span>Log Out</span>
+                                            <span>Déconnexion</span>
                                         </button>
                                     </div>
                                 )}
@@ -269,7 +277,7 @@ const Navbar = () => {
                                             onClick={() => setToggle(false)}
                                         >
                                             <span>👤</span>
-                                            <span>Sign In</span>
+                                            <span>Connexion</span>
                                         </Link>
                                     </div>
                                 )}
@@ -292,7 +300,7 @@ const Navbar = () => {
                 <div className="fixed top-20 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-50 animate-slideIn">
                     <div className="flex items-center gap-2">
                         <span className="text-lg">✓</span>
-                        <span className="font-medium">Login successful!</span>
+                        <span className="font-medium">Connexion réussie !</span>
                     </div>
                 </div>
             )}

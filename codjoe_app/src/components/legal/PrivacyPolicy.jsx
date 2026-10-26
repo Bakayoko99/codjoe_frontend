@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ScrollToTopButton from '../ScrollToTopButton';
+import SEO from '../SEO';
 
 const PrivacyPolicy = () => {
     const [activeSection, setActiveSection] = useState('introduction');
@@ -47,6 +48,10 @@ const PrivacyPolicy = () => {
 
     return (
         <div className="bg-gray-50 py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
+            <SEO
+                title="Politique de confidentialité - CODJOE"
+                description="Découvrez comment CODJOE collecte, utilise et protège vos données personnelles, conformément au RGPD."
+            />
             <div className="max-w-4xl mx-auto pb-8">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-gray-800">Politique de Confidentialité</h1>
 

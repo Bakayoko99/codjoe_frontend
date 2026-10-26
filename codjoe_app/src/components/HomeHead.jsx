@@ -14,12 +14,12 @@ const HomeHead = ({ screen }) => {
         {
             type: 'toggle',
             btn1: {
-                text: 'View tops',
+                text: 'Voir les hauts',
                 link: '/list/tops',
                 toProducts: ['tops', 'bottoms']
             },
             btn2: {
-                text: 'View bottoms',
+                text: 'Voir les bas',
                 link: '/list/bottoms',
                 toProducts: ['tops', 'bottoms']
             }
@@ -30,7 +30,7 @@ const HomeHead = ({ screen }) => {
         {
             type: '',
             btn1: {
-                text: 'Buy now',
+                text: 'Acheter',
                 toProducts: ['tops', 'bottoms'],
                 btnHeight: 'h-9',
             },
@@ -150,7 +150,7 @@ const HomeHead = ({ screen }) => {
                                             {/* Badge si nouveau produit */}
                                             {product.isNew && imagesLoaded[product._id] && (
                                                 <div className='absolute top-4 left-4 bg-[#C29F75] text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg'>
-                                                    NEW
+                                                    NOUVEAU
                                                 </div>
                                             )}
                                         </div>

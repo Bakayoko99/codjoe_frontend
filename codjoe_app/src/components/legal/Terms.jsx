@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ScrollToTopButton from '../ScrollToTopButton';
+import SEO from '../SEO';
 
 const Terms = () => {
     const [activeSection, setActiveSection] = useState('introduction');
@@ -47,6 +48,10 @@ const Terms = () => {
 
     return (
         <div className="bg-gray-50 py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
+            <SEO
+                title="Conditions générales de vente - CODJOE"
+                description="Conditions générales de vente CODJOE : commandes, prix, paiement, livraison, retours et garanties."
+            />
             <div className="max-w-4xl mx-auto pb-8">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-gray-800">Conditions Générales de Vente</h1>
 

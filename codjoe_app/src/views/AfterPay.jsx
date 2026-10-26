@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const AfterPay = () => {
     return (
+        <>
+        <SEO
+            title="Commande confirmée - CODJOE"
+            description="Votre commande CODJOE a été confirmée avec succès."
+            robots="noindex, nofollow"
+        />
         <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pt-20 flex items-center justify-center px-4'>
             <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -29,17 +36,17 @@ const AfterPay = () => {
                     transition={{ delay: 0.3 }}
                     className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
                 >
-                    Order Successful! 🎉
+                    Commande confirmée ! 🎉
                 </motion.h1>
-                
-                <motion.p 
+
+                <motion.p
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4 }}
                     className="text-gray-600 text-base leading-relaxed mb-8"
                 >
-                    Thank you for your purchase!<br />
-                    You will receive a confirmation email with your order details and tracking number shortly.
+                    Merci pour votre achat !<br />
+                    Vous recevrez bientôt un email de confirmation avec les détails de votre commande et votre numéro de suivi.
                 </motion.p>
 
                 <motion.div
@@ -50,13 +57,13 @@ const AfterPay = () => {
                 >
                     <Link to={'/list'}>
                         <button className="w-full bg-codjoe-biscuit hover:bg-codjoe-biscuit/90 text-white h-14 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5">
-                            Continue Shopping
+                            Continuer mes achats
                         </button>
                     </Link>
-                    
+
                     <Link to={'/orders'}>
                         <button className="w-full bg-white hover:bg-gray-50 text-gray-800 h-14 rounded-full font-medium border-2 border-gray-200 transition-all duration-300">
-                            Your Orders
+                            Mes commandes
                         </button>
                     </Link>
                 </motion.div>
@@ -67,10 +74,11 @@ const AfterPay = () => {
                     transition={{ delay: 0.6 }}
                     className="text-sm text-gray-500 mt-8"
                 >
-                    Need help? <Link to="/legal-info/terms" className="text-codjoe-biscuit hover:underline">Contact us</Link>
+                    Besoin d&apos;aide ? <Link to="/legal-info/terms" className="text-codjoe-biscuit hover:underline">Contactez-nous</Link>
                 </motion.p>
             </motion.div>
         </div>
+        </>
     );
 }
 

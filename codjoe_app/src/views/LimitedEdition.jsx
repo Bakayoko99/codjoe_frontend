@@ -3,9 +3,9 @@ import ComingSoon from '../components/ComingSoon';
 
 const LimitedEdition = () => {
     return (
-        <ComingSoon 
-            title="Limited Edition"
-            description="Be the first to discover our exclusive limited edition pieces"
+        <ComingSoon
+            title="Édition Limitée"
+            description="Soyez les premiers à découvrir nos pièces exclusives en édition limitée"
         />
     );
 }

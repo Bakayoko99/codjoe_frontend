@@ -30,7 +30,7 @@ const Orders = () => {
                             const product = products.find(p => p._id === item.productId);
                             // Utiliser les données de la commande si disponibles, sinon chercher dans products
                             const productPrice = parseFloat(item.productPrice || (product ? product.price : 0));
-                            const productName = item.productName || (product ? product.name : 'Unknown Product');
+                            const productName = item.productName || (product ? product.name : 'Produit inconnu');
                             const subtotal = parseFloat(item.subtotal || (item.quantity * productPrice));
                             
                             return {
@@ -85,8 +85,19 @@ const Orders = () => {
         return icons[status] || '📋';
     };
 
+    const getStatusLabel = (status) => {
+        const labels = {
+            pending: 'En attente',
+            processing: 'En préparation',
+            shipped: 'Expédiée',
+            delivered: 'Livrée',
+            cancelled: 'Annulée'
+        };
+        return labels[status] || status;
+    };
+
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
+        return new Date(dateString).toLocaleDateString('fr-FR', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -104,13 +115,13 @@ const Orders = () => {
                         animate={{ opacity: 1, y: 0 }}
                     >
                         <span className='text-6xl mb-4 block'>🔒</span>
-                        <h1 className='text-3xl font-bold text-gray-900 mb-4'>Please Log In</h1>
-                        <p className='text-gray-600 mb-8'>You need to be logged in to view your orders</p>
+                        <h1 className='text-3xl font-bold text-gray-900 mb-4'>Veuillez vous connecter</h1>
+                        <p className='text-gray-600 mb-8'>Vous devez être connecté pour consulter vos commandes</p>
                         <Link
                             to='/login'
                             className='inline-block bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl'
                         >
-                            Go to Login
+                            Se connecter
                         </Link>
                     </motion.div>
                 </div>
@@ -121,8 +132,8 @@ const Orders = () => {
     return (
         <>
             <SEO
-                title="My Orders - CODJOE"
-                description="Track and manage your CODJOE orders. View order history and shipping status."
+                title="Mes commandes - CODJOE"
+                description="Suivez et gérez vos commandes CODJOE. Consultez votre historique et le statut de livraison."
                 robots="noindex, nofollow"
             />
             <div className='min-h-screen bg-gradient-to-br from-gray-50 to-white pt-20 pb-10'>
@@ -133,14 +144,14 @@ const Orders = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className='mb-8'
                     >
-                        <h1 className='text-4xl font-bold text-gray-900 mb-2'>My Orders</h1>
-                        <p className='text-gray-600'>Track and manage your orders</p>
+                        <h1 className='text-4xl font-bold text-gray-900 mb-2'>Mes commandes</h1>
+                        <p className='text-gray-600'>Suivez et gérez vos commandes</p>
                     </motion.div>
 
                     {isLoading ? (
                         <div className='flex flex-col items-center justify-center py-20'>
                             <div className="w-16 h-16 border-4 border-gray-200 border-t-[#C29F75] rounded-full animate-spin mb-4"></div>
-                            <p className='text-gray-600'>Loading your orders...</p>
+                            <p className='text-gray-600'>Chargement de vos commandes...</p>
                         </div>
                     ) : orders.length === 0 ? (
                         <motion.div
@@ -149,13 +160,13 @@ const Orders = () => {
                             className='bg-white rounded-2xl shadow-lg p-12 text-center'
                         >
                             <span className='text-6xl mb-4 block'>📦</span>
-                            <h2 className='text-2xl font-bold text-gray-900 mb-2'>No Orders Yet</h2>
-                            <p className='text-gray-600 mb-6'>Start shopping to see your orders here</p>
+                            <h2 className='text-2xl font-bold text-gray-900 mb-2'>Aucune commande pour le moment</h2>
+                            <p className='text-gray-600 mb-6'>Commencez vos achats pour voir vos commandes ici</p>
                             <Link
                                 to='/'
                                 className='inline-block bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl'
                             >
-                                Start Shopping
+                                Commencer mes achats
                             </Link>
                         </motion.div>
                     ) : (
@@ -174,14 +185,14 @@ const Orders = () => {
                                             <div>
                                                 <div className='flex items-center gap-3 mb-2'>
                                                     <h3 className='text-xl font-bold text-gray-900'>
-                                                        Order #{order.orderNumber}
+                                                        Commande n°{order.orderNumber}
                                                     </h3>
                                                     <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(order.status)}`}>
-                                                        {getStatusIcon(order.status)} {order.status.toUpperCase()}
+                                                        {getStatusIcon(order.status)} {getStatusLabel(order.status).toUpperCase()}
                                                     </span>
                                                 </div>
                                                 <p className='text-sm text-gray-600'>
-                                                    Placed on {formatDate(order.createdAt)}
+                                                    Passée le {formatDate(order.createdAt)}
                                                 </p>
                                             </div>
                                             <div className='text-right'>
@@ -210,9 +221,9 @@ const Orders = () => {
                                                     <div className='flex-1'>
                                                         <h4 className='font-semibold text-gray-900'>{item.productName}</h4>
                                                         <div className='flex gap-4 mt-1 text-sm text-gray-600'>
-                                                            <span>Size: {item.size}</span>
-                                                            <span>Qty: {item.quantity}</span>
-                                                            <span>€{(parseFloat(item.productPrice) || 0).toFixed(2)} each</span>
+                                                            <span>Taille : {item.size}</span>
+                                                            <span>Qté : {item.quantity}</span>
+                                                            <span>€{(parseFloat(item.productPrice) || 0).toFixed(2)} l&apos;unité</span>
                                                         </div>
                                                     </div>
                                                     <div className='text-right'>
@@ -226,11 +237,11 @@ const Orders = () => {
                                         <div className='mt-6 pt-6 border-t-2 border-gray-200'>
                                             <div className='space-y-2'>
                                                 <div className='flex justify-between text-gray-700'>
-                                                    <span>Subtotal</span>
+                                                    <span>Sous-total</span>
                                                     <span>€{(parseFloat(order.subtotal) || 0).toFixed(2)}</span>
                                                 </div>
                                                 <div className='flex justify-between text-gray-700'>
-                                                    <span>Shipping</span>
+                                                    <span>Livraison</span>
                                                     <span>€{(parseFloat(order.shippingFee) || 0).toFixed(2)}</span>
                                                 </div>
                                                 <div className='flex justify-between text-lg font-bold text-gray-900 pt-2'>
@@ -243,7 +254,7 @@ const Orders = () => {
                                         {/* Shipping Address */}
                                         {order.shippingAddress && (
                                             <div className='mt-6 p-4 bg-gray-50 rounded-xl'>
-                                                <h4 className='font-semibold text-gray-900 mb-2'>Shipping Address</h4>
+                                                <h4 className='font-semibold text-gray-900 mb-2'>Adresse de livraison</h4>
                                                 <p className='text-sm text-gray-600'>
                                                     {order.shippingAddress.firstName} {order.shippingAddress.lastName}<br />
                                                     {order.shippingAddress.address}<br />

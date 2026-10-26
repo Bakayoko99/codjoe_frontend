@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEO from './SEO';
 
-const ComingSoon = ({ title = "Coming Soon", description = "This section is under construction" }) => {
+const ComingSoon = ({ title = "Bientôt disponible", description = "Cette section est en cours de construction" }) => {
     return (
         <>
             <SEO 
@@ -62,7 +62,7 @@ const ComingSoon = ({ title = "Coming Soon", description = "This section is unde
                         className='inline-flex items-center gap-2 bg-gradient-to-r from-[#C29F75] to-[#B8956A] text-white px-6 py-3 rounded-full mb-8 shadow-lg'
                     >
                         <span className='animate-pulse'>✨</span>
-                        <span className='font-semibold'>Exciting things are on the way!</span>
+                        <span className='font-semibold'>De belles surprises arrivent bientôt !</span>
                     </motion.div>
 
                     {/* Message supplémentaire */}
@@ -73,20 +73,20 @@ const ComingSoon = ({ title = "Coming Soon", description = "This section is unde
                         className='bg-white rounded-2xl shadow-xl p-8 mb-8 border border-gray-100'
                     >
                         <p className='text-gray-700 mb-4'>
-                            We're working hard to bring you something special. This section will be available soon with:
+                            Nous travaillons activement pour vous proposer quelque chose de spécial. Cette section sera bientôt disponible avec :
                         </p>
                         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 text-sm'>
                             <div className='bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl'>
                                 <span className='text-2xl mb-2 block'>🎨</span>
-                                <span className='font-semibold text-blue-900'>Unique Designs</span>
+                                <span className='font-semibold text-blue-900'>Designs uniques</span>
                             </div>
                             <div className='bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl'>
                                 <span className='text-2xl mb-2 block'>⭐</span>
-                                <span className='font-semibold text-purple-900'>Premium Quality</span>
+                                <span className='font-semibold text-purple-900'>Qualité premium</span>
                             </div>
                             <div className='bg-gradient-to-br from-pink-50 to-pink-100 p-4 rounded-xl'>
                                 <span className='text-2xl mb-2 block'>🔥</span>
-                                <span className='font-semibold text-pink-900'>Exclusive Items</span>
+                                <span className='font-semibold text-pink-900'>Articles exclusifs</span>
                             </div>
                         </div>
                     </motion.div>
@@ -104,7 +104,7 @@ const ComingSoon = ({ title = "Coming Soon", description = "This section is unde
                             <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M10 19l-7-7m0 0l7-7m-7 7h18' />
                             </svg>
-                            Back to Home
+                            Retour à l'accueil
                         </Link>
                     </motion.div>
 

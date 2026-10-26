@@ -25,14 +25,14 @@ const ListCard = ({ id, name, price, isSoldOut, image }) => {
                     {/* Sold out badge */}
                     {isSoldOut && (
                         <div className='absolute top-3 right-3 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full'>
-                            Sold out
+                            Épuisé
                         </div>
                     )}
-                    
+
                     {/* Quick view button on hover */}
                     <div className='absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
                         <div className='bg-white text-codjoe-biscuit px-4 py-2 rounded-full text-sm font-medium shadow-lg'>
-                            Quick view
+                            Aperçu rapide
                         </div>
                     </div>
                 </div>

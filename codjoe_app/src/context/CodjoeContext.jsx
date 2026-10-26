@@ -86,28 +86,28 @@ export const CodjoeProvider = ({ children, initialValue }) => {
                 setLoginSucess(true)
                 setUser(res.data.token)
                 console.log('storage data: ', localStorage.getItem('codjoe-user'));
-                showAlert('Login successful! Welcome back.', 'success');
+                showAlert('Connexion réussie ! Bon retour parmi nous.', 'success');
                 setTimeout(() => navigate('/'), 1000);
             }
         } catch (error) {
             console.error('Login error:', error);
-            
+
             if (error.response) {
-                const errorMsg = error.response.data?.msg || error.response.data?.message || 'Login failed';
-                
-                if (error.response.status === 401) {
-                    showAlert('Invalid email or password. Please try again.', 'error');
+                const errorMsg = error.response.data?.msg || error.response.data?.message || 'Échec de la connexion';
+
+                if (error.response.status === 400 || error.response.status === 401) {
+                    showAlert(errorMsg || 'Email ou mot de passe incorrect.', 'error');
                 } else if (error.response.status === 404) {
-                    showAlert('Account not found. Please sign up.', 'error');
+                    showAlert('Aucun compte ne correspond à cet email. Veuillez vous inscrire.', 'error');
                 } else if (error.response.status === 500) {
-                    showAlert('Server error. Please try again later.', 'error');
+                    showAlert('Erreur serveur. Veuillez réessayer plus tard.', 'error');
                 } else {
-                    showAlert(`Error: ${errorMsg}`, 'error');
+                    showAlert(`Erreur : ${errorMsg}`, 'error');
                 }
             } else if (error.request) {
-                showAlert('Unable to connect to server. Check your connection.', 'error');
+                showAlert('Impossible de contacter le serveur. Vérifiez votre connexion.', 'error');
             } else {
-                showAlert('An error occurred. Please try again.', 'error');
+                showAlert('Une erreur est survenue. Veuillez réessayer.', 'error');
             }
         }
     }
@@ -118,33 +118,87 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
             if (res.status === 200) {
                 setIsSignup(true);
-                showAlert('Account created successfully! Please login.', 'success');
+                showAlert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.', 'success');
                 setTimeout(() => navigate('/login'), 1500);
                 console.log('signup response', res.data);
             }
         } catch (error) {
             console.error('Signup error:', error);
-            
+
             if (error.response) {
-                const errorMsg = error.response.data?.msg || error.response.data?.message || 'Signup failed';
-                
+                const fieldErrors = error.response.data?.errors;
+                const errorMsg = (fieldErrors && fieldErrors[0]?.msg) || error.response.data?.msg || error.response.data?.message || "Échec de l'inscription";
+
                 if (error.response.status === 400) {
-                    showAlert(`Registration error: ${errorMsg}`, 'error');
+                    showAlert(errorMsg, 'error');
                 } else if (error.response.status === 500) {
-                    showAlert('Server error. Please try again later.', 'error');
+                    showAlert('Erreur serveur. Veuillez réessayer plus tard.', 'error');
                 } else {
-                    showAlert(`Error: ${errorMsg}`, 'error');
+                    showAlert(`Erreur : ${errorMsg}`, 'error');
                 }
             } else if (error.request) {
-                showAlert('Unable to connect to server. Check your connection.', 'error');
+                showAlert('Impossible de contacter le serveur. Vérifiez votre connexion.', 'error');
             } else {
-                showAlert('An error occurred. Please try again.', 'error');
+                showAlert('Une erreur est survenue. Veuillez réessayer.', 'error');
             }
-            
+
             // Réinitialiser l'état d'inscription en cas d'erreur
             setIsSignup(false);
         }
     }
+
+    //* RGPD — profil utilisateur (lecture, mise à jour, suppression, export des données)
+
+    const authHeader = () => ({ headers: { 'Authorization': `Bearer ${user}` } });
+
+    const getMyProfile = async () => {
+        const res = await axios.get(`${backUrl}/api/users/${userID}`, authHeader());
+        return res.data?.data;
+    };
+
+    const updateMyProfile = async (profileData) => {
+        const res = await axios.put(`${backUrl}/api/users/${userID}`, profileData, authHeader());
+        return res.data;
+    };
+
+    const deleteMyAccount = async () => {
+        const res = await axios.delete(`${backUrl}/api/users/${userID}`, authHeader());
+        setUser(null);
+        navigate('/');
+        return res.data;
+    };
+
+    const exportMyData = async () => {
+        const res = await axios.get(`${backUrl}/api/users/${userID}/data`, authHeader());
+        return res.data?.data;
+    };
+
+    //* Back-office — administration (utilisateurs, commandes)
+
+    const fetchAllUsers = async () => {
+        const res = await axios.get(`${backUrl}/api/users`, authHeader());
+        return res.data?.data || [];
+    };
+
+    const changeUserRole = async (targetUserId, role) => {
+        const res = await axios.patch(`${backUrl}/api/users/${targetUserId}/role`, { role }, authHeader());
+        return res.data;
+    };
+
+    const deleteUserByAdmin = async (targetUserId) => {
+        const res = await axios.delete(`${backUrl}/api/users/${targetUserId}`, authHeader());
+        return res.data;
+    };
+
+    const fetchAllOrders = async () => {
+        const res = await axios.get(`${backUrl}/api/orders`, authHeader());
+        return res.data?.data || [];
+    };
+
+    const changeOrderStatus = async (orderId, status) => {
+        const res = await axios.put(`${backUrl}/api/orders/${orderId}/status`, { status }, authHeader());
+        return res.data;
+    };
 
     useEffect(() => {
         console.log('userLoginData', userLoginData);
@@ -240,7 +294,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
     const getUserCart = async (id) => {
         console.log('getUserCart called with id:', id);
         try {
-            const res = await axios.get(`${backUrl}/api/users/${id}/cart`)
+            const res = await axios.get(`${backUrl}/api/users/${id}/cart`, authHeader())
             const cartProducts = res.data.data
 
             if (res.status === 200) {
@@ -295,7 +349,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
         if (newProduct) {
             try {
-                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/add`, { newItems: [newProduct] });
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/add`, { newItems: [newProduct] }, authHeader());
                 if (res.status === 200) {
                     console.log('Product added/updated in cart successfully, response:', res.data)
                     // Petit délai pour s'assurer que le backend a bien enregistré
@@ -325,10 +379,10 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
         if (productId) {
             try {
-                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/remove`, { 
-                    productId, 
-                    size 
-                })
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/remove`, {
+                    productId,
+                    size
+                }, authHeader())
 
                 if (res.status === 200) {
                     console.log('Product removed successfully, reloading cart...')
@@ -352,11 +406,11 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
         if (productId && size && quantity) {
             try {
-                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/update-quantity`, { 
-                    productId, 
-                    size, 
-                    quantity 
-                })
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/update-quantity`, {
+                    productId,
+                    size,
+                    quantity
+                }, authHeader())
 
                 if (res.status === 200) {
                     console.log('Quantity updated successfully, reloading cart...')
@@ -380,11 +434,11 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
         if (productId && oldSize && newSize) {
             try {
-                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/update-size`, { 
-                    productId, 
-                    oldSize, 
-                    newSize 
-                })
+                const res = await axios.post(`${backUrl}/api/users/${userID}/cart/update-size`, {
+                    productId,
+                    oldSize,
+                    newSize
+                }, authHeader())
 
                 if (res.status === 200) {
                     console.log('Size updated successfully, reloading cart...')
@@ -482,7 +536,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
             const res = await axios.post(`${backUrl}/api/products/add`,
 
                 newProductData,
-                { headers: { 'Content-Type': 'multipart/form-data' } }
+                { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${user}` } }
             )
 
             if (res.status === 200) {
@@ -499,7 +553,7 @@ export const CodjoeProvider = ({ children, initialValue }) => {
 
     const sendDeleteProduct = async (id) => {
 
-        const res = await axios.delete(`${backUrl}/api/products/delete/${id}`)
+        const res = await axios.delete(`${backUrl}/api/products/delete/${id}`, authHeader())
 
         if (res.status === 200) {
             console.log('product deleted:', res);
@@ -700,7 +754,18 @@ export const CodjoeProvider = ({ children, initialValue }) => {
             clientSecret,
             createOrder,
             getUserOrders,
-            
+
+            getMyProfile,
+            updateMyProfile,
+            deleteMyAccount,
+            exportMyData,
+
+            fetchAllUsers,
+            changeUserRole,
+            deleteUserByAdmin,
+            fetchAllOrders,
+            changeOrderStatus,
+
             showAlert
         }}>
             <Alert 

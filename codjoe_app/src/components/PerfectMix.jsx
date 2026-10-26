@@ -7,7 +7,7 @@ const PerfectMix = () => {
         {
             type: '',
             btn1: {
-                text: 'Explore Collection',
+                text: 'Découvrir la collection',
                 link: '/list/collections',
             }
         }
@@ -30,16 +30,16 @@ const PerfectMix = () => {
                     viewport={{ once: true }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                    Codjoe's Perfect Mix
+                    Le Mélange Parfait Codjoe
                 </motion.h2>
-                <motion.p 
+                <motion.p
                     className='text-gray-600 text-sm sm:text-base'
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3, duration: 0.5 }}
                 >
-                    Discover our curated collection
+                    Découvrez notre collection sélectionnée avec soin
                 </motion.p>
             </div>
 
@@ -64,29 +64,29 @@ const PerfectMix = () => {
                         transition={{ delay: 0.4 }}
                     >
                         <span className='text-[#C29F75] font-bold text-sm'>✨</span>
-                        <span className='text-gray-900 font-semibold text-sm'>Exclusive Collection</span>
+                        <span className='text-gray-900 font-semibold text-sm'>Collection exclusive</span>
                     </motion.div>
 
                     {/* Title */}
-                    <motion.h3 
+                    <motion.h3
                         className='text-white text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 drop-shadow-lg'
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.5 }}
                     >
-                        Style Meets Comfort
+                        Style et confort réunis
                     </motion.h3>
 
                     {/* Description */}
-                    <motion.p 
+                    <motion.p
                         className='text-white/90 text-sm sm:text-base lg:text-lg mb-6 max-w-2xl drop-shadow-md'
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.6 }}
                     >
-                        Carefully selected pieces that blend traditional African aesthetics with contemporary design
+                        Des pièces soigneusement choisies qui allient esthétique africaine traditionnelle et design contemporain
                     </motion.p>
 
                     {/* Button */}
@@ -123,10 +123,10 @@ const PerfectMix = () => {
                 transition={{ delay: 0.8, duration: 0.5 }}
             >
                 {[
-                    { icon: '🌍', label: 'African Heritage' },
-                    { icon: '✨', label: 'Premium Quality' },
-                    { icon: '🎨', label: 'Unique Designs' },
-                    { icon: '♻️', label: 'Sustainable' }
+                    { icon: '🌍', label: 'Héritage africain' },
+                    { icon: '✨', label: 'Qualité premium' },
+                    { icon: '🎨', label: 'Designs uniques' },
+                    { icon: '♻️', label: 'Durable' }
                 ].map((feature, index) => (
                     <motion.div 
                         key={index}

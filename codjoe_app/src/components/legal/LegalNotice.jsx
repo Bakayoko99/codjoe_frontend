@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ScrollToTopButton from '../ScrollToTopButton';
+import SEO from '../SEO';
 
 const LegalNotice = () => {
     const [showScrollTop, setShowScrollTop] = useState(false);
@@ -31,6 +32,10 @@ const LegalNotice = () => {
     };
     return (
         <div className="bg-gray-50 py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
+            <SEO
+                title="Mentions légales - CODJOE"
+                description="Mentions légales de CODJOE SAS : éditeur du site, hébergement, propriété intellectuelle et contact."
+            />
             <div className="max-w-4xl mx-auto pb-8">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-gray-800">Mentions Légales</h1>
 

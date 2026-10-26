@@ -32,26 +32,27 @@ const Home = () => {
 
     return (
         <>
-            <SEO 
-                title="CODJOE - Premium Fashion & Streetwear Collection"
-                description="Discover CODJOE's exclusive collection of premium streetwear. Shop the latest trends in tops, bottoms, and accessories. Free shipping on orders over €50."
-                keywords="streetwear, fashion, premium clothing, CODJOE, tops, bottoms, best sellers, online shopping"
+            <SEO
+                title="CODJOE - Collection premium streetwear"
+                description="Découvrez la collection exclusive CODJOE : streetwear premium. Suivez les dernières tendances en hauts, bas et accessoires. Livraison gratuite dès 50 €."
+                keywords="streetwear, mode, vêtements premium, CODJOE, hauts, bas, meilleures ventes, boutique en ligne"
                 type="website"
             />
             <div className='mx-4 sm:mx-8 lg:mx-16'>
+                <h1 className='sr-only'>CODJOE — Mode premium et streetwear</h1>
                 {/* Section mobile */}
                 <section className='bg-home-head h-0 pt-[116%] w-full bg-contain bg-no-repeat max-w-full mt-20 lg:hidden mb-10'>
                     <HomeHead screen={screen} />
                 </section>
-                
+
                 {/* Section desktop */}
                 <section className='lg:block mt-20 hidden'>
                     <HomeHead screen={screen} />
                 </section>
-                
+
                 {/* Section Best Sellers */}
                 <section className='mx-2 sm:mx-6 lg:mx-10 mt-4 sm:mt-8 lg:mt-12'>
-                    <h1 className='text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-black mb-2 sm:mb-3 lg:mb-4'>Best sellers</h1>
+                    <h2 className='text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-black mb-2 sm:mb-3 lg:mb-4'>Meilleures ventes</h2>
                     <BestSellers />
                 </section>
                 
