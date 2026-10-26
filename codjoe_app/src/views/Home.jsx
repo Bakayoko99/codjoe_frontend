@@ -8,26 +8,25 @@ import PerfectMix from '../components/PerfectMix';
 import SEO from '../components/SEO';
 
 
+// Calculé de façon synchrone (lazy initializer) pour que HomeHead ait déjà la bonne
+// valeur dès le premier rendu : sinon screen vaut '' au premier passage, HomeHead
+// n'affiche rien, puis la vraie section apparaît après l'effet → gros décalage de
+// mise en page (CLS) sur desktop, repéré par PageSpeed Insights (score 0.387).
+const getScreenType = () => (
+    typeof window !== 'undefined' && window.screen.height > window.screen.width
+        ? 'sm-screens'
+        : 'lg-screens'
+);
+
 const Home = () => {
 
-    const [screen, setScreen] = useState('')
+    const [screen, setScreen] = useState(getScreenType)
 
     useEffect(() => {
-
-        const screenWidth = window.screen.width;
-        const screenHeight = window.screen.height;
-
-        if (screenHeight > screenWidth) {
-            setScreen('sm-screens')
-        } else {
-            setScreen('lg-screens')
-        }
-
-        console.log('screen', screen);
-        // console.log("Screen width:", screenWidth);
-        // console.log("Screen height:", screenHeight);
-
-    });
+        const handleResize = () => setScreen(getScreenType());
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
 
     return (
