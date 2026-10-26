@@ -3,7 +3,8 @@
  * Le script gtag n'est injecté dans le DOM qu'après consentement
  * explicite de l'utilisateur, jamais au chargement initial de la page.
  */
-const GTM_ID = 'GTM-W674L28P';
+// const GTM_ID = 'GTM-W674L28P';
+const GTM_ID = 'G-EYSRZ1S4JQ';
 let analyticsLoaded = false;
 
 export const hasAnalyticsConsent = () =>
