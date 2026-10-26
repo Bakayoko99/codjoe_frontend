@@ -89,7 +89,7 @@ const Navbar = () => {
                         }}
                         className="flex-shrink-0 hover:opacity-80 transition-opacity"
                     >
-                        <img src={codjoe_logo} alt="CODJOE" className='w-28 sm:w-32 lg:w-36 xl:w-40 h-auto object-contain' />
+                        <img src={codjoe_logo} alt="CODJOE" width="320" height="86" className='w-28 sm:w-32 lg:w-36 xl:w-40 h-auto object-contain' />
                     </Link>
 
                     {/* Navigation et icônes */}

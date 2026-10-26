@@ -95,17 +95,23 @@ const HomeHead = ({ screen }) => {
                         {isLoading || lgScreenProducts.length === 0 ? (
                             // Loading State
                             [1, 2, 3].map((i) => (
-                                <motion.div 
-                                    key={i} 
-                                    className='w-full max-w-sm animate-pulse'
+                                <motion.div
+                                    key={i}
+                                    className='w-full max-w-sm'
                                     variants={itemVariants}
                                 >
-                                    <div className='aspect-[3/4] mb-4 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex justify-center items-center overflow-hidden'>
-                                        <div className="w-16 h-16 border-4 border-gray-300 border-t-[#C29F75] rounded-full animate-spin"></div>
-                                    </div>
-                                    <div className='space-y-2'>
-                                        <div className='h-4 bg-gray-200 rounded w-3/4'></div>
-                                        <div className='h-4 bg-gray-200 rounded w-1/2'></div>
+                                    {/* animate-pulse isolé sur un wrapper interne : partager l'animation
+                                        d'opacité CSS avec l'opacité animée par framer-motion sur le même
+                                        élément empêche le navigateur de composer l'animation (relevé par
+                                        PageSpeed Insights). */}
+                                    <div className='animate-pulse'>
+                                        <div className='aspect-[3/4] mb-4 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex justify-center items-center overflow-hidden'>
+                                            <div className="w-16 h-16 border-4 border-gray-300 border-t-[#C29F75] rounded-full animate-spin"></div>
+                                        </div>
+                                        <div className='space-y-2'>
+                                            <div className='h-4 bg-gray-200 rounded w-3/4'></div>
+                                            <div className='h-4 bg-gray-200 rounded w-1/2'></div>
+                                        </div>
                                     </div>
                                 </motion.div>
                             ))
