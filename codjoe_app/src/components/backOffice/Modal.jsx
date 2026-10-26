@@ -122,95 +122,95 @@ const Modal = ({ setOpenModal, openModal, title, type, mainImg, deleteData }) =>
                                                     <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-6">
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Product name *</label>
-                                                            <input 
-                                                                type="text" 
-                                                                name="product_name" 
-                                                                id="product-name" 
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Nom du produit *</label>
+                                                            <input
+                                                                type="text"
+                                                                name="product_name"
+                                                                id="product-name"
                                                                 required
-                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm" 
-                                                                placeholder="Enter product name"
+                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm"
+                                                                placeholder="Saisir le nom du produit"
                                                             />
                                                         </div>
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Price (€) *</label>
-                                                            <input 
-                                                                type="number" 
-                                                                name="price" 
-                                                                id="price" 
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Prix (€) *</label>
+                                                            <input
+                                                                type="number"
+                                                                name="price"
+                                                                id="price"
                                                                 required
                                                                 step="0.01"
-                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm" 
+                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm"
                                                                 placeholder="0.00"
                                                             />
                                                         </div>
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Quantity *</label>
-                                                            <input 
-                                                                type="number" 
-                                                                name="quantity" 
-                                                                id="quantity" 
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Quantité *</label>
+                                                            <input
+                                                                type="number"
+                                                                name="quantity"
+                                                                id="quantity"
                                                                 required
                                                                 min="0"
-                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm" 
+                                                                className="block w-full rounded-xl border-2 border-gray-200 p-3 text-gray-900 bg-white shadow-sm focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 sm:text-sm"
                                                                 placeholder="0"
                                                             />
                                                         </div>
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Stock Status *</label>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Statut du stock *</label>
                                                             <div className="flex items-center gap-4 h-12">
                                                                 <label className="flex items-center gap-2 cursor-pointer group">
-                                                                    <input 
-                                                                        className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded' 
-                                                                        type="radio" 
-                                                                        name="soldOut" 
-                                                                        value={true} 
+                                                                    <input
+                                                                        className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded'
+                                                                        type="radio"
+                                                                        name="soldOut"
+                                                                        value={true}
                                                                     />
-                                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Sold Out</span>
+                                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Épuisé</span>
                                                                 </label>
                                                                 <label className="flex items-center gap-2 cursor-pointer group">
-                                                                    <input 
-                                                                        className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded' 
-                                                                        type="radio" 
-                                                                        name="soldOut" 
-                                                                        value={false} 
+                                                                    <input
+                                                                        className='w-4 h-4 text-[#C29F75] focus:ring-[#C29F75] border-gray-300 rounded'
+                                                                        type="radio"
+                                                                        name="soldOut"
+                                                                        value={false}
                                                                         defaultChecked
                                                                     />
-                                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Available</span>
+                                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Disponible</span>
                                                                 </label>
                                                             </div>
                                                         </div>
 
                                                         <div className="sm:col-span-6">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Main image *</label>
-                                                            <input 
-                                                                type='file' 
-                                                                accept='image/*' 
-                                                                name="main_image" 
-                                                                id="main_image" 
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Image principale *</label>
+                                                            <input
+                                                                type='file'
+                                                                accept='image/*'
+                                                                name="main_image"
+                                                                id="main_image"
                                                                 required
-                                                                className="block w-full text-sm text-gray-900 bg-white border-2 border-gray-200 rounded-xl cursor-pointer focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-[#C29F75] file:text-white hover:file:bg-[#B8956A] file:transition-colors file:duration-200" 
+                                                                className="block w-full text-sm text-gray-900 bg-white border-2 border-gray-200 rounded-xl cursor-pointer focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-[#C29F75] file:text-white hover:file:bg-[#B8956A] file:transition-colors file:duration-200"
                                                             />
                                                         </div>
 
                                                         <div className="sm:col-span-6">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Additional images</label>
-                                                            <input 
-                                                                type="file" 
-                                                                accept='image/*' 
-                                                                name="images" 
-                                                                id="images" 
-                                                                multiple 
-                                                                className="block w-full text-sm text-gray-900 bg-white border-2 border-gray-200 rounded-xl cursor-pointer focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 file:transition-colors file:duration-200" 
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Images supplémentaires</label>
+                                                            <input
+                                                                type="file"
+                                                                accept='image/*'
+                                                                name="images"
+                                                                id="images"
+                                                                multiple
+                                                                className="block w-full text-sm text-gray-900 bg-white border-2 border-gray-200 rounded-xl cursor-pointer focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 file:transition-colors file:duration-200"
                                                             />
-                                                            <p className="mt-1 text-xs text-gray-500">You can select multiple files</p>
+                                                            <p className="mt-1 text-xs text-gray-500">Vous pouvez sélectionner plusieurs fichiers</p>
                                                         </div>
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Available Sizes *</label>
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Tailles disponibles *</label>
                                                             <div className='flex gap-3 flex-wrap py-2'>
                                                                 {
                                                                     sizesList.map((size) => (
@@ -230,14 +230,14 @@ const Modal = ({ setOpenModal, openModal, title, type, mainImg, deleteData }) =>
                                                         </div>
 
                                                         <div className="sm:col-span-3">
-                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
-                                                            <select 
-                                                                className='w-full bg-white border-2 border-gray-200 rounded-xl p-3 text-gray-900 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 cursor-pointer' 
-                                                                name="category" 
+                                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Catégorie *</label>
+                                                            <select
+                                                                className='w-full bg-white border-2 border-gray-200 rounded-xl p-3 text-gray-900 focus:border-[#C29F75] focus:ring-2 focus:ring-[#C29F75]/20 transition-all duration-200 cursor-pointer'
+                                                                name="category"
                                                                 id="category_select"
                                                                 required
                                                             >
-                                                                <option value="">-- Choose a category --</option>
+                                                                <option value="">-- Choisir une catégorie --</option>
                                                                 {
                                                                     categories.map((e) => (
                                                                         <option key={e.id} value={e.name.toLowerCase()}>{e.name}</option>
@@ -257,14 +257,14 @@ const Modal = ({ setOpenModal, openModal, title, type, mainImg, deleteData }) =>
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                 </svg>
-                                                Add Product
+                                                Ajouter le produit
                                             </button>
-                                            <button 
-                                                type="reset" 
-                                                onClick={() => setOpenModal(false)} 
+                                            <button
+                                                type="reset"
+                                                onClick={() => setOpenModal(false)}
                                                 className="inline-flex w-full sm:w-auto justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
                                             >
-                                                Cancel
+                                                Annuler
                                             </button>
                                         </div>
                                     </form>
@@ -286,7 +286,7 @@ const Modal = ({ setOpenModal, openModal, title, type, mainImg, deleteData }) =>
 
                             <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                    <button type="button" onClick={() => setOpenModal(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Close</button>
+                                    <button type="button" onClick={() => setOpenModal(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Fermer</button>
                                 </div>
                                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                     <div className="flex justify-center items-center flex-col">
@@ -325,14 +325,14 @@ const Modal = ({ setOpenModal, openModal, title, type, mainImg, deleteData }) =>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                             <h3 className="text-base font-semibold text-gray-900" id="modal-title">{title} : {deleteData.name}</h3>
                                             <div className="mt-2">
-                                                <p className="text-sm text-gray-500">Are you sure you want to delete this product ? All data will be permanently removed. This action cannot be undone.</p>
+                                                <p className="text-sm text-gray-500">Êtes-vous sûr de vouloir supprimer ce produit ? Toutes les données seront définitivement supprimées. Cette action est irréversible.</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                    <button type="button" onClick={() => handleDeleteProduct(deleteData)} className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</button>
-                                    <button type="button" onClick={() => setOpenModal(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+                                    <button type="button" onClick={() => handleDeleteProduct(deleteData)} className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Supprimer</button>
+                                    <button type="button" onClick={() => setOpenModal(false)} className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Annuler</button>
                                 </div>
                             </div>
                         </div>

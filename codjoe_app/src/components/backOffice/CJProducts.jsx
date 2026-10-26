@@ -17,7 +17,7 @@ const CJProducts = () => {
 
 
     const titles = [
-        'Name', 'Price', 'Av. quantity', 'Main image', 'Others images', 'SoldOut', 'Available sizes', 'Category', ''
+        'Nom', 'Prix', 'Quantité', 'Image principale', 'Autres images', 'Épuisé', 'Tailles disponibles', 'Catégorie', ''
     ]
 
     useEffect(() => {
@@ -48,26 +48,26 @@ const CJProducts = () => {
                 {/* Header */}
                 <div className='mb-8 flex justify-between items-center'>
                     <div>
-                        <h1 className='text-4xl font-bold text-gray-900 mb-2'>Products Management</h1>
-                        <p className='text-gray-600'>Manage your product catalog</p>
+                        <h1 className='text-4xl font-bold text-gray-900 mb-2'>Gestion des produits</h1>
+                        <p className='text-gray-600'>Gérez votre catalogue de produits</p>
                     </div>
-                    <button 
-                        className='bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1' 
+                    <button
+                        className='bg-[#C29F75] hover:bg-[#B8956A] text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
                         onClick={() => setNewProductModal(true)}
                     >
-                        + Add New Product
+                        + Ajouter un produit
                     </button>
                 </div>
 
                 {/* Modals */}
                 {newProductModal && (
-                    <Modal setOpenModal={setNewProductModal} openModal={newProductModal} title={'New product'} type={'addProduct'} />
+                    <Modal setOpenModal={setNewProductModal} openModal={newProductModal} title={'Nouveau produit'} type={'addProduct'} />
                 )}
                 {seeMainImgModal && (
-                    <Modal setOpenModal={setSeeMainImgModal} openModal={seeMainImgModal} title={'Main Image'} type={'mainImg'} mainImg={mainImg} />
+                    <Modal setOpenModal={setSeeMainImgModal} openModal={seeMainImgModal} title={'Image principale'} type={'mainImg'} mainImg={mainImg} />
                 )}
                 {deleteProductModal && (
-                    <Modal setOpenModal={setDeleteProductModal} openModal={deleteProductModal} title={'Delete Product'} type={'deleteProduct'} deleteData={deleteData} />
+                    <Modal setOpenModal={setDeleteProductModal} openModal={deleteProductModal} title={'Supprimer le produit'} type={'deleteProduct'} deleteData={deleteData} />
                 )}
 
                 {/* Products Table */}
@@ -109,17 +109,17 @@ const CJProducts = () => {
                                                 onClick={() => mainImgData(product.mainImg)} 
                                                 className='text-[#C29F75] hover:text-[#B8956A] font-medium text-sm'
                                             >
-                                                View
+                                                Voir
                                             </button>
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap'>
                                             <button className='text-[#C29F75] hover:text-[#B8956A] font-medium text-sm'>
-                                                View ({product.imgs?.length || 0})
+                                                Voir ({product.imgs?.length || 0})
                                             </button>
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap'>
                                             <span className='px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-                                                In Stock
+                                                En stock
                                             </span>
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
@@ -127,7 +127,7 @@ const CJProducts = () => {
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap'>
                                             <span className='px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800'>
-                                                {product.category || 'Uncategorized'}
+                                                {product.category || 'Non catégorisé'}
                                             </span>
                                         </td>
                                         <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
@@ -147,7 +147,7 @@ const CJProducts = () => {
                     {products.length === 0 && (
                         <div className='text-center py-12'>
                             <span className='text-6xl'>📦</span>
-                            <p className='text-gray-500 mt-4'>No products found</p>
+                            <p className='text-gray-500 mt-4'>Aucun produit trouvé</p>
                         </div>
                     )}
                 </div>
@@ -156,7 +156,7 @@ const CJProducts = () => {
                 <div className='mt-6 bg-white rounded-xl shadow-lg p-6'>
                     <div className='flex items-center justify-between'>
                         <div>
-                            <p className='text-sm text-gray-600'>Total Products</p>
+                            <p className='text-sm text-gray-600'>Total des produits</p>
                             <p className='text-3xl font-bold text-gray-900'>{products.length}</p>
                         </div>
                         <span className='text-5xl'>📦</span>

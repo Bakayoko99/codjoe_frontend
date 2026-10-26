@@ -15,11 +15,13 @@ import Backoffice from './views/Backoffice';
 import CJStats from './components/backOffice/CJStats';
 import CJProducts from './components/backOffice/CJProducts';
 import CJUsers from './components/backOffice/CJUsers';
+import CJOrders from './components/backOffice/CJOrders';
 import CJBestSellers from './components/backOffice/CJBestSellers';
 import { ProtectedRoute, ProtectedAdminRoute } from './components/ProtectedRoute';
 import Payment from './views/Payment';
 import AfterPay from './views/AfterPay';
 import Orders from './views/Orders';
+import Account from './views/Account';
 import Footer from './components/Footer';
 import Legal from './views/Legal';
 import LegalNotice from './components/legal/LegalNotice';
@@ -93,6 +95,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/account"
+              element={
+                <ProtectedRoute>
+                  <Account />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path='/legal-info'
@@ -117,6 +127,7 @@ const App = () => {
               <Route path='stats' element={<CJStats />} />
               <Route path='products' element={<CJProducts />} />
               <Route path='users' element={<CJUsers />} />
+              <Route path='orders' element={<CJOrders />} />
               <Route path='bestSellers' element={<CJBestSellers />} />
             </Route>
 

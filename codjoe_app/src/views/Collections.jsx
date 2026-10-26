@@ -3,9 +3,9 @@ import ComingSoon from '../components/ComingSoon';
 
 const Collections = () => {
     return (
-        <ComingSoon 
+        <ComingSoon
             title="Collections"
-            description="Explore our curated collections - seasonal favorites and timeless classics"
+            description="Explorez nos collections sélectionnées avec soin - incontournables de saison et classiques intemporels"
         />
     );
 }

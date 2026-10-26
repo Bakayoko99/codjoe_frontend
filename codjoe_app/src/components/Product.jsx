@@ -22,7 +22,7 @@ const Product = () => {
         {
             type: '',
             btn1: {
-                text: 'Buy now',
+                text: 'Acheter',
                 // link: '/list/tops',
             }
         }
@@ -113,10 +113,10 @@ const Product = () => {
 
     return (
         <>
-            <SEO 
-                title={product.name ? `${product.name} - CODJOE` : 'Loading Product - CODJOE'}
-                description={product.name ? `Shop ${product.name} at CODJOE. Premium quality, modern design. Price: €${product.price}. Available in multiple sizes.` : 'Loading...'}
-                keywords={product.name ? `${product.name}, ${product.category || 'fashion'}, streetwear, CODJOE, online shopping` : 'fashion, streetwear'}
+            <SEO
+                title={product.name ? `${product.name} - CODJOE` : 'Chargement du produit - CODJOE'}
+                description={product.name ? `Achetez ${product.name} chez CODJOE. Qualité premium, design moderne. Prix : €${product.price}. Disponible en plusieurs tailles.` : 'Chargement...'}
+                keywords={product.name ? `${product.name}, ${product.category || 'mode'}, streetwear, CODJOE, boutique en ligne` : 'mode, streetwear'}
                 image={product.mainImg || '/codjoe_logo.png'}
                 type="product"
             />
@@ -179,7 +179,7 @@ const Product = () => {
                                                 <button
                                                     onClick={prevImage}
                                                     className='absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110'
-                                                    aria-label="Previous image"
+                                                    aria-label="Image précédente"
                                                 >
                                                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -188,7 +188,7 @@ const Product = () => {
                                                 <button
                                                     onClick={nextImage}
                                                     className='absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110'
-                                                    aria-label="Next image"
+                                                    aria-label="Image suivante"
                                                 >
                                                     <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -206,7 +206,7 @@ const Product = () => {
                                                                     ? 'w-8 bg-white' 
                                                                     : 'w-2 bg-white/50 hover:bg-white/75'
                                                             }`}
-                                                            aria-label={`Go to image ${index + 1}`}
+                                                            aria-label={`Aller à l'image ${index + 1}`}
                                                         />
                                                     ))}
                                                 </div>
@@ -229,7 +229,7 @@ const Product = () => {
                                                 >
                                                     <img
                                                         src={image}
-                                                        alt={`Thumbnail ${index + 1}`}
+                                                        alt={`Miniature ${index + 1}`}
                                                         className='w-full h-full object-cover'
                                                     />
                                                 </button>
@@ -249,7 +249,7 @@ const Product = () => {
                         <div className='text-black space-y-6'>
                             {/* <div className='text-black bg-slate-500 h-full w-[600px]'> */}
                             <p className='text-2xl font-medium mb-1'>
-                                {product.name ? product.name : 'Loading...'}
+                                {product.name ? product.name : 'Chargement...'}
                             </p>
                             <p className={`${product?.price ? '' : 'animate-pulse bg-gray-300 h-5 w-full mt-5 mb-5'} text-[#AFAFBD] text-xl mb-1`}>
                                 {product?.price ? `€${product?.price}` : ''}
@@ -269,7 +269,7 @@ const Product = () => {
                                 </select> */}
 
                                 <button className=' h-14 bg-white rounded-[28px] w-64 text-left pl-10 relative drop-shadow-lg' onClick={() => { console.log('selectedSize: ', selectedSize.length), setLgSizeOpen(!lgSizeOpen) }}
-                                >Size {selectedSize != '' && `: ${selectedSize}`}
+                                >Taille {selectedSize != '' && `: ${selectedSize}`}
                                     <span className=' rotate-90 absolute right-11'>
                                         {'>'}
                                     </span>
@@ -279,13 +279,13 @@ const Product = () => {
                                     className=' h-14 bg-white rounded-[28px] w-64 drop-shadow-lg flex justify-center items-center'
                                     to={`${selectedSize.length != '' ? '/cart' : ''}`}
                                 >
-                                    Buy now
+                                    Acheter
                                 </Link>
 
                             </div>
                             <div className={` ${lgSizeOpen === false ? 'opacity-0' : ''} h-56 w-64 bg-[#C29F75] mt-5 rounded-[28px] flex items-center justify-center duration-300`}>
                                 <ul className={`flex justify-evenly items-center flex-col h-full text-white w-full text-center ${lgSizeOpen === false ? 'hidden' : ''}`}>
-                                    <li>SELECT YOUR SIZE</li>
+                                    <li>CHOISISSEZ VOTRE TAILLE</li>
                                     {
                                         sizesData.map((size, i) => (
                                             <li key={i} className={`${selectedSize == size && 'border-2 rounded-xl'} cursor-pointer  w-20`} onClick={() => { handleSize(size), setLgSizeOpen(!lgSizeOpen) }}>

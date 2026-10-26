@@ -1,12 +1,14 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 import menu from '../assets/icons/menu.svg';
 import stat from '../assets/icons/bOffice/stat.png';
 import user from '../assets/icons/user.png';
 import bestSeller from '../assets/icons/bOffice/bestSeller.png';
 import products from '../assets/icons/bOffice/product.png';
+import orders from '../assets/icons/shopping-cart.svg';
 
 const Backoffice = () => {
 
@@ -20,22 +22,27 @@ const Backoffice = () => {
         //     link: ''
         // },
         {
-            name: 'Stats',
+            name: 'Statistiques',
             icon: stat,
             link: 'stats'
         },
         {
-            name: 'Users',
+            name: 'Utilisateurs',
             icon: user,
             link: 'users'
         },
         {
-            name: 'Products',
+            name: 'Produits',
             icon: products,
             link: 'products'
         },
         {
-            name: 'Best Seller',
+            name: 'Commandes',
+            icon: orders,
+            link: 'orders'
+        },
+        {
+            name: 'Meilleures ventes',
             icon: bestSeller,
             link: 'bestSellers'
         }
@@ -43,6 +50,11 @@ const Backoffice = () => {
 
     return (
         <div className='bg-gradient-to-br from-gray-50 to-gray-100 pt-20 w-full text-black min-h-[100vh] flex'>
+            <SEO
+                title="Back-office - CODJOE"
+                description="Interface d'administration CODJOE."
+                robots="noindex, nofollow"
+            />
             {/* Sidebar moderne */}
             <div className={`${menuOpen ? 'w-64' : 'w-20'} bg-gradient-to-b from-gray-900 to-gray-800 h-[87.7vh] duration-300 ease-in-out shadow-2xl border-r border-gray-700 relative`}>
                 {/* Overlay gradient pour effet de profondeur */}
@@ -102,7 +114,7 @@ const Backoffice = () => {
                     <div className='p-4 border-t border-gray-700/50'>
                         <div className={`${menuOpen ? 'flex items-center gap-3' : 'flex justify-center'} text-gray-400 text-xs`}>
                             <div className='w-2 h-2 bg-green-500 rounded-full animate-pulse'></div>
-                            {menuOpen && <span>Admin Panel</span>}
+                            {menuOpen && <span>Panneau admin</span>}
                         </div>
                     </div>
                 </div>

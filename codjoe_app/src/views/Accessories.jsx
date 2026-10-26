@@ -3,9 +3,9 @@ import ComingSoon from '../components/ComingSoon';
 
 const Accessories = () => {
     return (
-        <ComingSoon 
-            title="Accessories Collection"
-            description="Discover our exclusive range of accessories - bags, hats, jewelry and more"
+        <ComingSoon
+            title="Collection Accessoires"
+            description="Découvrez notre gamme exclusive d'accessoires - sacs, chapeaux, bijoux et plus encore"
         />
     );
 }

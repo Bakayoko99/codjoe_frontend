@@ -27,11 +27,12 @@ const CJBestSellers = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className='mb-8'
                 >
-                    <h1 className='text-4xl font-bold text-gray-900 mb-2'>Best Sellers</h1>
-                    <p className='text-gray-600'>Top performing products in your store</p>
+                    <h1 className='text-4xl font-bold text-gray-900 mb-2'>Meilleures ventes</h1>
+                    <p className='text-gray-600'>Les produits les plus performants de votre boutique</p>
                 </motion.div>
 
                 {/* Best Sellers Grid */}
+                <h2 className='sr-only'>Classement des produits</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                     {bestSellers.map((product, index) => (
                         <motion.div
@@ -76,15 +77,15 @@ const CJBestSellers = () => {
                                 {/* Statistiques */}
                                 <div className='space-y-3'>
                                     <div className='flex items-center justify-between pb-3 border-b border-gray-100'>
-                                        <span className='text-sm text-gray-600'>Total Sales</span>
+                                        <span className='text-sm text-gray-600'>Ventes totales</span>
                                         <span className='text-lg font-bold text-gray-900'>{product.sales}</span>
                                     </div>
                                     <div className='flex items-center justify-between pb-3 border-b border-gray-100'>
-                                        <span className='text-sm text-gray-600'>Revenue</span>
+                                        <span className='text-sm text-gray-600'>Revenu</span>
                                         <span className='text-lg font-bold text-green-600'>€{product.revenue}</span>
                                     </div>
                                     <div className='flex items-center justify-between'>
-                                        <span className='text-sm text-gray-600'>Category</span>
+                                        <span className='text-sm text-gray-600'>Catégorie</span>
                                         <span className='text-sm font-medium text-gray-900'>
                                             {product.category || 'N/A'}
                                         </span>
@@ -94,8 +95,8 @@ const CJBestSellers = () => {
                                 {/* Barre de progression */}
                                 <div className='mt-4'>
                                     <div className='flex justify-between text-xs text-gray-600 mb-1'>
-                                        <span>Stock Status</span>
-                                        <span>In Stock</span>
+                                        <span>Statut du stock</span>
+                                        <span>En stock</span>
                                     </div>
                                     <div className='w-full bg-gray-200 rounded-full h-2'>
                                         <div
@@ -116,22 +117,22 @@ const CJBestSellers = () => {
                     transition={{ delay: 0.6 }}
                     className='mt-8 bg-white rounded-2xl shadow-lg p-6'
                 >
-                    <h2 className='text-2xl font-bold text-gray-900 mb-6'>Performance Overview</h2>
+                    <h2 className='text-2xl font-bold text-gray-900 mb-6'>Vue d&apos;ensemble des performances</h2>
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                         <div className='text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl'>
-                            <p className='text-sm text-gray-600 mb-2'>Total Units Sold</p>
+                            <p className='text-sm text-gray-600 mb-2'>Unités vendues</p>
                             <p className='text-4xl font-bold text-blue-600'>
                                 {bestSellers.reduce((sum, p) => sum + p.sales, 0)}
                             </p>
                         </div>
                         <div className='text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl'>
-                            <p className='text-sm text-gray-600 mb-2'>Total Revenue</p>
+                            <p className='text-sm text-gray-600 mb-2'>Chiffre d&apos;affaires total</p>
                             <p className='text-4xl font-bold text-green-600'>
                                 €{bestSellers.reduce((sum, p) => sum + parseFloat(p.revenue), 0).toFixed(2)}
                             </p>
                         </div>
                         <div className='text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl'>
-                            <p className='text-sm text-gray-600 mb-2'>Average Sale Price</p>
+                            <p className='text-sm text-gray-600 mb-2'>Prix de vente moyen</p>
                             <p className='text-4xl font-bold text-purple-600'>
                                 €{bestSellers.length > 0 
                                     ? (bestSellers.reduce((sum, p) => sum + parseFloat(p.price), 0) / bestSellers.length).toFixed(2)
