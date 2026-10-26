@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+/* Police Poppins chargée depuis index.html (preconnect + <link>) plutôt que via
+   @import ici : un @import CSS bloque le rendu en série (le navigateur doit
+   d'abord télécharger et analyser ce fichier avant de découvrir la police),
+   alors qu'un <link> dans le <head> est découvert et chargé en parallèle. */
 
 @tailwind base;
 @tailwind components;
